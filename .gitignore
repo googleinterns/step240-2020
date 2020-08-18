@@ -1,5 +1,5 @@
-webapp/node_modules
-webapp/.cache
-webapp/dist
 .idea
 target/
+webapp/.cache
+webapp/dist
+webapp/node_modules
