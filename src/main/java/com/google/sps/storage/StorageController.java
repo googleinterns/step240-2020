@@ -14,9 +14,6 @@
 
 package com.google.sps.storage;
 
-import com.google.sps.storage.StorageCommand;
-import com.google.sps.storage.StorageControllerInterface;
-
 /**
  * TODO(bogdanciobanu): add class explanations
  */

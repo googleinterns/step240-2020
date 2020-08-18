@@ -14,10 +14,6 @@
 
 package com.google.sps.storage;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.Entity;
-import com.google.sps.storage.StorageWrapperInterface;
-
 /**
  * TODO(bogdanciobanu): add class explanations
  */
