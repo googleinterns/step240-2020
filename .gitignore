@@ -2,6 +2,6 @@
 .idea
 .DS_Store
 target/
-webapp/.cache
-webapp/dist
-webapp/node_modules
+src/main/webapp/.cache
+src/main/webapp/dist
+src/main/webapp/node_modules
