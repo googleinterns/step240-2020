@@ -5,7 +5,7 @@ import * as React from "react";
  * @param {*} props arbituary input properties for our application to use
  */
 export const App = (props) => {
-	return (
-		<h1>Welcome {props.name}</h1>
-	)
+  return (
+    <h1>Welcome {props.name}</h1>
+  )
 }
