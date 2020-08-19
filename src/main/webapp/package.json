@@ -8,7 +8,7 @@
     "dev": "parcel index.html",
     "build": "parcel build index.html"
   },
-  "author": "",
+  "author": "Graph Geckos",
   "license": "Apache-2.0",
   "devDependencies": {
     "parcel-bundler": "^1.12.4"
