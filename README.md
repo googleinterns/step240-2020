@@ -3,9 +3,6 @@
 ## Project Description
 A lightweight dashboard designed to display the build status of LLVM Build Bots in an easily interpretable fashion via a User Interface.
 
-## Repository Structure
-
-
 ## Wiki
 [The wiki](https://github.com/googleinterns/step240-2020/wiki) describes the purpose of different parts of the system.
 
