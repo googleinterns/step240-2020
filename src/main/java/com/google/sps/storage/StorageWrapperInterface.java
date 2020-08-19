@@ -20,5 +20,9 @@ package com.google.sps.storage;
 public interface StorageWrapperInterface<EntryType, EntryPrimaryKeyType> {
   void addEntry(final EntryType entry);
 
+  void updateEntry(final EntryPrimaryKeyType primaryKey, final EntryType update);
+
   EntryType getEntry(final EntryPrimaryKeyType primaryKey);
+
+  Iterable<EntryType> getLastEntries(final int number);
 }

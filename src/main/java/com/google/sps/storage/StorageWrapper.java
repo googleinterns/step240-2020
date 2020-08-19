@@ -15,15 +15,22 @@
 package com.google.sps.storage;
 
 import com.google.appengine.api.datastore.Entity;
+import com.google.gson.Gson;
 
 /**
- * Implementation of the StorageWrapperInterface, with the purpose of interacting with
+ * Implementation of the StorageWrapperInterface, with the purpose of providing I/O to
  * the Google Cloud Datastore component.
  */
-public class StorageWrapper implements StorageWrapperInterface<Entity, String> {
-  public void addEntry(final Entity entry) { }
+public class StorageWrapper implements StorageWrapperInterface<Gson, String> {
+  public void addEntry(final Gson entry) { }
 
-  public Entity getEntry(final String primaryKey) {
+  public void updateEntry(final String primaryKey, final Gson update) { }
+
+  public Gson getEntry(final String primaryKey) {
+    return null;
+  }
+
+  public Iterable<Gson> getLastEntries(final int number) {
     return null;
   }
 }
