@@ -13,6 +13,18 @@
     "email": "juwonsogbesan@gmail.com",
     "url": "https://github.com/samuelsogbesan"
   },
+  "contributors": [
+    {
+      "name": "Bogdan Ciobanu",
+      "email": "bogdanciobanu@google.com",
+      "url": "https://github.com/MagoDelBlocco"
+    },
+    {
+      "name": "Masha",
+      "email": "mashasamsikova@google.com",
+      "url": "https://github.com/holounic"
+    }
+  ],
   "license": "Apache-2.0",
   "devDependencies": {
     "parcel-bundler": "^1.12.4"
