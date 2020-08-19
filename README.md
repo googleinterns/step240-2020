@@ -7,7 +7,7 @@ A lightweight dashboard designed to display the build status of LLVM Build Bots 
 [The wiki](https://github.com/googleinterns/step240-2020/wiki) describes the purpose of different parts of the system.
 
 ## Contributions
-The whole of the Graph Geckos Team.
+**The Graph Geckos Team**.
 Meike Baumgärtner
 Krasimir Georgiev
 Samuel Sogbesan
