@@ -1,6 +1,7 @@
 # Please keep this list in ASCII sort order
-.idea
 .DS_Store
+.idea
+step240-2020.iml
 target/
 webapp/.cache
 webapp/dist
