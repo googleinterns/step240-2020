@@ -14,9 +14,6 @@
 
 package com.google.sps.storage;
 
-/**
- * TODO(bogdanciobanu): add class explanations
- */
 public enum StorageCommandType {
   CREATE, UPDATE, GET
 }

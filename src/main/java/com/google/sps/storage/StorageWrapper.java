@@ -17,7 +17,8 @@ package com.google.sps.storage;
 import com.google.appengine.api.datastore.Entity;
 
 /**
- * TODO(bogdanciobanu): add class explanations
+ * Implementation of the StorageWrapperInterface, with the purpose of interacting with
+ * the Google Cloud Datastore component.
  */
 public class StorageWrapper implements StorageWrapperInterface<Entity, String> {
   public void addEntry(final Entity entry) { }

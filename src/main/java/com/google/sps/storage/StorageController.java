@@ -15,7 +15,9 @@
 package com.google.sps.storage;
 
 /**
- * TODO(bogdanciobanu): add class explanations
+ * Implementation of the StorageControllerInterface, with a priority queue policy of
+ * access (CREATE > UPDATE > GET). This particular implementation supports concurrent
+ * requests being made for storage access.
  */
 public class StorageController implements StorageControllerInterface {
   public void doCommand(final StorageCommand command) { }

@@ -15,7 +15,8 @@
 package com.google.sps.storage;
 
 /**
- * TODO(bogdanciobanu): add class explanations
+ * An interface for communicating with the storage component, arbitrating access to
+ * the resources.
  */
 public interface StorageControllerInterface {
   void doCommand(final StorageCommand command);

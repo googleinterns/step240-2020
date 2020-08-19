@@ -15,6 +15,7 @@
 package com.google.sps.storage;
 
 /**
- * TODO(bogdanciobanu): add class explanations
+ * The purpose of this class is to provide a uniform method of communication with an
+ * implementation of the StorageControllerInterface.
  */
 public class StorageCommand { }
