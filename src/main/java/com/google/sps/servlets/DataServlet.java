@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 /**
- * {@code DataServlet} is used to provide interaction between front-end part of the application
+ * Provides interaction between front-end part of the application
  * and the storage.
  */
 @WebServlet("/data")
