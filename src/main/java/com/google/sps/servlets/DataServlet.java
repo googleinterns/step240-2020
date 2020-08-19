@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
+/**
+ * {@code DataServlet} is used to provide interaction between front-end part of the application
+ * and the storage.
+ */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   private final static Object STORAGE_CONTROLLER = null;
