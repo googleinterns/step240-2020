@@ -14,6 +14,8 @@
 
 package com.google.sps.storage;
 
+import com.google.appengine.api.datastore.Entity;
+
 /**
  * TODO(bogdanciobanu): add class explanations
  */
