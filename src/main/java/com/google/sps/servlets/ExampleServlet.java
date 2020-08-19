@@ -14,4 +14,3 @@ public class ExampleServlet extends HttpServlet {
     response.sendRedirect("example.html");
   }
 }
-
