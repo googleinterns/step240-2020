@@ -11,6 +11,11 @@ A lightweight dashboard designed to display the build status of LLVM Build Bots 
 
 ## Contributions
 The whole of the Graph Geckos Team.
+Meike Baumgärtner
+Krasimir Georgiev
+Samuel Sogbesan
+Bogdan Ciobanu
+Masha Samsikova
 
 ## Licensing
 Licensed under Apache 2.0, inline with the licensing of the [LLVM Project](https://github.com/llvm/llvm-project)
