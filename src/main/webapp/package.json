@@ -8,7 +8,11 @@
     "dev": "parcel index.html",
     "build": "parcel build index.html"
   },
-  "author": "Graph Geckos",
+  "author": {
+    "name": "Samuel Sogbesan",
+    "email": "juwonsogbesan@gmail.com",
+    "url": "https://github.com/samuelsogbesan"
+  },
   "license": "Apache-2.0",
   "devDependencies": {
     "parcel-bundler": "^1.12.4"
