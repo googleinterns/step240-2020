@@ -21,10 +21,14 @@ import com.google.gson.Gson;
  * Implementation of the StorageWrapperInterface, with the purpose of providing I/O to
  * the Google Cloud Datastore component.
  */
-public class StorageWrapper implements StorageWrapperInterface<Gson, String> {
-  public void addEntry(final Gson entry) { }
+public class StorageController implements StorageControllerInterface<Gson, String> {
+  public void addEntry(final Gson entry) {
 
-  public void updateEntry(final String primaryKey, final Gson update) { }
+  }
+
+  public void updateEntry(final String primaryKey, final Gson update) {
+
+  }
 
   public Gson getEntry(final String primaryKey) {
     return null;

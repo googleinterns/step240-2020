@@ -17,7 +17,7 @@ package com.google.sps.storage;
 /**
  * An interface for providing unified I/O to the storage component.
  */
-public interface StorageWrapperInterface<EntryType, EntryPrimaryKeyType> {
+public interface StorageControllerInterface<EntryType, EntryPrimaryKeyType> {
   void addEntry(final EntryType entry);
 
   void updateEntry(final EntryPrimaryKeyType primaryKey, final EntryType update);
