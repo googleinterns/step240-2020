@@ -21,19 +21,19 @@ export const BuildSnapshot = (props) => {
 const Header = (props) => {
   return (
     <div>
-      <span>commit hash</span>
-      <span>description</span>
+      <CommitHash hash = {}/>
+      <Description description = {}/>
       <FailureGroup group = {}/>
       <BuildStatus status = {}/>
     </div>
   );
 }
 
-const FailureGroup = (props) => {
-  return (
-    <span>failure group</span>
-  );
-}
+const CommitHash = (props) => <span>{props.hash}</span>
+
+const Description = (props) => <span>{props.description}</span>
+
+const FailureGroup = (props) => <span>failure group</span>
 
 const BuildStatus = (props) => <span>{props.status}</span>
 
