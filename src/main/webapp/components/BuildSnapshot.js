@@ -7,7 +7,8 @@ import * as React from "react";
 export const BuildSnapshot = (props) => {
     return (
         <div>
-            Snapshot
+            <Header data = { }/>
+            <Tray data = { }/>
         </div>
     )
 }
