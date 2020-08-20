@@ -21,9 +21,21 @@ export const BuildSnapshot = (props) => {
 const Header = (props) => {
   return (
     <div>
+      <span>commit hash</span>
+      <span>description</span>
+      <FailureGroup group = {}/>
+      <BuildStatus status = {}/>
     </div>
   );
 }
+
+const FailureGroup = (props) => {
+  return (
+    <span>failure group</span>
+  );
+}
+
+const BuildStatus = (props) => <span>{props.status}</span>
 
 const Tray = (props) => {
   return (
