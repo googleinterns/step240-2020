@@ -17,9 +17,11 @@ package com.google.sps.storage;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
-import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.gson.Gson;
+// Note: all Gson uses in this file will be superseded by Spring functionality.
 
 /**
  * Implementation of the StorageWrapperInterface, with the purpose of providing I/O to
@@ -41,7 +43,7 @@ public class StorageController implements StorageControllerInterface {
   }
 
   void createNewEntry(final String entryData) throws IllegalArgumentException {
-
+    
   }
 
   void updateExistingEntry(final String updateData) throws IllegalArgumentException {
