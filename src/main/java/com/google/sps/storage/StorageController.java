@@ -14,7 +14,12 @@
 
 package com.google.sps.storage;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.PreparedQuery;
 
 /**
  * Implementation of the StorageWrapperInterface, with the purpose of providing I/O to
@@ -29,6 +34,12 @@ import com.google.appengine.api.datastore.Entity;
  *      * commit information
  */
 public class StorageController implements StorageControllerInterface {
+  private DatastoreService storage;
+
+  public StorageController() {
+    storage = DatastoreServiceFactory.getDatastoreService();
+  }
+
   void createNewEntry(final String entryData) throws IllegalArgumentException {
 
   }
