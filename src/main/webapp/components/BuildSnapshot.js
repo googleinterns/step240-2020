@@ -36,7 +36,7 @@ const Tray = (props) => {
         <Subheading/>
         <Grid data = { } element = {NameTag}/>
       </Wrapper>
-      <DataTable/>
+      <BuilderDataTable/>
     </div>
   );
 }
@@ -61,6 +61,6 @@ const Grid = (props) => <div></div>
 
 const NameTag = (props) => <span>{props.buildBotName}</span>
 
-const DataTable = (props) => <table></table>
+const BuilderDataTable = (props) => <table></table>
 
 const getField = (obj, field, defaultValue) => obj[field] !== undefined ? field : defaultValue !== undefined ? defaultValue : null;
