@@ -62,3 +62,5 @@ const Grid = (props) => <div></div>
 const NameTag = (props) => <span>{props.buildBotName}</span>
 
 const DataTable = (props) => <table></table>
+
+const getField = (obj, field, defaultValue) => obj[field] !== undefined ? field : defaultValue !== undefined ? defaultValue : null;
