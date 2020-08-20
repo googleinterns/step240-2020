@@ -11,3 +11,17 @@ export const BuildSnapshot = (props) => {
         </div>
     )
 }
+
+const Header = (props) => {
+  return (
+    <div>
+    </div>
+  );
+}
+
+const Tray = (props) => {
+  return (
+    <div>
+    </div>
+  );
+}
