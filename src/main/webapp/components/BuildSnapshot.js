@@ -15,7 +15,7 @@ export const BuildSnapshot = (props) => {
             <Header isOpen = {isOpen} data = { }/>
             <Tray isOpen = {isOpen} data = { }/>
         </div>
-    )
+    );
 }
 
 const Header = (props) => {
