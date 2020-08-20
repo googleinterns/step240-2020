@@ -29,6 +29,18 @@ const Header = (props) => {
   );
 }
 
+const Tray = (props) => {
+  return (
+    <div>
+      <Wrapper>
+        <Subheading/>
+        <Grid data = { } element = {NameTag}/>
+      </Wrapper>
+      <DataTable/>
+    </div>
+  );
+}
+
 const CommitHash = (props) => <span>{props.hash}</span>
 
 const Description = (props) => <span>{props.description}</span>
@@ -37,9 +49,16 @@ const FailureGroup = (props) => <span>failure group</span>
 
 const BuildStatus = (props) => <span>{props.status}</span>
 
-const Tray = (props) => {
-  return (
-    <div>
-    </div>
-  );
+const Wrapper = (props) => {
+  <div>
+    {props.children}
+  </div>
 }
+
+const Subheading = (props) => <Wrapper><span>time</span></Wrapper>
+
+const Grid = (props) => <div></div>
+
+const NameTag = (props) => <span>{props.buildBotName}</span>
+
+const DataTable = (props) => <table></table>
