@@ -30,16 +30,14 @@ public interface StorageControllerInterface {
 
   /**
    * Updates an existing database entry, with the passed/failed information for
-   * a particular buildbot.
+   * a particular buildbot. If no entry is associated to the commit hash provided,
+   * creates a new entry from the metadata included in the {@code updateData}.
    *
    * @param updateData a JSON in plain string format, must have a "commitHash" field.
    * @throws IllegalArgumentException if entryData is null or doesn't have a
    *     "commitHash" field.
-   * @throws RuntimeException if the commit hash provided does not have a database
-   *     entry associated with it.
    */
-  void updateExistingEntry(final String updateData) throws IllegalArgumentException,
-                                                           RuntimeException;
+  void updateExistingEntry(final String updateData) throws IllegalArgumentException;
 
   /**
    * Queries the database for all the entries which have a certain property

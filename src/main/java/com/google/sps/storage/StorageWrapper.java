@@ -33,8 +33,7 @@ public class StorageController implements StorageControllerInterface {
 
   }
 
-  void updateExistingEntry(final String updateData) throws IllegalArgumentException,
-                                                           RuntimeException {
+  void updateExistingEntry(final String updateData) throws IllegalArgumentException {
 
   }
 
