@@ -15,26 +15,36 @@
 package com.google.sps.storage;
 
 import com.google.appengine.api.datastore.Entity;
-import com.google.gson.Gson;
 
 /**
  * Implementation of the StorageWrapperInterface, with the purpose of providing I/O to
- * the Google Cloud Datastore component.
+ * the Google Appengine Datastore component. Each individual database entry is
+ * structured as follows:
+ *    - Kind: "revision"
+ *    - Properties:
+ *      * commit hash
+ *      * index
+ *      * blames
+ *      * timestamp
+ *      * commit information
  */
-public class StorageController implements StorageControllerInterface<Gson, String> {
-  public void addEntry(final Gson entry) {
+public class StorageController implements StorageControllerInterface {
+  void createNewEntry(final String entryData) throws IllegalArgumentException {
 
   }
 
-  public void updateEntry(final String primaryKey, final Gson update) {
+  void updateExistingEntry(final String updateData) throws IllegalArgumentException,
+                                                           RuntimeException {
 
   }
 
-  public Gson getEntry(final String primaryKey) {
+  Iterable<String> getEntriesByProperty(final String property, final String value)
+                                                    throws IllegalArgumentException {
     return null;
   }
 
-  public Iterable<Gson> getLastEntries(final int number) {
+  Iterable<String> getLastEntries(final int number, final int offset)
+                                                    throws IllegalArgumentException {
     return null;
   }
 }
