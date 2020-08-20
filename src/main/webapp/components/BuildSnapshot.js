@@ -21,10 +21,10 @@ export const BuildSnapshot = (props) => {
 const Header = (props) => {
   return (
     <div>
-      <CommitHash hash = {}/>
-      <Description description = {}/>
-      <FailureGroup group = {}/>
-      <BuildStatus status = {}/>
+      <CommitHash hash = { }/>
+      <Description description = { }/>
+      <FailureGroup group =  { }/>
+      <BuildStatus status = { }/>
     </div>
   );
 }
