@@ -52,7 +52,7 @@ const BuildStatus = (props) => <span>{props.status}</span>
 
 const Subheading = (props) => <Wrapper><span>time</span></Wrapper>
 
-const Grid = (props) => <div></div>
+const Grid = (props) => <div>{props.data.map(datapoint => <NameTag buildBotName = {datapoint.buildBotName}/>)}</div>
 
 const NameTagGrid = (props) => <Grid data = {[]} element = {NameTag}/>
 
