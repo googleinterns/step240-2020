@@ -1,5 +1,7 @@
 import * as React from "react";
-
+import {Header} from "./components/Header";
+import {Wrapper} from "./components/Wrapper";
+import {BuildSnapshotContainer} from "./components/BuildSnapshotContainer";
 /**
  * Parent Component that is Rendered to the Page.
  * 
@@ -7,6 +9,9 @@ import * as React from "react";
  */
 export const App = (props) => {
   return (
-    <h1>Welcome {props.name}</h1>
-  )
+    <Wrapper>
+      <Header/>
+      <BuildSnapshotContainer/>
+    </Wrapper>
+  );
 }
