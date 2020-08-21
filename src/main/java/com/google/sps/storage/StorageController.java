@@ -26,7 +26,7 @@ public interface StorageController {
    * @throws IllegalArgumentException if entryData is null or doesn't have a
    *      "commitHash" field.
    */
-  void createNewEntry(final String entryData);
+  void createNewEntry(final ParsedGitData entryData);
 
   /**
    * Updates an existing database entry, with the passed/failed information for
@@ -37,7 +37,7 @@ public interface StorageController {
    * @throws IllegalArgumentException if entryData is null or doesn't have a
    *     "commitHash" field.
    */
-  void updateExistingEntry(final String updateData);
+  void updateExistingEntry(final ParsedBuildbotData updateData);
 
   /**
    * Deletes all entries from the database that have a certain property equal to
@@ -58,7 +58,7 @@ public interface StorageController {
    *     the condition.
    * @throws IllegalArgumentException if either property or value are null.
    */
-  Iterable<String> getEntriesByProperty(final String property, final String value);
+  Iterable<AggregatedBuildbotData> getEntriesByProperty(final String property, final String value);
 
   /**
    * Queries the database for a specified amout of entries, going down in chronological
@@ -73,6 +73,6 @@ public interface StorageController {
    *     entries from that range.
    * @throws IllegalArgumentException if either number or offset are < 0.
    */
-  Iterable<String> getLastEntries(final int number, final int offset)
+  Iterable<AggregatedBuildbotData> getLastEntries(final int number, final int offset)
                                                     throws IllegalArgumentException;
 }
