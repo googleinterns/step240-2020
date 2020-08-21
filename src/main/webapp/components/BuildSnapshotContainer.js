@@ -1,5 +1,6 @@
 import * as React from "react";
-
+import {Wrapper} from "./Wrapper";
+import {BuildSnapshot} from "./BuildSnapshot";
 /**
  * Container Component for BuildSnapshots.
  * 
@@ -8,8 +9,8 @@ import * as React from "react";
  */
 export const BuildSnapshotContainer = (props) => {
     return (
-        <div>
-            snapshot container.
-        </div>
+        <Wrapper>
+          <BuildSnapshot/>
+        </Wrapper>
     )
 }
