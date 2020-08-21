@@ -17,48 +17,24 @@ package com.google.sps.storage;
 /**
  * An immutable container used for providing stripped-down build bot information
  * to the StorageController. Provides functionality for checking whether the information
- * is sufficient for either a creation or an update of an entry. Does not modify or
- * validity checks the individual contents of each field.
+ * is sufficient for an update of an entry. Does not modify or validity check the individual
+ * contents of each field.
  */
 public class ParsedBuildbotData {
   private final String commitHash;
-  private final String timestamp;
-  private final String branch;
   private final String builderName;
   private final List<String> logs;
   private final boolean status;
 
   /**
-   * Creates an instance with sufficient information for creating a database entry.
+   * Creates an instance with information for updating a database entry.
    */
-  public ParsedBuildbotData(final String commitHash, final String timestamp, final String branch) {
+  public ParsedBuildbotData(final String commitHash, final String builderName,
+                            final List<String> logs, final boolean status) {
     this.commitHash = commitHash;
-    this.timestamp = timestamp;
-    this.branch = branch;
-    this.builderName = null;
-    this.logs = null;
-    this.status = null;
-  }
-
-  /**
-   * Creates an instance with sufficient information for updating a database entry.
-   */
-  public ParsedBuildbotData(final String commitHash, final String timestamp, final String branch,
-                        final String builderName, final List<String> logs, final boolean status) {
-    this.commitHash = commitHash;
-    this.timestamp = timestamp;
-    this.branch = branch;
     this.builderName = builderName;
     this.logs = new ArrayList<>(logs);
     this.status = status;
-  }
-
-  /**
-   * Checks for the existance of the fields necessary for creating a database entry.
-   * Does not check the validity of each field.
-   */
-  boolean validCreationData() {
-    return (commitHash != null && timestamp != null && branch != null);
   }
 
   /**
@@ -71,14 +47,6 @@ public class ParsedBuildbotData {
 
   String getCommitHash() {
     return commitHash;
-  }
-
-  String getTimestamp() {
-    return timestamp;
-  }
-
-  String getBranch() {
-    return branch;
   }
 
   String getBuilderName() {
