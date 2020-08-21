@@ -1,4 +1,5 @@
 import * as React from "react";
+import {Wrapper} from "./Wrapper";
 
 /**
  * Component used to render Build Information.
@@ -8,12 +9,12 @@ export const BuildSnapshot = (props) => {
     // State variable indicating whether the BuildSnapshot is open
     // isOpen === true indicates the tray should be visible 
     // and the indicator arrow on the Header should be facing downwards.
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = React.useState(false);
 
     return (
         <div>
-            <Header isOpen = {isOpen} data = { }/>
-            <Tray isOpen = {isOpen} data = { }/>
+            <Header isOpen = {isOpen} data = {{}}/>
+            <Tray isOpen = {isOpen} data = {{}}/>
         </div>
     );
 }
@@ -21,10 +22,10 @@ export const BuildSnapshot = (props) => {
 const Header = (props) => {
   return (
     <div>
-      <CommitHash hash = { }/>
-      <Description description = { }/>
-      <FailureGroup group =  { }/>
-      <BuildStatus status = { }/>
+      <CommitHash hash = {"Hash"}/>
+      <Description description = {"Desc"}/>
+      <FailureGroup group =  {"group"}/>
+      <BuildStatus status = {"failed"}/>
     </div>
   );
 }
@@ -34,7 +35,7 @@ const Tray = (props) => {
     <div>
       <Wrapper>
         <Subheading/>
-        <Grid data = { } element = {NameTag}/>
+        <Grid data = {{}} element = {NameTag}/>
       </Wrapper>
       <BuilderDataTable/>
     </div>
@@ -45,15 +46,9 @@ const CommitHash = (props) => <span>{props.hash}</span>
 
 const Description = (props) => <span>{props.description}</span>
 
-const FailureGroup = (props) => <span>failure group</span>
+const FailureGroup = (props) => <span>{props.group}</span>
 
 const BuildStatus = (props) => <span>{props.status}</span>
-
-const Wrapper = (props) => {
-  <div>
-    {props.children}
-  </div>
-}
 
 const Subheading = (props) => <Wrapper><span>time</span></Wrapper>
 
