@@ -26,9 +26,6 @@ public class ParsedBuildbotData {
   private final List<String> logs;
   private final boolean status;
 
-  /**
-   * Creates an instance with information for updating a database entry.
-   */
   public ParsedBuildbotData(final String commitHash, final String builderName,
                             final List<String> logs, final boolean status) {
     this.commitHash = commitHash;

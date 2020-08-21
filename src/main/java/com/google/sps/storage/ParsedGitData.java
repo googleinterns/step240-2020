@@ -25,9 +25,6 @@ public class ParsedBuildbotData {
   private final String timestamp;
   private final String branch;
 
-  /**
-   * Creates an instance with information for creating a database entry.
-   */
   public ParsedBuildbotData(final String commitHash, final String timestamp, final String branch) {
     this.commitHash = commitHash;
     this.timestamp = timestamp;
