@@ -35,7 +35,7 @@ const Tray = (props) => {
     <div>
       <Wrapper>
         <Subheading/>
-        <Grid data = {{}} element = {NameTag}/>
+        <NameTagGrid data = {{}}/>
       </Wrapper>
       <BuilderDataTable/>
     </div>
@@ -53,6 +53,8 @@ const BuildStatus = (props) => <span>{props.status}</span>
 const Subheading = (props) => <Wrapper><span>time</span></Wrapper>
 
 const Grid = (props) => <div></div>
+
+const NameTagGrid = (props) => <Grid data = {{}} element = {NameTag}/>
 
 const NameTag = (props) => <span>{props.buildBotName}</span>
 
