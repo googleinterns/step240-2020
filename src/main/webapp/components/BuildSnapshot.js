@@ -54,7 +54,7 @@ const Subheading = (props) => <Wrapper><span>time</span></Wrapper>
 
 const Grid = (props) => <div></div>
 
-const NameTagGrid = (props) => <Grid data = {{}} element = {NameTag}/>
+const NameTagGrid = (props) => <Grid data = {[]} element = {NameTag}/>
 
 const NameTag = (props) => <span>{props.buildBotName}</span>
 
