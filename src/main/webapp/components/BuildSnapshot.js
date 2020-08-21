@@ -10,10 +10,9 @@ export const BuildSnapshot = (props) => {
     // isOpen === true indicates the tray should be visible 
     // and the indicator arrow on the Header should be facing downwards.
     const [isOpen, setIsOpen] = React.useState(false);
-
     return (
         <div>
-            <Header isOpen = {isOpen} data = {{}}/>
+            <Header isOpen = {isOpen} onClick = {setIsOpen} data = {{}}/>
             <Tray isOpen = {isOpen} data = {{}}/>
         </div>
     );
@@ -21,7 +20,7 @@ export const BuildSnapshot = (props) => {
 
 const Header = (props) => {
   return (
-    <div>
+    <div onClick = {() => props.onClick(toggle(props.isOpen))}>
       <CommitHash hash = {"Hash"}/>
       <Description description = {"Desc"}/>
       <FailureGroup group =  {"group"}/>
@@ -31,6 +30,7 @@ const Header = (props) => {
 }
 
 const Tray = (props) => {
+  if(props.isOpen !== true) return null;
   return (
     <div>
       <Wrapper>
@@ -61,3 +61,5 @@ const NameTag = (props) => <span>{props.buildBotName}</span>
 const BuilderDataTable = (props) => <table></table>
 
 const getField = (obj, field, defaultValue) => obj[field] !== undefined ? field : defaultValue !== undefined ? defaultValue : null;
+
+const toggle = (boolean) => !boolean;
