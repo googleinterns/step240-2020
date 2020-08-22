@@ -9,17 +9,15 @@ public class BuildInfo {
   private final String repository;
   private final String branch;
 
-  private final List<Builder> passedBuilders;
-  private final List<Builder> failedBuilders;
+  private final List<Builder> builders;
 
   public BuildInfo(String commitHash, String timeStamp, String repository,
-                   String branch, Builder[] passedBuilders, Builder[] failedBuilders) {
+                   String branch, Builder[] builders) {
     this.commitHash = commitHash;
     this.timeStamp = timeStamp;
     this.repository = repository;
     this.branch = branch;
-    this.passedBuilders = Arrays.asList(passedBuilders);
-    this.failedBuilders = Arrays.asList(failedBuilders);
+    this.builders = Arrays.asList(builders);
   }
 
   public String getCommitHash() {
@@ -38,11 +36,8 @@ public class BuildInfo {
     return branch;
   }
 
-  public List<Builder> getPassedBuilders() {
-    return passedBuilders;
+  public List<Builder> getBuilders() {
+    return builders;
   }
 
-  public List<Builder> getFailedBuilders() {
-    return failedBuilders;
-  }
 }
