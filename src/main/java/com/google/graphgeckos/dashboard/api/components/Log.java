@@ -1,5 +1,8 @@
 package com.google.graphgeckos.dashboard.api.components;
 
+/**
+ * Represents a log of a buildbot.
+ */
 public class Log {
   private final String type;
   private final String link;
@@ -16,5 +19,5 @@ public class Log {
   public String getLink() {
     return link;
   }
-  
+
 }
