@@ -16,4 +16,5 @@ public class Log {
   public String getLink() {
     return link;
   }
+  
 }
