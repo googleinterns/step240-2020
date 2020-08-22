@@ -3,12 +3,20 @@ package com.google.graphgeckos.dashboard.api.components;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Represents the response json with the
+ * aggregated buildbot data.
+ */
 public class BuildInfo {
   private final String commitHash;
   private final String timeStamp;
   private final String repository;
   private final String branch;
 
+
+  /**
+   *
+   */
   private final List<Builder> builders;
 
   public BuildInfo(String commitHash, String timeStamp, String repository,
