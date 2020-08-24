@@ -6,9 +6,9 @@ import * as React from "react";
  * @param {*} props input properties containing build information
  */
 export const BuildSnapshot = (props) => {
-    return (
-        <div>
-            Snapshot
-        </div>
-    );
+  return (
+    <div>
+    Snapshot
+    </div>
+  );
 }
