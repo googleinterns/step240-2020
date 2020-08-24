@@ -1,8 +1,8 @@
 # Please keep this list in ASCII sort order
 .DS_Store
 .idea
-step240-2020.iml
-target/
 src/main/webapp/.cache
 src/main/webapp/dist
 src/main/webapp/node_modules
+step240-2020.iml
+target/
