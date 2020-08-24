@@ -9,9 +9,9 @@ import java.util.List;
  */
 public class BuildInfo {
 
-  // git commit hash
+  // Git commit hash
   private final String commitHash;
-  // time of git commit push
+  // time of the Git commit push
   private final Date timestamp;
   // link to to the repository
   private final String repository;
@@ -29,9 +29,9 @@ public class BuildInfo {
     this.branch = branch;
     this.builders = new ArrayList<>(builders);
   }
-  
+
   /**
-   * Returns git commit hash of the tested changes commit.
+   * Returns Git commit hash of the tested changes commit.
    */
   public String getCommitHash() {
     return commitHash;
@@ -45,14 +45,14 @@ public class BuildInfo {
   }
 
   /**
-   * Returns link to to the git repository where the tested changes were made.
+   * Returns link to to the Git repository where the tested changes were made.
    */
   public String getRepository() {
     return repository;
   }
 
   /**
-   * Returns name of the git branch where the tested changes were made.
+   * Returns name of the Git branch where the tested changes were made.
    */
   public String getBranch() {
     return branch;
