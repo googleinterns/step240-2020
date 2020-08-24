@@ -1,4 +1,4 @@
-package com.google.graphgeckos.dashboard.api.components;
+package com.google.graphgeckos.dashboard.components;
 
 
 /**
@@ -11,7 +11,7 @@ public enum BuilderStatus {
   // String representation of the status
   private final String status;
 
-  BuilderStatus(String status) {
+  BuilderStatus(final String status) {
     this.status = status;
   }
 
