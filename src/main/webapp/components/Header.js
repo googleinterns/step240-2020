@@ -8,5 +8,5 @@ export const Header = () => {
         <header>
             LLVM Build View
         </header>
-    )
+    );
 }
