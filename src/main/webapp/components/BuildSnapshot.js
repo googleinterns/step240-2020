@@ -10,7 +10,7 @@ export const BuildSnapshot = (props) => {
     // isOpen === true indicates the tray should be visible 
     // and the indicator arrow on the Header should be facing downwards.
     const [isOpen, setIsOpen] = React.useState(false);
-    const headerFields = ["commitHash","repository", "status"];
+    const headerFields = ["description", "commitHash", "repository", "status"];
     //TODO: Determine failure group and add it to headerFields.
     const trayFields = ["builders", "timestamp"];
 
