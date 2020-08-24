@@ -32,35 +32,35 @@ public class BuildInfo {
 
 
   /**
-   * @return git commit hash of the tested changes commit
+   * Returns git commit hash of the tested changes commit
    */
   public String getCommitHash() {
     return commitHash;
   }
 
   /**
-   * @return time of receiving build info
+   * Returns time of receiving build info
    */
   public Date getTimestamp() {
     return timestamp;
   }
 
   /**
-   * @return link to to the git repository where the tested changes were made
+   * Returns link to to the git repository where the tested changes were made
    */
   public String getRepository() {
     return repository;
   }
 
   /**
-   * @return name of the git branch where the tested changes were made
+   * Returns name of the git branch where the tested changes were made
    */
   public String getBranch() {
     return branch;
   }
 
   /**
-   * @return builders which tested the changes
+   * Returns builders which tested the changes
    */
   public List<Builder> getBuilders() {
     return builders;

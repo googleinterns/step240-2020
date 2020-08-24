@@ -16,7 +16,7 @@ public enum BuilderStatus {
   }
 
   /**
-   * @return String representation of the status
+   * Returns String representation of the status
    */
   public String getStatus() {
     return status;
