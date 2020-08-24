@@ -15,14 +15,14 @@ public class Log {
   }
 
   /**
-   * @return a type of the log
+   * Returns a type of the log
    */
   public String getType() {
     return type;
   }
 
   /**
-   * @return a link to the full version of the log
+   * Returns a link to the full version of the log
    */
   public String getLink() {
     return link;
