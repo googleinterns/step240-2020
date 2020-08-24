@@ -11,7 +11,7 @@ public class BuildInfo {
 
   // git commit hash
   private final String commitHash;
-  // time of receiving build info
+  // time of git commit push
   private final Date timestamp;
   // link to to the repository
   private final String repository;
@@ -39,7 +39,7 @@ public class BuildInfo {
   }
 
   /**
-   * Returns time of receiving build info.
+   * Returns time of when the tested commit was pushed (the time is fetched from the Git API).
    */
   public Date getTimestamp() {
     return timestamp;
