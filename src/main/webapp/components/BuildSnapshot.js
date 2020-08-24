@@ -41,7 +41,7 @@ const Tray = (props) => {
   return (
     <div>
       <Wrapper>
-        <Subheading/>
+        <Subheading time = {props.timestamp}/>
         <NameTagGrid data = {{}}/>
       </Wrapper>
       <BuilderDataTable/>
