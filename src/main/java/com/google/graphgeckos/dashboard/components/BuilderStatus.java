@@ -1,6 +1,5 @@
 package com.google.graphgeckos.dashboard.components;
 
-
 /**
  * Represents buildbot statuses: "failed" or "passed".
  */
