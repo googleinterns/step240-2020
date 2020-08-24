@@ -4,19 +4,21 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-// Represents the response json with the aggregated buildbot data.
+/**
+ * Represents the response json with the aggregated buildbot data.
+ */
 public class BuildInfo {
 
-  // git commit hash of the tested changes commit
+  // git commit hash
   private final String commitHash;
   // time of receiving build info
   private final Date timestamp;
-  // link to to the git repository where the tested changes were made
+  // link to to the repository
   private final String repository;
-  // name of the git branch where the tested changes were made
+  // name of the branch
   private final String branch;
 
-  // builders which tested the changes
+  // builders
   private final List<Builder> builders;
 
   public BuildInfo(String commitHash, Date timestamp, String repository,
@@ -28,22 +30,38 @@ public class BuildInfo {
     this.builders = new ArrayList<>(builders);
   }
 
+
+  /**
+   * @return git commit hash of the tested changes commit
+   */
   public String getCommitHash() {
     return commitHash;
   }
 
+  /**
+   * @return time of receiving build info
+   */
   public Date getTimestamp() {
     return timestamp;
   }
 
+  /**
+   * @return link to to the git repository where the tested changes were made
+   */
   public String getRepository() {
     return repository;
   }
 
+  /**
+   * @return name of the git branch where the tested changes were made
+   */
   public String getBranch() {
     return branch;
   }
 
+  /**
+   * @return builders which tested the changes
+   */
   public List<Builder> getBuilders() {
     return builders;
   }
