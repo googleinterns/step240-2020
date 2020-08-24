@@ -11,5 +11,5 @@ export const BuildSnapshotContainer = (props) => {
         <div>
             snapshot container.
         </div>
-    )
+    );
 }
