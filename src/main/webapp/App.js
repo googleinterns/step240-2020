@@ -8,5 +8,5 @@ import * as React from "react";
 export const App = (props) => {
   return (
     <h1>Welcome {props.name}</h1>
-  )
+  );
 }
