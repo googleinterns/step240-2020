@@ -6,9 +6,16 @@ import java.util.List;
 // Represents the response json with the aggregated buildbot data.
 public class BuildInfo {
 
+  // represents a git commit hash of the tested changes commit
   private final String commitHash;
+  /*
+   represents the relative time (time since the application was started), 
+   allows to sort received build info in the descending order (latest goes first)
+   */
   private final String timestamp;
+  // represent a link to to the git repository where the tested changes were made
   private final String repository;
+  // represent a name of the git branch where the tested changes were made
   private final String branch;
 
   private final List<Builder> builders;
