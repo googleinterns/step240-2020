@@ -7,9 +7,9 @@ import * as React from "react";
  * rendered through BuildSnapshot.
  */
 export const BuildSnapshotContainer = (props) => {
-    return (
-        <div>
-            snapshot container.
-        </div>
-    );
+  return (
+    <div>
+    snapshot container.
+    </div>
+  );
 }
