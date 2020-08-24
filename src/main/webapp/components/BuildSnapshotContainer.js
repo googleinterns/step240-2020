@@ -12,6 +12,7 @@ export const BuildSnapshotContainer = (props) => {
         <Wrapper>
           <BuildSnapshot buildData = {{
             commitHash: "HASH",
+            description: "Description",
             repository: "REPO LINK",
             status: "PASSED",
             builders: [],
