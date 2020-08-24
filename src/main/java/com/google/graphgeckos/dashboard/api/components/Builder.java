@@ -7,10 +7,12 @@ import java.util.List;
  * Represents the information about a single buildbot.
  */
 public class Builder {
+  // name of the builder
   private final String builderName;
+  // builder logs
   private final List<Log> logs;
 
-  // "failed" or "passed"
+  // builder status, FAILED or PASSED
   private final BuilderStatus status;
 
   public Builder(String builderName, List<Log> logs, BuilderStatus status) {
@@ -19,14 +21,23 @@ public class Builder {
     this.status = status;
   }
 
+  /**
+   * @return name of the builder
+   */
   public String getBuilderName() {
     return builderName;
   }
 
+  /**
+   * @return list of logs of the builder
+   */
   public List<Log> getLogs() {
     return logs;
   }
-
+  
+  /**
+   * @return status of the builder (FAILED or PASSED)
+   */
   public BuilderStatus getStatus() {
     return status;
   }
