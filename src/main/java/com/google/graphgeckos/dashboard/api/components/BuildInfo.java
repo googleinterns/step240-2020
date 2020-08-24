@@ -8,18 +8,18 @@ import java.util.List;
  * aggregated buildbot data.
  */
 public class BuildInfo {
+  
   private final String commitHash;
-  private final String timeStamp;
+  private final String timestamp;
   private final String repository;
   private final String branch;
 
-
   private final List<Builder> builders;
 
-  public BuildInfo(String commitHash, String timeStamp, String repository,
+  public BuildInfo(String commitHash, String timestamp, String repository,
                    String branch, List<Builder> builders) {
     this.commitHash = commitHash;
-    this.timeStamp = timeStamp;
+    this.timestamp = timestamp;
     this.repository = repository;
     this.branch = branch;
     this.builders = new ArrayList<>(builders);
@@ -29,8 +29,8 @@ public class BuildInfo {
     return commitHash;
   }
 
-  public String getTimeStamp() {
-    return timeStamp;
+  public String getTimestamp() {
+    return timestamp;
   }
 
   public String getRepository() {
