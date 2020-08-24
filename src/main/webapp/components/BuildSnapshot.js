@@ -65,7 +65,26 @@ const NameTagGrid = (props) => <Grid data = {[]} element = {NameTag}/>
 
 const NameTag = (props) => <span>{props.buildBotName}</span>
 
-const BuilderDataTable = (props) => <table></table>
+const BuilderHeader = (props) => <tr></tr>
+
+const BuilderRow = (props) => {
+  return (
+    <tr>{props.data.map(datapoint => props.header === true ? <th>{datapoint}</th> : <td>{datapoint}</td>)}</tr>
+  );
+}
+
+const BuilderDataTable = (props) => {
+  return (
+    <table>
+      <thead>
+      <BuilderRow header={true} data = {["Bot name", "expected succ", "expected fail","unexpected fail", "unsupported fail","log"]}/>
+      </thead>
+      <tbody>
+        <BuilderRow data = {["Step 1","8","2","1","0","log"]}/>
+      </tbody>
+    </table>
+  );
+}
 
 const getFields = (obj, fields, defaultValue) => {
   const result = { };
