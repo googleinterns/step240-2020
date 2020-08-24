@@ -11,10 +11,9 @@ public class Builder {
   private final List<Log> logs;
 
   // "failed" or "passed"
-  // TODO for mashasamsikova: add java enum representation for these states
-  private final String status;
+  private final BuilderStatus status;
 
-  public Builder(String builderName, List<Log> logs, String status) {
+  public Builder(String builderName, List<Log> logs, BuilderStatus status) {
     this.builderName = builderName;
     this.logs = new ArrayList<>(logs);
     this.status = status;
@@ -28,7 +27,7 @@ public class Builder {
     return logs;
   }
 
-  public String getStatus() {
+  public BuilderStatus getStatus() {
     return status;
   }
 
