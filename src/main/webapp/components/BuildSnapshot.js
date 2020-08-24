@@ -14,7 +14,7 @@ export const BuildSnapshot = (props) => {
     //TODO: Determine failure group and add it to headerFields.
     const trayFields = ["builders", "timestamp"];
 
-    const headerData = getFields(props.buildData, headerFields);
+    const headerData = getFields(props.buildData, headerFields, "");
     const trayData = getFields(props.buildData, trayFields, "");
 
     return (
@@ -28,10 +28,10 @@ export const BuildSnapshot = (props) => {
 const Header = (props) => {
   return (
     <div onClick = {() => props.onClick(toggle(props.isOpen))}>
-      <CommitHash hash = {"Hash"}/>
-      <Description description = {"Desc"}/>
-      <FailureGroup group =  {"group"}/>
-      <BuildStatus status = {"failed"}/>
+      <CommitHash hash = {props.data.commitHash}/>
+      <Description description = {props.data.description}/>
+      <FailureGroup group =  {"Group"}/>
+      <BuildStatus status = {props.data.status}/>
     </div>
   );
 }
@@ -69,10 +69,10 @@ const BuilderDataTable = (props) => <table></table>
 
 const getFields = (obj, fields, defaultValue) => {
   const result = { };
-  for(const field in fields) result[field] = (obj[field] !== undefined ? field : (defaultValue !== undefined ? defaultValue : null));
+  for(const field of fields) result[field] = getField(obj, field, defaultValue);
   return result;
 }
 
-const getField = (obj, field, defaultValue) => obj[field] !== undefined ? field : (defaultValue !== undefined ? defaultValue : null);
+const getField = (obj, field, defaultValue) => obj[field] !== undefined ? obj[field] : (defaultValue !== undefined ? defaultValue : null);
 
 const toggle = (boolean) => !boolean;
