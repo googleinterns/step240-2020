@@ -2,7 +2,7 @@ package com.google.graphgeckos.dashboard.api.components;
 
 
 /**
- * Represents buildbot statuses: "failed" or "passed"
+ * Represents buildbot statuses: "failed" or "passed".
  */
 public enum BuilderStatus {
   FAILED("failed"),
@@ -16,7 +16,7 @@ public enum BuilderStatus {
   }
 
   /**
-   * Returns String representation of the status
+   * Returns String representation of the status.
    */
   public String getStatus() {
     return status;
