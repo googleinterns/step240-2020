@@ -1,6 +1,7 @@
 package com.google.graphgeckos.dashboard.api.components;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 // Represents the response json with the aggregated buildbot data.
@@ -8,11 +9,8 @@ public class BuildInfo {
 
   // git commit hash of the tested changes commit
   private final String commitHash;
-  /*
-   the relative time (time since the application was started),
-   allows to sort received build info in the descending order (latest goes first)
-   */
-  private final String timestamp;
+  // time of receiving build info
+  private final Date timestamp;
   // link to to the git repository where the tested changes were made
   private final String repository;
   // name of the git branch where the tested changes were made
@@ -21,7 +19,7 @@ public class BuildInfo {
   // builders which tested the changes
   private final List<Builder> builders;
 
-  public BuildInfo(String commitHash, String timestamp, String repository,
+  public BuildInfo(String commitHash, Date timestamp, String repository,
                    String branch, List<Builder> builders) {
     this.commitHash = commitHash;
     this.timestamp = timestamp;
@@ -34,7 +32,7 @@ public class BuildInfo {
     return commitHash;
   }
 
-  public String getTimestamp() {
+  public Date getTimestamp() {
     return timestamp;
   }
 
