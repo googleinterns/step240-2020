@@ -29,8 +29,7 @@ public class BuildInfo {
     this.branch = branch;
     this.builders = new ArrayList<>(builders);
   }
-
-
+  
   /**
    * Returns git commit hash of the tested changes commit.
    */
