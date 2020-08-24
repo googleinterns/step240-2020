@@ -22,21 +22,21 @@ public class Builder {
   }
 
   /**
-   * Returns name of the builder
+   * Returns name of the builder.
    */
   public String getBuilderName() {
     return builderName;
   }
 
   /**
-   * Returns list of logs of the builder
+   * Returns list of logs of the builder.
    */
   public List<Log> getLogs() {
     return logs;
   }
 
   /**
-   * Returns status of the builder (FAILED or PASSED)
+   * Returns status of the builder (FAILED or PASSED).
    */
   public BuilderStatus getStatus() {
     return status;
