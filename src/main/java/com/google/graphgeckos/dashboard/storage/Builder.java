@@ -1,4 +1,4 @@
-package com.google.graphgeckos.dashboard.components;
+package com.google.graphgeckos.dashboard.storage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ public class Builder {
   // builder status, FAILED or PASSED
   private final BuilderStatus status;
 
-  public Builder(final String builderName, final List<Log> logs, final BuilderStatus status) {
+  Builder(final String builderName, final List<Log> logs, final BuilderStatus status) {
     this.builderName = builderName;
     this.logs = new ArrayList<>(logs);
     this.status = status;

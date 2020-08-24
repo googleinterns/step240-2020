@@ -1,4 +1,4 @@
-package com.google.graphgeckos.dashboard.components;
+package com.google.graphgeckos.dashboard.storage;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,7 +21,7 @@ public class BuildInfo {
   // builders
   private final List<Builder> builders;
 
-  public BuildInfo(final String commitHash, final Date timestamp, final String repository,
+  BuildInfo(final String commitHash, final Date timestamp, final String repository,
                    final String branch, final List<Builder> builders) {
     this.commitHash = commitHash;
     this.timestamp = timestamp;
