@@ -1,6 +1,6 @@
 package com.google.graphgeckos.dashboard.api.components;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,18 +14,15 @@ public class BuildInfo {
   private final String branch;
 
 
-  /**
-   *
-   */
   private final List<Builder> builders;
 
   public BuildInfo(String commitHash, String timeStamp, String repository,
-                   String branch, Builder[] builders) {
+                   String branch, List<Builder> builders) {
     this.commitHash = commitHash;
     this.timeStamp = timeStamp;
     this.repository = repository;
     this.branch = branch;
-    this.builders = Arrays.asList(builders);
+    this.builders = new ArrayList<>(builders);
   }
 
   public String getCommitHash() {
