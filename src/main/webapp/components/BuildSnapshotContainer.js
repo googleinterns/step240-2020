@@ -10,7 +10,14 @@ import {BuildSnapshot} from "./BuildSnapshot";
 export const BuildSnapshotContainer = (props) => {
     return (
         <Wrapper>
-          <BuildSnapshot/>
+          <BuildSnapshot buildData = {{
+            commitHash: "HASH",
+            repository: "REPO LINK",
+            status: "PASSED",
+            builders: [],
+            timestamp: "Monday"
+          }}
+        />
         </Wrapper>
     )
 }
