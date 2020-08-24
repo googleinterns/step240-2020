@@ -1,6 +1,6 @@
 package com.google.graphgeckos.dashboard.api.components;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,13 +10,13 @@ public class Builder {
   private final String builderName;
   private final List<Log> logs;
 
-  //"failed" or "passed"
-  //TODO for mashasamsikova: add java enum representation for these states
+  // "failed" or "passed"
+  // TODO for mashasamsikova: add java enum representation for these states
   private final String status;
 
-  public Builder(String builderName, Log[] logs, String status) {
+  public Builder(String builderName, List<Log> logs, String status) {
     this.builderName = builderName;
-    this.logs = Arrays.asList(logs);
+    this.logs = new ArrayList<>(logs);
     this.status = status;
   }
 
