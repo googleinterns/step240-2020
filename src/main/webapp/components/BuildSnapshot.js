@@ -55,12 +55,12 @@ const Header = (props) => {
 const Tray = (props) => {
   if(props.isOpen !== true) return null;
   return (
-    <div>
+    <Wrapper>
       <Wrapper>
         <Subheading time = {props.data.timestamp}/>
         <NameTagGrid data = {props.data.builders}/>
       </Wrapper>
       <BuilderDataTable/>
-    </div>
+    </Wrapper>
   );
 }
