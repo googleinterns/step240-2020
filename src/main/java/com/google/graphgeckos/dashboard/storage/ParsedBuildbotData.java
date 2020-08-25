@@ -40,8 +40,8 @@ public class ParsedBuildbotData {
    * @param logs logs for each individual stage of compilation.
    * @param status the results of the compilation (True for passed, False for failed).
    */
-  public ParsedBuildbotData(final String commitHash, final String builderName,
-                            final List<String> logs, final boolean status) {
+  public ParsedBuildbotData(String commitHash, String builderName,
+                            List<String> logs, boolean status) {
     this.commitHash = commitHash;
     this.builderName = builderName;
     this.logs = new LinkedList<>(logs);
