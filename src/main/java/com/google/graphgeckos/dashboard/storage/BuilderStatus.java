@@ -10,7 +10,7 @@ public enum BuilderStatus {
   // String representation of the status
   private final String status;
 
-  BuilderStatus(final String status) {
+  BuilderStatus(String status) {
     this.status = status;
   }
 

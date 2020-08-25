@@ -15,7 +15,7 @@ public class Builder {
   // builder status, FAILED or PASSED
   private final BuilderStatus status;
 
-  Builder(final String builderName, final List<Log> logs, final BuilderStatus status) {
+  Builder(String builderName, List<Log> logs, BuilderStatus status) {
     this.builderName = builderName;
     this.logs = new ArrayList<>(logs);
     this.status = status;
