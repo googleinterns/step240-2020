@@ -26,3 +26,22 @@ export const BuildSnapshot = (props) => {
     </Wrapper>
   );
 }
+
+
+/**
+  * Subcomponent that holds the content displayed
+  * when the BuildSnapshot is collapsed.
+  *
+  * @param props an object containing a "data" field.
+  * , which encapsulates the fields from headerFields.
+ */
+const Header = (props) => {
+  return (
+    <div onClick = {() => props.onClick(toggle(props.isOpen))}>
+      <CommitHash hash = {props.data.commitHash}/>
+      <Description description = {props.data.description}/>
+      <FailureGroup group =  {"Group"}/>
+      <BuildStatus status = {props.data.status}/>
+    </div>
+  );
+}
