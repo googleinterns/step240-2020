@@ -32,8 +32,8 @@ export const BuildSnapshot = (props) => {
   * Subcomponent that holds the content displayed
   * when the BuildSnapshot is collapsed.
   *
-  * @param props an object containing a "data" field.
-  * , which encapsulates the fields from headerFields.
+  * @param props an object containing a "data" field
+  * which encapsulates the fields from headerFields.
  */
 const Header = (props) => {
   return (
