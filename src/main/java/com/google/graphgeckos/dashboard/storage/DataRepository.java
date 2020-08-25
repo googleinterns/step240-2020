@@ -19,35 +19,37 @@ package com.google.graphgeckos.dashboard.storage;
  */
 public interface DataRepository {
   /**
-   * Creates a new database entry, with just the metadata of a commit.
+   * Creates a new database entry, with just the metadata of a commit. If there already
+   * is an entry with the same commit hash, ignores the request.
    *
-   * @param entryData a JSON in plain string format, must have a "commitHash" field.
+   * @param entryData a ParsedGitData instance, must have a non-null "commitHash" field.
    * @throws IllegalArgumentException if entryData is null or doesn't have a
    *      "commitHash" field.
    */
-  void createNewEntry(final ParsedGitData entryData);
+  void createEntry(final ParsedGitData entryData);
 
   /**
    * Updates an existing database entry, with the individual information from
-   * a particular buildbot.
+   * a particular buildbot. If there is no entry associated with the provided commit hash,
+   * ignores the request.
    *
-   * @param updateData a JSON in plain string format, must have a "commitHash" field.
+   * @param updateData a ParsedBuildbotData instance, must have a non-null "commitHash" field.
    * @throws IllegalArgumentException if entryData is null or doesn't have a
    *     "commitHash" field.
    */
-  void updateExistingEntry(final ParsedBuildbotData updateData);
+  void updateEntry(final ParsedBuildbotData updateData);
 
   /**
    * Deletes a database entry which has its commit hash equal to the one provided in the
    * arguments.
    *
    * @param commitHash the String representation of the commit hash of the revision data to
-   * be deleted.
+   * be deleted. Has no effect if there is no Entity associated to the commit hash.
    */
-  void deleteEntryByCommitHash(final String commitHash);
+  void deleteEntry(final String commitHash);
 
   /**
-   * Queries the database for a specified amout of entries, going down in chronological
+   * Queries the database for a specified amount of entries, going down in chronological
    * order, starting from an offest.
    *
    * @param number is the number of database entries to retrieve.
@@ -60,5 +62,5 @@ public interface DataRepository {
    * @throws IllegalArgumentException if either number or offset are < 0.
    */
   Iterable<AggregatedBuildbotData> getLastEntries(final int number, final int offset)
-                                                         throws IllegalArgumentException {
+                                                         throws IllegalArgumentException;
 }
