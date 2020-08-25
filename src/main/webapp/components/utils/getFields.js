@@ -6,7 +6,7 @@ import {getField} from "./getField";
   * Useful for extracting a subset of fields from an object.
   *
   * @param obj the object to query the fields for.
-  * @param fields an array of the target fields, in string form. 
+  * @param fields an array of the target fields, in string form.
   * @param defaultValue the value to be used if obj[field] === undefined.
  */
 export const getFields = (obj, fields, defaultValue) => {
