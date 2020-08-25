@@ -1,5 +1,6 @@
 import * as React from "react";
 import {getFields} from "./utils/getFields.js";
+import {Wrapper} from "./Wrapper.js";
 
 /**
  * Component used to render Build Information.
@@ -19,9 +20,9 @@ export const BuildSnapshot = (props) => {
   const trayData = getFields(props.buildData, trayFields, "");
 
   return (
-    <div>
+    <Wrapper>
       <Header isOpen = {isOpen} onClick = {setIsOpen} data = {headerData}/>
       <Tray isOpen = {isOpen} data = {trayData}/>
-    </div>
+    </Wrapper>
   );
 }
