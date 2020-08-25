@@ -19,14 +19,14 @@ package com.google.graphgeckos.dashboard.storage;
  */
 public interface DataRepository {
   /**
-   * Creates a new database entry, with just the metadata of a commit. If there already
+   * Creates a new database entry about a te metadata of a commit. If there already
    * is an entry with the same commit hash, ignores the request.
    *
    * @param entryData a ParsedGitData instance, must have a non-null "commitHash" field.
    * @throws IllegalArgumentException if entryData is null or doesn't have a
    *      "commitHash" field.
    */
-  void createEntry(final ParsedGitData entryData);
+  void createEntry(ParsedGitData entryData);
 
   /**
    * Updates an existing database entry, with the individual information from
@@ -37,7 +37,7 @@ public interface DataRepository {
    * @throws IllegalArgumentException if entryData is null or doesn't have a
    *     "commitHash" field.
    */
-  void updateEntry(final ParsedBuildbotData updateData);
+  void updateEntry(ParsedBuildbotData updateData);
 
   /**
    * Deletes a database entry which has its commit hash equal to the one provided in the
@@ -46,7 +46,7 @@ public interface DataRepository {
    * @param commitHash the String representation of the commit hash of the revision data to
    * be deleted.
    */
-  void deleteEntry(final String commitHash);
+  void deleteEntry(String commitHash);
 
   /**
    * Queries the database for a specified amount of entries, going down in chronological
@@ -61,6 +61,6 @@ public interface DataRepository {
    *     entries from that range.
    * @throws IllegalArgumentException if either number or offset are < 0.
    */
-  Iterable<AggregatedBuildbotData> getLastEntries(final int number, final int offset)
-                                                         throws IllegalArgumentException;
+  Iterable<AggregatedBuildbotData> getLastEntries(int number, int offset)
+                                                  throws IllegalArgumentException;
 }
