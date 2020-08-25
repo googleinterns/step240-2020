@@ -41,10 +41,10 @@ public interface DataRepository {
 
   /**
    * Deletes a database entry which has its commit hash equal to the one provided in the
-   * arguments.
+   * arguments. Has no effect if there is no Entity associated to the commit hash.
    *
    * @param commitHash the String representation of the commit hash of the revision data to
-   * be deleted. Has no effect if there is no Entity associated to the commit hash.
+   * be deleted.
    */
   void deleteEntry(final String commitHash);
 
