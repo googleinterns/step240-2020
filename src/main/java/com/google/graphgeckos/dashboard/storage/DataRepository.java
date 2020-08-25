@@ -62,7 +62,7 @@ public interface DataRepository {
    * @return an iterable object containing at most {@code number} entries starting
    *     from the latest entry - {@code offset}. If the database has not enough entries
    *     for the requested {@code offset} and {@code number}, returns all the available
-   *     entries from that range
+   *     entries from that range.
    * @throws IllegalArgumentException if either number or offset are < 0
    */
   Iterable<AggregatedBuildbotData> getLastEntries(int number, int offset)
