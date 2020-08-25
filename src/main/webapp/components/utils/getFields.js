@@ -1,3 +1,5 @@
+import {getField} from "./getField";
+
 /**
   * Creates a new object whose fields are either equal to obj[field] or defaultValue.
   * Useful for extracting a subset of fields from an object.
