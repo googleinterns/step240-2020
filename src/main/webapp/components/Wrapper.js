@@ -7,5 +7,5 @@ export const Wrapper = (props) => {
     <div className={className}>
       {props.children}
     </div>
-  )
+  );
 }
