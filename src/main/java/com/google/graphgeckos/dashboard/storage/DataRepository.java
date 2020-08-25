@@ -50,7 +50,7 @@ public interface DataRepository {
 
   /**
    * Queries the database for a specified amount of entries, going down in chronological
-   * order, starting from an offest.
+   * order, starting from an offset.
    *
    * @param number is the number of database entries to retrieve.
    * @param offset is the offset from the latest database entry, for which to consider
