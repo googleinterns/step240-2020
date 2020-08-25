@@ -45,3 +45,22 @@ const Header = (props) => {
     </div>
   );
 }
+
+/**
+  * Subcomponent that holds the content revealed
+  * when the BuildSnapshot is collapsed (isOpen === true).
+  * @param props an object containing a "data" field
+  * which encapsualtes the fields from trayFields.
+ */
+const Tray = (props) => {
+  if(props.isOpen !== true) return null;
+  return (
+    <div>
+      <Wrapper>
+        <Subheading time = {props.data.timestamp}/>
+        <NameTagGrid data = {props.data.builders}/>
+      </Wrapper>
+      <BuilderDataTable/>
+    </div>
+  );
+}
