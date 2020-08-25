@@ -19,18 +19,18 @@ package com.google.graphgeckos.dashboard.storage;
  */
 public interface DataRepository {
   /**
-   * Creates a new database entry with the metadata of a commit. If there already
-   * is an entry with the same commit hash, ignores the request.
+   * Creates a new database entry of the "revision" type with the metadata of the revision.
+   * If there already is an entry with the same commit hash, ignores the request.
    *
    * @param entryData a ParsedGitData instance, must have a non-null "commitHash" field
    * @throws IllegalArgumentException if entryData is null
    * @throws RuntimeException if entryData's "commitHash" field is null
    */
-  void createEntry(ParsedGitData entryData) throws IllegalArgumentException,
-                                                   RuntimeException;
+  void createRevisionEntry(ParsedGitData entryData) throws IllegalArgumentException,
+                                                           RuntimeException;
 
   /**
-   * Updates an existing database entry, with the individual information from
+   * Updates an existing revision's database entry, with the individual information from
    * a particular buildbot. If there is no entry associated with the provided commit hash,
    * ignores the request.
    *
@@ -39,22 +39,22 @@ public interface DataRepository {
    * @throws RuntimeException if either of updateData's "commitHash", "builderName",
    *     or "logs" fields are null.
    */
-  void updateEntry(ParsedBuildbotData updateData) throws IllegalArgumentException,
-                                                         RuntimeException;
+  void updateRevisionEntry(ParsedBuildbotData updateData) throws IllegalArgumentException,
+                                                                 RuntimeException;
 
   /**
-   * Deletes a database entry which has its commit hash equal to the one provided in the
-   * arguments. Has no effect if there is no Entity associated to the commit hash.
+   * Deletes a revision's database entry, based on it's commit hash. Has no effect if there
+   * is no Entity associated to the commit hash.
    *
    * @param commitHash the String representation of the commit hash of the revision data to
    * be deleted
    * @throws IllegalArgumentException if commitHash is null
    */
-  void deleteEntry(String commitHash) throws IllegalArgumentException;
+  void deleteRevisionEntry(String commitHash) throws IllegalArgumentException;
 
   /**
-   * Queries the database for a specified amount of entries, going down in chronological
-   * order, starting from an offset.
+   * Queries the database for a specified amount of entries of type "revision", going down
+   * in chronological order, starting from an offset from the latest.
    *
    * @param number the number of database entries to retrieve
    * @param offset the offset from the latest database entry, for which to consider
@@ -65,6 +65,6 @@ public interface DataRepository {
    *     entries from that range.
    * @throws IllegalArgumentException if either number or offset are < 0
    */
-  Iterable<AggregatedBuildbotData> getLastEntries(int number, int offset)
-                                                  throws IllegalArgumentException;
+  Iterable<AggregatedBuildbotData> getLastRevisionEntries(int number, int offset)
+                                                          throws IllegalArgumentException;
 }
