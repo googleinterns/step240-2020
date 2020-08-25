@@ -11,7 +11,7 @@ export const BuildSnapshot = (props) => {
   // isOpen === true indicates the tray should be visible 
   // and the indicator arrow on the Header should be facing downwards.
   const [isOpen, setIsOpen] = React.useState(false);
-  
+
   const headerFields = ["description", "commitHash", "repository", "status"];
   const trayFields = ["builders", "timestamp"];
 
@@ -20,7 +20,8 @@ export const BuildSnapshot = (props) => {
 
   return (
     <div>
-    Snapshot
+      <Header isOpen = {isOpen} onClick = {setIsOpen} data = {headerData}/>
+      <Tray isOpen = {isOpen} data = {trayData}/>
     </div>
   );
 }
