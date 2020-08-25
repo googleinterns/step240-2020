@@ -9,7 +9,7 @@ import {getField} from "./getField";
   * @param defaultValue the value to be used if obj[field] === undefined.
  */
 export const getFields = (obj, fields, defaultValue) => {
-  const result = {};
-  for (const field of fields) result[field] = getField(obj, field, defaultValue);
-  return result;
+  const res = {};
+  for (const field of fields) res[field] = getField(obj, field, defaultValue);
+  return res;
 }
