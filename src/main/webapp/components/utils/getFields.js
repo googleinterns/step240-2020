@@ -4,7 +4,7 @@
   *
   * @param obj the object to query the fields for.
   * @param fields an array of the target fields, in string form. 
-  * @param defaultValue 
+  * @param defaultValue the value to be used if obj[field] === undefined.
  */
 const getFields = (obj, fields, defaultValue) => {
   const result = { };
