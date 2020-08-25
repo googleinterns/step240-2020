@@ -11,7 +11,6 @@ export const BuildSnapshot = (props) => {
     // and the indicator arrow on the Header should be facing downwards.
     const [isOpen, setIsOpen] = React.useState(false);
     const headerFields = ["description", "commitHash", "repository", "status"];
-    //TODO: Determine failure group and add it to headerFields.
     const trayFields = ["builders", "timestamp"];
 
     const headerData = getFields(props.buildData, headerFields, "");
