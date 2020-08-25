@@ -18,11 +18,10 @@ public class BuildInfo {
   // name of the branch
   private final String branch;
 
-  // builders
   private final List<Builder> builders;
 
   BuildInfo(final String commitHash, final Date timestamp, final String repository,
-                   final String branch, final List<Builder> builders) {
+            final String branch, final List<Builder> builders) {
     this.commitHash = commitHash;
     this.timestamp = timestamp;
     this.repository = repository;
