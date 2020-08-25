@@ -49,6 +49,7 @@ const Header = (props) => {
 /**
   * Subcomponent that holds the content revealed
   * when the BuildSnapshot is collapsed (isOpen === true).
+  *
   * @param props an object containing a "data" field
   * which encapsualtes the fields from trayFields.
  */
