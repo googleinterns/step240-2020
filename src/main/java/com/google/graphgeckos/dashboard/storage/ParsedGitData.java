@@ -47,7 +47,7 @@ public class ParsedGitData {
    * Checks for the existance of the fields necessary for creating a database entry.
    * Does not check the validity of each field.
    *
-   * @return true if all required fields are available, false if not.
+   * @return True if all required fields are available, False if not.
    */
   boolean validCreateData() {
     return commitHash != null;
