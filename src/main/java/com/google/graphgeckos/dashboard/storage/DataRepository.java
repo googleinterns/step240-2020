@@ -22,9 +22,9 @@ public interface DataRepository {
    * Creates a new database entry about a te metadata of a commit. If there already
    * is an entry with the same commit hash, ignores the request.
    *
-   * @param entryData a ParsedGitData instance, must have a non-null "commitHash" field.
+   * @param entryData a ParsedGitData instance, must have a non-null "commitHash" field
    * @throws IllegalArgumentException if entryData is null or doesn't have a
-   *      "commitHash" field.
+   *      "commitHash" field
    */
   void createEntry(ParsedGitData entryData);
 
@@ -33,9 +33,9 @@ public interface DataRepository {
    * a particular buildbot. If there is no entry associated with the provided commit hash,
    * ignores the request.
    *
-   * @param updateData a ParsedBuildbotData instance, must have a non-null "commitHash" field.
+   * @param updateData a ParsedBuildbotData instance, must have a non-null "commitHash" field
    * @throws IllegalArgumentException if entryData is null or doesn't have a
-   *     "commitHash" field.
+   *     "commitHash" field
    */
   void updateEntry(ParsedBuildbotData updateData);
 
@@ -44,7 +44,7 @@ public interface DataRepository {
    * arguments. Has no effect if there is no Entity associated to the commit hash.
    *
    * @param commitHash the String representation of the commit hash of the revision data to
-   * be deleted.
+   * be deleted
    */
   void deleteEntry(String commitHash);
 
@@ -58,7 +58,7 @@ public interface DataRepository {
    * @return an iterable object containing at most {@code number} entries starting
    *     from the latest entry - {@code offset}. If the database has not enough entries
    *     for the requested {@code offset} and {@code number}, returns all the available
-   *     entries from that range.
+   *     entries from that range
    * @throws IllegalArgumentException if either number or offset are < 0
    */
   Iterable<AggregatedBuildbotData> getLastEntries(int number, int offset)
