@@ -19,8 +19,7 @@ package com.google.graphgeckos.dashboard.storage;
  */
 public interface DataRepository {
   /**
-   * Creates a new database entry, with just the metadata of a commit,
-   * having the passed/failed fields empty.
+   * Creates a new database entry, with just the metadata of a commit.
    *
    * @param entryData a JSON in plain string format, must have a "commitHash" field.
    * @throws IllegalArgumentException if entryData is null or doesn't have a
@@ -29,9 +28,8 @@ public interface DataRepository {
   void createNewEntry(final ParsedGitData entryData);
 
   /**
-   * Updates an existing database entry, with the passed/failed information for
-   * a particular buildbot. If no entry is associated to the commit hash provided,
-   * creates a new entry from the metadata included in the {@code updateData}.
+   * Updates an existing database entry, with the individual information from
+   * a particular buildbot.
    *
    * @param updateData a JSON in plain string format, must have a "commitHash" field.
    * @throws IllegalArgumentException if entryData is null or doesn't have a
@@ -40,7 +38,7 @@ public interface DataRepository {
   void updateExistingEntry(final ParsedBuildbotData updateData);
 
   /**
-   * Deletes a database entry which has it's commit hash equal to the one provided in the
+   * Deletes a database entry which has its commit hash equal to the one provided in the
    * arguments.
    *
    * @param commitHash the String representation of the commit hash of the revision data to
