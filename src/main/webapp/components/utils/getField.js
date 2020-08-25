@@ -1,5 +1,6 @@
 /**
-  * Returns the value at obj[field] or defaultValue if obj[field] === undefined.
+  * Returns the value at obj[field] or defaultValue
+  * if obj[field] === undefined.
   * Useful for extracting a field from an object, with a fallback.
   *
   * @param obj the object to query the fields for.
