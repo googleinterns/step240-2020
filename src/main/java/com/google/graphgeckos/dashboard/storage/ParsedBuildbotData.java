@@ -29,19 +29,20 @@ package com.google.graphgeckos.dashboard.storage;
 public class ParsedBuildbotData {
   private final String commitHash;
   private final String builderName;
-  private final List<String> logs;
+  private final List<Log> logs;
   private final boolean status;
 
   /**
    * Constructs an immutable instance of a ParsedBuildbotData.
    *
-   * @param commitHash the commit hash of the revision this data refers to.
-   * @param builderName the name of the builder which performed the compilation.
-   * @param logs logs for each individual stage of compilation.
-   * @param status the results of the compilation (True for passed, False for failed).
+   * @param commitHash the commit hash of the revision this data refers to
+   * @param builderName the name of the builder which performed the compilation
+   * @param logs logs for each individual stage of compilation. See {@link
+   *      #com.google.graphgeckos.dashboard.storage.Log Log}
+   * @param status the results of the compilation (True for passed, False for failed)
    */
   public ParsedBuildbotData(String commitHash, String builderName,
-                            List<String> logs, boolean status) {
+                            List<Log> logs, boolean status) {
     this.commitHash = commitHash;
     this.builderName = builderName;
     this.logs = new LinkedList<>(logs);
@@ -56,6 +57,16 @@ public class ParsedBuildbotData {
    */
   boolean validUpdateData() {
     return (commitHash != null && builderName != null && logs != null);
+  }
+
+  /**
+   * Converts this instance to an instance of {@link com.gogle.graphgeckos.dashboard.storage.Builder
+   * Builder}.
+   *
+   * @return a new Builder instance, with the fields copied from the calling instance.
+   */
+  Builder toBuilder() {
+    return new Builder(builderName, logs, status);
   }
 
   /**
@@ -81,7 +92,7 @@ public class ParsedBuildbotData {
    *
    * @return the logs.
    */
-  List<String> getLogs() {
+  List<Log> getLogs() {
     return logs;
   }
 
