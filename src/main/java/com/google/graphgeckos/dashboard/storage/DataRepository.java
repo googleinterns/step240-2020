@@ -19,14 +19,15 @@ package com.google.graphgeckos.dashboard.storage;
  */
 public interface DataRepository {
   /**
-   * Creates a new database entry about a te metadata of a commit. If there already
+   * Creates a new database entry with the metadata of a commit. If there already
    * is an entry with the same commit hash, ignores the request.
    *
    * @param entryData a ParsedGitData instance, must have a non-null "commitHash" field
-   * @throws IllegalArgumentException if entryData is null or doesn't have a
-   *      "commitHash" field
+   * @throws IllegalArgumentException if entryData is null
+   * @throws RuntimeException if entryData's "commitHash" field is null
    */
-  void createEntry(ParsedGitData entryData);
+  void createEntry(ParsedGitData entryData) throws IllegalArgumentException,
+                                                   RuntimeException;
 
   /**
    * Updates an existing database entry, with the individual information from
@@ -34,10 +35,12 @@ public interface DataRepository {
    * ignores the request.
    *
    * @param updateData a ParsedBuildbotData instance, must have a non-null "commitHash" field
-   * @throws IllegalArgumentException if entryData is null or doesn't have a
-   *     "commitHash" field
+   * @throws IllegalArgumentException if updateData is null
+   * @throws RuntimeException if either of updateData's "commitHash", "builderName",
+   *     or "logs" fields are null.
    */
-  void updateEntry(ParsedBuildbotData updateData);
+  void updateEntry(ParsedBuildbotData updateData) throws IllegalArgumentException,
+                                                         RuntimeException;
 
   /**
    * Deletes a database entry which has its commit hash equal to the one provided in the
@@ -45,8 +48,9 @@ public interface DataRepository {
    *
    * @param commitHash the String representation of the commit hash of the revision data to
    * be deleted
+   * @throws IllegalArgumentException if commitHash is null
    */
-  void deleteEntry(String commitHash);
+  void deleteEntry(String commitHash) throws IllegalArgumentException;
 
   /**
    * Queries the database for a specified amount of entries, going down in chronological
