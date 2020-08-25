@@ -11,6 +11,8 @@ import {getField} from "./getField";
  */
 export const getFields = (obj, fields, defaultValue) => {
   const res = {};
-  for (const field of fields) { res[field] = getField(obj, field, defaultValue); }
+  for (const field of fields) { 
+    res[field] = getField(obj, field, defaultValue);
+  }
   return res;
 }
