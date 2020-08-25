@@ -12,7 +12,7 @@ export const BuildSnapshotContainer = (props) => {
   const data = props.data;
   return (
     <Wrapper>
-    {data.map(snapshotData => <BuildSnapshot data={snapshotData}/>)}
+      {data.map(snapshotData => <BuildSnapshot data={snapshotData}/>)}
     </Wrapper>
   );
 }
