@@ -6,4 +6,6 @@
   * @param field the target field, in string form. 
   * @param defaultValue the value to be used if obj[field] === undefined.
  */
-export const getField = (obj, field, defaultValue) => obj[field] !== undefined ? obj[field] : (defaultValue !== undefined ? defaultValue : null);
+export const getField = (obj, field, defaultValue) => obj[field] !== undefined
+? obj[field]
+: (defaultValue !== undefined ? defaultValue : null);
