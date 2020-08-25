@@ -21,9 +21,9 @@ package com.google.graphgeckos.dashboard.storage;
  * contents of each field.
  *
  * Fields included: 
- * -commitHash: the commit hash of the revision built by a certain build bot.
- * -timestamp: the formatted date when the commit was pushed.
- * -branch: the branch of the LLVM project on which this commit was pushed.
+ * -commitHash: the commit hash of the revision built by a certain build bot
+ * -timestamp: the formatted date when the commit was pushed
+ * -branch: the branch of the LLVM project on which this commit was pushed
  */
 public class ParsedGitData {
   private final String commitHash;
@@ -31,13 +31,13 @@ public class ParsedGitData {
   private final String branch;
 
   /**
-   * Constructs an immutable instance of a ParsedBuildbotData.
+   * Constructs an immutable instance of the ParsedGitData.
    *
-   * @param commitHash the commit hash of the revision this data refers to.
-   * @param timestamp the formatted time when the commit was pushed.
-   * @param branch branch of the LLVM project on which this commit was pushed.
+   * @param commitHash the commit hash of the revision this data refers to
+   * @param timestamp the formatted time when the commit was pushed
+   * @param branch branch of the LLVM project on which this commit was pushed
    */
-  public ParsedGitData(final String commitHash, final String timestamp, final String branch) {
+  public ParsedGitData(String commitHash, String timestamp, String branch) {
     this.commitHash = commitHash;
     this.timestamp = timestamp;
     this.branch = branch;
