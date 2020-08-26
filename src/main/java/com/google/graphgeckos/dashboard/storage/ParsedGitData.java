@@ -16,7 +16,7 @@ package com.google.graphgeckos.dashboard.storage;
 
 /**
  * An immutable container used for providing stripped-down git information
- * to the StorageController. Provides functionality for checking whether the information
+ * to the GCDataRepository. Provides functionality for checking whether the information
  * is sufficient for creating an entry. Does not modify or validity check the individual
  * contents of each field.
  *
