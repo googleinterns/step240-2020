@@ -17,12 +17,12 @@ public class CommitData {
 
   private String timestamp;
 
-  private String repositoryName;
+  private String repositoryLink;
 
   @JsonProperty("repository")
   private void unpackRepositoryData(Map<String, Object> repository) {
     timestamp = repository.get("updated-at").toString();
-    repositoryName = repository.get("name").toString();
+    repositoryLink = repository.get("html_url").toString();
   }
 
   CommitData(String commitHash, String branch) {
