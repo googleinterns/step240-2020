@@ -61,6 +61,6 @@ public interface DataRepository {
    *     entries from that range.
    * @throws IllegalArgumentException if either number or offset are < 0
    */
-  Iterable<AggregatedBuildbotData> getLastRevisionEntries(int number, int offset)
+  Iterable<BuildInfo> getLastRevisionEntries(int number, int offset)
                                                           throws IllegalArgumentException;
 }
