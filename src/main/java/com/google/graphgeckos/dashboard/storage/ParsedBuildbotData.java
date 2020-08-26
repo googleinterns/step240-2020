@@ -15,6 +15,7 @@
 package com.google.graphgeckos.dashboard.storage;
 
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * An immutable container used for providing stripped-down build bot information
