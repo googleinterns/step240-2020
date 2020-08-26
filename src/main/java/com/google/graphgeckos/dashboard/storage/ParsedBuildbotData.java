@@ -47,7 +47,7 @@ public class ParsedBuildbotData {
                             List<Log> logs, BuilderStatus status) {
     this.commitHash = commitHash;
     this.builderName = builderName;
-    this.logs = new LinkedList<>(logs);
+    this.logs = new ArrayList<>(logs);
     this.status = status;
   }
 
