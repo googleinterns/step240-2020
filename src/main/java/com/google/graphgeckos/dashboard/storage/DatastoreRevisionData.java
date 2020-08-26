@@ -16,6 +16,7 @@ package com.google.graphgeckos.dashboard.storage;
 
 import com.google.cloud.Timestamp;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * An immutable container used for providing stripped-down git information
@@ -28,11 +29,22 @@ import java.util.List;
  * -timestamp: the formatted date when the commit was pushed
  * -branch: the branch of the LLVM project on which this commit was pushed
  */
+@Entity(name = "revision")
 class DatastoreRevisionData {
+  @Id
+  @Field(name = "commitHash")
   private String commitHash;
+  
+  @Field(name = "index")
   private int index;
+
+  @Field(name = "timestamp")
   private Timestamp timestamp;
+
+  @Field(name = "branch")
   private String branch;
+
+  @Field(name = "builders")
   private List<Builder> builders;
 
   DatastoreRevisionData(ParsedGitData creationData, int index) {
