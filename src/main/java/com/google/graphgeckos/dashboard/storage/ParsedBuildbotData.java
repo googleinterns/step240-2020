@@ -33,7 +33,7 @@ public class ParsedBuildbotData {
   private final boolean status;
 
   /**
-   * Constructs an immutable instance of a ParsedBuildbotData.
+   * Constructs an immutable instance of ParsedBuildbotData.
    *
    * @param commitHash the commit hash of the revision this data refers to
    * @param builderName the name of the builder which performed the compilation
