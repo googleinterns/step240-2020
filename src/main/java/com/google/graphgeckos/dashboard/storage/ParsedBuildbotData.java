@@ -53,7 +53,7 @@ public class ParsedBuildbotData {
    * Checks for the existance of the fields necessary for updating a database entry.
    * Does not check the validity of each field.
    *
-   * @return True if all required fields are available, False if not.
+   * @return true if all required fields are available, false if not.
    */
   boolean validUpdateData() {
     return (commitHash != null && builderName != null && logs != null);
