@@ -11,10 +11,10 @@ public class CommitData {
   @JsonProperty("after")
   private final String commitHash;
 
-  private String timestamp;
-
   @JsonProperty("ref")
   private final String branch;
+
+  private String timestamp;
 
   @JsonProperty("repository")
   private void unpackTimestamp(Map<String, Object> repository) {
