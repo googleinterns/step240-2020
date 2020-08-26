@@ -1,0 +1,38 @@
+{
+  "name": "llvm-dashboard",
+  "version": "1.0.0",
+  "description": "a dashboard for viewing the build status of buildbots for the llvm project",
+  "repository": "github:googleinterns/step240-2020",
+  "bugs": "https://github.com/googleinterns/step240-2020/issues",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "author": {
+    "name": "Samuel Sogbesan",
+    "email": "juwonsogbesan@gmail.com",
+    "url": "https://github.com/samuelsogbesan"
+  },
+  "contributors": [
+    {
+      "name": "Bogdan Ciobanu",
+      "email": "bogdanciobanu@google.com",
+      "url": "https://github.com/MagoDelBlocco"
+    },
+    {
+      "name": "Masha Samsikova",
+      "email": "mashasamsikova@google.com",
+      "url": "https://github.com/holounic"
+    }
+  ],
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4"
+  },
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
