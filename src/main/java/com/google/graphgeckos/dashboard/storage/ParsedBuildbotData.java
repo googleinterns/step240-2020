@@ -30,7 +30,7 @@ public class ParsedBuildbotData {
   private final String commitHash;
   private final String builderName;
   private final List<Log> logs;
-  private final boolean status;
+  private final BuilderStatus status;
 
   /**
    * Constructs an immutable instance of ParsedBuildbotData.
@@ -42,7 +42,7 @@ public class ParsedBuildbotData {
    * @param status the results of the compilation (true for passed, false for failed)
    */
   public ParsedBuildbotData(String commitHash, String builderName,
-                            List<Log> logs, boolean status) {
+                            List<Log> logs, BuilderStatus status) {
     this.commitHash = commitHash;
     this.builderName = builderName;
     this.logs = new LinkedList<>(logs);
@@ -56,7 +56,7 @@ public class ParsedBuildbotData {
    * @return true if all required fields are available, false if not.
    */
   boolean validUpdateData() {
-    return (commitHash != null && builderName != null && logs != null);
+    return (commitHash != null && builderName != null && logs != null && status != null);
   }
 
   /**
@@ -101,7 +101,7 @@ public class ParsedBuildbotData {
    *
    * @return the status.
    */
-  boolean getStatus() {
+  BuildStatus getStatus() {
     return status;
   }
 }
