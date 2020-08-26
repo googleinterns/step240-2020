@@ -33,13 +33,13 @@ public class ParsedBuildbotData {
   private final boolean status;
 
   /**
-   * Constructs an immutable instance of a ParsedBuildbotData.
+   * Constructs an immutable instance of ParsedBuildbotData.
    *
    * @param commitHash the commit hash of the revision this data refers to
    * @param builderName the name of the builder which performed the compilation
    * @param logs logs for each individual stage of compilation. See {@link
    *      #com.google.graphgeckos.dashboard.storage.Log Log}
-   * @param status the results of the compilation (True for passed, False for failed)
+   * @param status the results of the compilation (true for passed, false for failed)
    */
   public ParsedBuildbotData(String commitHash, String builderName,
                             List<Log> logs, boolean status) {
@@ -53,7 +53,7 @@ public class ParsedBuildbotData {
    * Checks for the existance of the fields necessary for updating a database entry.
    * Does not check the validity of each field.
    *
-   * @return True if all required fields are available, False if not.
+   * @return true if all required fields are available, false if not.
    */
   boolean validUpdateData() {
     return (commitHash != null && builderName != null && logs != null);
