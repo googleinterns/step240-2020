@@ -23,11 +23,9 @@ public interface DataRepository {
    * If there already is an entry with the same commit hash, ignores the request.
    *
    * @param entryData a ParsedGitData instance, must have a non-null "commitHash" field
-   * @throws IllegalArgumentException if entryData is null
-   * @throws RuntimeException if entryData's "commitHash" field is null
+   * @throws IllegalArgumentException if entryData or it's "commitHash" field is null
    */
-  void createRevisionEntry(ParsedGitData entryData) throws IllegalArgumentException,
-                                                           RuntimeException;
+  void createRevisionEntry(ParsedGitData entryData) throws IllegalArgumentException;
 
   /**
    * Updates an existing revision's database entry, with the individual information from
@@ -35,12 +33,10 @@ public interface DataRepository {
    * ignores the request.
    *
    * @param updateData a ParsedBuildbotData instance, must have a non-null "commitHash" field
-   * @throws IllegalArgumentException if updateData is null
-   * @throws RuntimeException if either of updateData's "commitHash", "builderName",
+   * @throws IllegalArgumentException if updateData or it's "commitHash", "builderName",
    *     or "logs" fields are null.
    */
-  void updateRevisionEntry(ParsedBuildbotData updateData) throws IllegalArgumentException,
-                                                                 RuntimeException;
+  void updateRevisionEntry(ParsedBuildbotData updateData) throws IllegalArgumentException;
 
   /**
    * Deletes a revision's database entry, based on it's commit hash. Has no effect if there
