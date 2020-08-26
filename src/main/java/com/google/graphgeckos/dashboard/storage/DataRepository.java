@@ -24,7 +24,9 @@ public interface DataRepository {
    * If there already is an entry with the same commit hash, ignores the request.
    *
    * @param entryData a ParsedGitData instance, must have a non-null "commitHash" field
-   * @throws IllegalArgumentException if entryData or it's "commitHash" field is null
+   * @throws IllegalArgumentException if entryData is null, or {@link 
+   *       com.google.graphgeckos.dashboard.storage.ParsedGitData#validCreateData()
+   *       entryData.validCreateData()} returns false
    */
   void createRevisionEntry(ParsedGitData entryData) throws IllegalArgumentException;
 
@@ -34,8 +36,9 @@ public interface DataRepository {
    * ignores the request.
    *
    * @param updateData a ParsedBuildbotData instance, must have a non-null "commitHash" field
-   * @throws IllegalArgumentException if updateData or it's "commitHash", "builderName", "status"
-   *     or "logs" fields are null.
+   * @throws IllegalArgumentException if updateData or {@link
+   *       com.google.graphgeckos.dashboard.storage.ParsedBuildbotData#validUpdateData()
+   *       updateData.validUpdateData()} returns false
    */
   void updateRevisionEntry(ParsedBuildbotData updateData) throws IllegalArgumentException;
 
