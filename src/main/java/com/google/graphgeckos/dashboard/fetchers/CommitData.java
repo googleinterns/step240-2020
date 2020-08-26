@@ -7,7 +7,7 @@ import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CommitData {
-  
+
   @JsonProperty("after")
   private final String commitHash;
 
@@ -38,8 +38,4 @@ public class CommitData {
     return timestamp;
   }
 
-  @Override
-  public String toString() {
-    return String.format("branch: %s, comitHash: %s, timestamp, %s", branch, commitHash, timestamp);
-  }
 }
