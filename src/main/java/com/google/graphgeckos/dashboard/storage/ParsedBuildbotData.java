@@ -39,7 +39,7 @@ public class ParsedBuildbotData {
    * @param builderName the name of the builder which performed the compilation
    * @param logs logs for each individual stage of compilation. See {@link
    *      #com.google.graphgeckos.dashboard.storage.Log Log}
-   * @param status the results of the compilation (True for passed, False for failed)
+   * @param status the results of the compilation (true for passed, false for failed)
    */
   public ParsedBuildbotData(String commitHash, String builderName,
                             List<Log> logs, boolean status) {
