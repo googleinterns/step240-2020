@@ -33,7 +33,7 @@ public interface DataRepository {
    * ignores the request.
    *
    * @param updateData a ParsedBuildbotData instance, must have a non-null "commitHash" field
-   * @throws IllegalArgumentException if updateData or it's "commitHash", "builderName",
+   * @throws IllegalArgumentException if updateData or it's "commitHash", "builderName", "status"
    *     or "logs" fields are null.
    */
   void updateRevisionEntry(ParsedBuildbotData updateData) throws IllegalArgumentException;
