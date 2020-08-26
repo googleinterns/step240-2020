@@ -15,7 +15,8 @@
 package com.google.graphgeckos.dashboard.storage;
 
 /**
- * An interface for providing unified I/O to the storage component.
+ * A storage component for creating/updating/deleting revision data, with the possibility
+ * of querying entries in bulk, sorted by their timestamp.
  */
 public interface DataRepository {
   /**
