@@ -15,22 +15,19 @@
 package com.google.graphgeckos.dashboard.storage;
 
 import com.google.cloud.Timestamp;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * An immutable container used for providing stripped-down git information
- * to the GCDataRepository. Provides functionality for checking whether the information
- * is sufficient for creating an entry. Does not modify or validity check the individual
- * contents of each field.
- *
- * Fields included: 
- * -commitHash: the commit hash of the revision built by a certain build bot
- * -timestamp: the formatted date when the commit was pushed
- * -branch: the branch of the LLVM project on which this commit was pushed
+ * An intermediary container used by the Spring - Google Cloud Datastore integration,
+ * allowing easy creation/update of new entities in the database. It is created using
+ * a commit's metadata from git, and updated using
+ * {@link com.google.graphgeckos.dashboard.storage#Builder Builder} objects, which add
+ * compilation information from each buildbot. The scope of an instance is supposed to
+ * be contained inside a single method from DataRepository.
  */
 @Entity(name = "revision")
-class DatastoreRevisionData {
+class DatastoreRevisionEntity {
   @Id
   @Field(name = "commitHash")
   private String commitHash;
@@ -47,7 +44,11 @@ class DatastoreRevisionData {
   @Field(name = "builders")
   private List<Builder> builders;
 
-  DatastoreRevisionData(ParsedGitData creationData, int index) {
+  /**
+   * Constructs a DatastoreRevisionEntity from the raw commit information from git,
+   * and an index used for database ordering.
+   */
+  DatastoreRevisionEntity(ParsedGitData creationData, int index) {
     this.commitHash = creationData.getCommitHash();
     this.index = index;
     this.timestamp = creationData.getTimestamp();
@@ -55,26 +56,52 @@ class DatastoreRevisionData {
     this.builders = new ArrayList<>();
   }
 
+  /**
+   * Getter for the commitHash.
+   *
+   * @return the commitHash.
+   */
   String getCommitHash() {
     return commitHash;
   }
 
+  /**
+   * Getter for the timestamp.
+   *
+   * @return the timestamp.
+   */
   Timestamp getTimestamp() {
     return timestamp;
   }
 
+  /**
+   * Getter for the branch.
+   *
+   * @return the branch.
+   */
   String getBranch() {
     return branch;
   }
 
+  /**
+   * Getter for the builders.
+   *
+   * @return the builders.
+   */
   List<Builder> getBuilders() {
     return builders;
   }
 
+  /**
+   * Setter for the index. Used in the reindexing operation inside GCDataRepository.
+   */
   void setIndex(int newIndex) {
     index = newIndex;
   }
 
+  /**
+   * Adds a new builder to the builders list.
+   */
   void addBuilder(Builder newBuilder) {
     builders.add(newBuilder);
   }
