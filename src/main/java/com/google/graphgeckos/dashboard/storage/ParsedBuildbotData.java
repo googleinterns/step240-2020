@@ -14,6 +14,8 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
+import java.util.List;
+
 /**
  * An immutable container used for providing stripped-down build bot information
  * to the GCDataRepository. Provides functionality for checking whether the information
