@@ -41,6 +41,7 @@ class DatastoreRevisionEntity {
   @Field(name = "branch")
   private String branch;
 
+  @Unindexed
   @Field(name = "builders")
   private List<Builder> builders;
 
