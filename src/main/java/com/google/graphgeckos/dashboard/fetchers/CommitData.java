@@ -8,6 +8,7 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CommitData {
 
+  // Git commit hash
   @JsonProperty("after")
   private final String commitHash;
 
@@ -16,9 +17,12 @@ public class CommitData {
 
   private String timestamp;
 
+  private String repositoryName;
+
   @JsonProperty("repository")
-  private void unpackTimestamp(Map<String, Object> repository) {
+  private void unpackRepositoryData(Map<String, Object> repository) {
     timestamp = repository.get("updated-at").toString();
+    repositoryName = repository.get("name").toString();
   }
 
   CommitData(String commitHash, String branch) {
@@ -38,4 +42,7 @@ public class CommitData {
     return timestamp;
   }
 
+  public String getRepositoryName() {
+    return repositoryName;
+  }
 }
