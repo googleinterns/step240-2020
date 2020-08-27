@@ -57,7 +57,7 @@ public class CommitData {
   }
 
   /**
-   * Returns name of the Git branch where the tested changes were made.
+   * Returns name of the Git branch, where the tested changes were made.
    */
   public String getBranch() {
     return branch;
@@ -78,7 +78,7 @@ public class CommitData {
   }
 
   /**
-   * Returns link to the Git repository where the last commit was made.
+   * Returns link to the Git repository, where the last commit was made.
    */
   public String getRepositoryLink() {
     return repositoryLink;
