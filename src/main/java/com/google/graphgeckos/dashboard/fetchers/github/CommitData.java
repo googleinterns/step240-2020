@@ -1,4 +1,4 @@
-package com.google.graphgeckos.dashboard.fetchers;
+package com.google.graphgeckos.dashboard.fetchers.github;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

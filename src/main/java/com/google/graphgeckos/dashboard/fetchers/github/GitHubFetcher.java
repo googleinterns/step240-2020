@@ -1,5 +1,6 @@
-package com.google.graphgeckos.dashboard.fetchers;
+package com.google.graphgeckos.dashboard.fetchers.github;
 
+import com.google.graphgeckos.dashboard.fetchers.github.CommitData;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
