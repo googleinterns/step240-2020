@@ -4,9 +4,14 @@ import * as React from "react";
  * Main Navigation Component
  */
 export const Header = () => {
+  const TITLE = "LLVM Build View";
+
   return (
     <header>
-    LLVM Build View
+      <Wrapper>
+        <span>{TITLE}</span>
+      </Wrapper>
+      <Navigation/>
     </header>
   );
 }
