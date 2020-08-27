@@ -10,7 +10,7 @@ export const Header = () => {
   return (
     <header>
       <Wrapper>
-        <span>{TITLE}</span>
+        <span className="title">{TITLE}</span>
       </Wrapper>
       <Navigation/>
     </header>
