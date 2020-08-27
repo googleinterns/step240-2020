@@ -15,9 +15,10 @@ public class GitHubFetcher {
    * @param commitData json from the GitHub API
    */
   @PostMapping("/github-info")
-  public void postGithubInfo(@RequestBody CommitData commitData) {
+  public void postGitHubInfo(@RequestBody CommitData commitData) {
     System.out.println(commitData);
     // TODO: implement described functionality. (Couldn't be implemented now since there is no Class to access storage).
     assert false;
   }
+
 }
