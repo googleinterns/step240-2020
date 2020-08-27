@@ -14,8 +14,6 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
-import java.util.List;
-
 /**
  * An immutable container used for providing stripped-down git information
  * to the GCDataRepository. Provides functionality for checking whether the information
@@ -78,7 +76,7 @@ public class ParsedGitData {
    *
    * @return the branch.
    */
-  List<String> getBranch() {
+  String getBranch() {
     return branch;
   }
 }
