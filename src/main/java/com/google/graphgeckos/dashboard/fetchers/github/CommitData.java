@@ -12,7 +12,7 @@ public class CommitData {
 
   /**
    * Extracts the name of the branch from the reference.
-   * @param ref Git reference
+   * @param ref Git reference.
    */
   @JsonProperty("ref")
   private void extractBranch(String ref) {

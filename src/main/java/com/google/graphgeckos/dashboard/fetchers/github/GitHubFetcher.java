@@ -13,7 +13,7 @@ public class GitHubFetcher {
    * Extracts required data from the json {@see CommitData} and adds it to the Storage.
    *
    * Class that provide access to the Storage is required to implement the functionality.
-   * @param commitData json from the GitHub API
+   * @param commitData json from the GitHub API.
    */
   @PostMapping("/github-info")
   public void postGitHubInfo(@RequestBody CommitData commitData) {
