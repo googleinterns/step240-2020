@@ -9,12 +9,12 @@ export const Header = () => {
 
   return (
     <header className='header'>
-      <Wrapper>
+      <div>
         <span className='title'>{TITLE}</span>
-      </Wrapper>
-      <Wrapper>
+      </div>
+      <div>
         <Navigation/>
-      </Wrapper>
+      </div>
     </header>
   );
 }
