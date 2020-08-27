@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class GithubFetcher {
+public class GitHubFetcher {
 
   /**
    * Handles POST requests from the GitHub API. Setting GitHub Webhooks is required.

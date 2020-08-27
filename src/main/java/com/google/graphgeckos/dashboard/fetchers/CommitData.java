@@ -7,7 +7,7 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CommitData {
 
-  // name of the branch
+  // Name of the branch
   private String branch;
 
   /**
@@ -23,14 +23,14 @@ public class CommitData {
   // Git commit hash
   private String commitHash;
 
-  // time of the Git commit push
+  // Time of the Git commit push
   private String timestamp;
 
   /**
    * Extracts commit id (also known as commit hash) and timestamp nested fields from the data of the head_commit
    * field.
    * Assigns the id value to {@code commitHash} and the timestamp value to {@code timestamp}.
-   * @param headCommit representation of the head_commit field of the GitHub API request json
+   * @param headCommit representation of the head_commit field of the GitHub API request json.
    */
   @JsonProperty("head_commit")
   private void unpackHeadCommit(Map<String, Object> headCommit) {
@@ -38,13 +38,13 @@ public class CommitData {
     timestamp = headCommit.get("timestamp").toString();
   }
 
-  // link to to the repository
+  // Link to to the repository
   private String repositoryLink;
 
   /**
    * Extracts link to the working repository (html_url field value) from the data of the repository field.
    * Assigns the extracted value to {@code repositoryLink}.
-   * @param repository representation of the repository field of the GitHub API request json
+   * @param repository representation of the repository field of the GitHub API request json.
    */
   @JsonProperty("repository")
   private void extractRepositoryLink(Map<String, Object> repository) {
