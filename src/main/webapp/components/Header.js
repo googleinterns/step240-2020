@@ -8,11 +8,13 @@ export const Header = () => {
   const TITLE = "LLVM Build View";
 
   return (
-    <header>
+    <header className="header">
       <Wrapper>
         <span className="title">{TITLE}</span>
       </Wrapper>
-      <Navigation/>
+      <Wrapper>
+        <Navigation/>
+      </Wrapper>
     </header>
   );
 }
