@@ -7,7 +7,7 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CommitData {
 
-  // Name of the branch
+  // Name of the branch.
   private String branch;
 
   /**
@@ -20,10 +20,10 @@ public class CommitData {
     branch = refComponents[refComponents.length - 1];
   }
 
-  // Git commit hash
+  // Git commit hash.
   private String commitHash;
 
-  // Time of the Git commit push
+  // Time of the Git commit push.
   private String timestamp;
 
   /**
@@ -38,7 +38,7 @@ public class CommitData {
     timestamp = headCommit.get("timestamp").toString();
   }
 
-  // Link to to the repository
+  // Link to to the repository.
   private String repositoryLink;
 
   /**
