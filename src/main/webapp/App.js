@@ -1,12 +1,18 @@
 import * as React from "react";
+import {BuildSnapshotContainer} from "./components/BuildSnapshotContainer";
+import {Header} from "./components/Header";
+import {Wrapper} from "./components/Wrapper";
 
 /**
- * Parent Component that is Rendered to the Page.
+ * Main App that is Rendered to the Page.
  * 
- * @param {*} props arbituary input properties for our application to use
+ * @param {*} props arbituary input properties for our application to use.
  */
 export const App = (props) => {
   return (
-    <h1>Welcome {props.name}</h1>
+    <Wrapper>
+      <Header/>
+      <BuildSnapshotContainer/>
+    </Wrapper>
   );
 }
