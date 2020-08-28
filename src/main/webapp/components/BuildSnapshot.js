@@ -37,10 +37,10 @@ export const BuildSnapshot = (props) => {
 const Header = (props) => {
   return (
     <div onClick = {() => props.onClick(toggle(props.isOpen))}>
-      <span class="hash">{props.data.commitHash}</span>
-      <Description description = {props.data.description}/>
+      <span class="header-hash">{props.data.commitHash}</span>
+      <span class="header-description">{props.data.description}</span>
       <FailureGroup group =  {"Group"}/>
-      <BuildStatus status = {props.data.status}/>
+      <span class="header-status">{props.data.status}</span>
     </div>
   );
 }
