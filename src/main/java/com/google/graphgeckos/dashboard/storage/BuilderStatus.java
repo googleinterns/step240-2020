@@ -3,6 +3,7 @@ package com.google.graphgeckos.dashboard.storage;
 /**
  * Represents buildbot statuses: "failed" or "passed".
  */
+@Entity(name = "buildStatus")
 public enum BuilderStatus {
   FAILED("failed"),
   PASSED("passed");

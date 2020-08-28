@@ -2,10 +2,12 @@ package com.google.graphgeckos.dashboard.storage;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 
 /**
  * Represents the information about a single buildbot.
  */
+@Entity(name = "builder")
 public class Builder {
   // name of the builder
   private final String builderName;

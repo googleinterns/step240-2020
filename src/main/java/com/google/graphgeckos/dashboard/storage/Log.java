@@ -3,6 +3,7 @@ package com.google.graphgeckos.dashboard.storage;
 /**
  * Represents a log of a buildbot.
  */
+@Entity(name = "buildLog")
 public class Log {
   // log type (e.g "stdio")
   private final String type;
