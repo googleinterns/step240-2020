@@ -8,7 +8,7 @@ import {Wrapper} from "./Wrapper.js";
  * @param {*} props input properties containing build information
  */
 export const BuildSnapshot = (props) => {
-  // State variable indicating whether the BuildSnapshot is open
+  // State variable indicating whether the BuildSnapshot is open or closed.
   // isOpen === true indicates the tray should be visible 
   // and the indicator arrow on the Header should be facing downwards.
   const [isOpen, setIsOpen] = React.useState(false);
