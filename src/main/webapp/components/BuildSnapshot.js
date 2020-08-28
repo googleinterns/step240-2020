@@ -37,7 +37,7 @@ export const BuildSnapshot = (props) => {
 const Header = (props) => {
   return (
     <div onClick = {() => props.onClick(toggle(props.isOpen))}>
-      <CommitHash hash = {props.data.commitHash}/>
+      <span class="hash">{props.data.commitHash}</span>
       <Description description = {props.data.description}/>
       <FailureGroup group =  {"Group"}/>
       <BuildStatus status = {props.data.status}/>
