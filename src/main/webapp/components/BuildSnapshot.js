@@ -1,6 +1,5 @@
 import * as React from "react";
 import {getFields} from "./utils/getFields.js";
-import {Wrapper} from "./Wrapper.js";
 
 /**
  * Component used to render Build Information.
@@ -20,10 +19,10 @@ export const BuildSnapshot = (props) => {
   const trayData = getFields(props.buildData, trayFields, "");
 
   return (
-    <Wrapper>
+    <div>
       <Header isOpen = {isOpen} onClick = {setIsOpen} data = {headerData}/>
       <Tray isOpen = {isOpen} data = {trayData}/>
-    </Wrapper>
+    </div>
   );
 }
 
@@ -56,12 +55,12 @@ const Header = (props) => {
 const Tray = (props) => {
   if(props.isOpen !== true) return null;
   return (
-    <Wrapper>
-      <Wrapper>
+    <div>
+      <div>
         <Subheading time = {props.data.timestamp}/>
         <NameTagGrid data = {props.data.builders}/>
-      </Wrapper>
+      </div>
       <BuilderDataTable/>
-    </Wrapper>
+    </div>
   );
 }
