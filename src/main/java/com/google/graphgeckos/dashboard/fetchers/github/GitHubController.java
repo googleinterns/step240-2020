@@ -6,20 +6,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class GitHubFetcher {
+public class GitHubController {
 
   /**
    * Handles POST requests from the GitHub API. Setting GitHub Webhooks is required.
    * Extracts required data from the json {@see CommitData} and adds it to the Storage.
-   *
-   * Class, that provide access to the Storage, is required to implement the functionality.
    * @param commitData json from the GitHub API.
    */
   @PostMapping("/github-info")
-  public void postGitHubInfo(@RequestBody CommitData commitData) {
+  public CommitData postGitHubInfo(@RequestBody CommitData commitData) {
     System.out.println(commitData);
-    // TODO: implement described functionality. (Couldn't be implemented now since there is no Class to access storage).
+    // TODO(issue #64): implement described functionality.
     assert false;
+    return commitData;
   }
 
 }

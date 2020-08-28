@@ -29,7 +29,6 @@ public class CommitData {
   /**
    * Extracts commit id (also known as commit hash) and timestamp nested fields from the data of the head_commit
    * field.
-   * Assigns the id value to {@code commitHash} and the timestamp value to {@code timestamp}.
    * @param headCommit representation of the head_commit field of the GitHub API request json.
    */
   @JsonProperty("head_commit")
@@ -43,7 +42,6 @@ public class CommitData {
 
   /**
    * Extracts link to the working repository (html_url field value) from the data of the repository field.
-   * Assigns the extracted value to {@code repositoryLink}.
    * @param repository representation of the repository field of the GitHub API request json.
    */
   @JsonProperty("repository")
