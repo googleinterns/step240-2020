@@ -1,3 +1,17 @@
+// Copyright 2020 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package com.google.graphgeckos.dashboard.storage;
 
 import com.google.cloud.Timestamp;
@@ -9,19 +23,29 @@ import org.springframework.cloud.gcp.data.datastore.core.mapping.Unindexed;
 import org.springframework.data.annotation.Id;
 
 /**
- * Represents the response json with the aggregated buildbot data.
+ * This class encapsulates all the information gathered about a specific revision.
+ * Information included: 
+ *    * commit hash
+ *    * timestamp
+ *    * branch
+ *    * information from builders:
+ *          - builder name
+ *          - compile logs
+ *          - compilation status
+ *
+ * This class is used to facilitate Datastore I/O operations through Spring Cloud API,
+ * and to transfer the data from the DataRepository to the REST API component.
  */
 @Entity(name = "revision")
 public class BuildInfo {
 
-  // Git commit hash
   @Id
   @Field(name = "commitHash")
   private final String commitHash;
-  // time of the Git commit push
+
   @Field(name = "timestamp")
   private final Timestamp timestamp;
-  // name of the branch
+
   @Field(name = "branch")
   private final String branch;
 
@@ -29,6 +53,11 @@ public class BuildInfo {
   @Unindexed
   private final List<Builder> builders;
 
+  /**
+   * Converts a ParsedGitData object to a BuildInfo object. This is used for adding
+   * entries to the Google Cloud Datastore, from the Git commit information received,
+   * and leaving the {@Code builders} field as empty, for later updates.
+   */
   BuildInfo(ParsedGitData creationData) {
     this.commitHash = creationData.getCommitHash();
     this.timestamp = creationData.getTimestamp();
@@ -37,35 +66,36 @@ public class BuildInfo {
   }
 
   /**
-   * Returns Git commit hash of the tested changes commit.
+   * Getter for the Git commit hash of the associated revision.
+   *
+   * @return the commitHash. Cannot be null.
    */
   public String getCommitHash() {
     return commitHash;
   }
 
   /**
-   * Returns time of when the tested commit was pushed (the time is fetched from the Git API).
+   * Returns time of when the commit was pushed as a com.google.cloud.Timestamp value.
+   *
+   * @return the timestamp. Cannot be null.
    */
   public Timestamp getTimestamp() {
     return timestamp;
   }
 
   /**
-   * Returns link to to the Git repository where the tested changes were made.
-   */
-  public String getRepository() {
-    return repository;
-  }
-
-  /**
-   * Returns name of the Git branch where the tested changes were made.
+   * Returns name of the Git branch where the revision was pushed.
+   *
+   * @return the branch. Cannot be null.
    */
   public String getBranch() {
     return branch;
   }
 
   /**
-   * Returns builders which tested the changes.
+   * Returns builders which attempted the compilation of the revision.
+   *
+   * @return the list of builders. Cannot be null, neither it's elements.
    */
   public List<Builder> getBuilders() {
     return builders;
