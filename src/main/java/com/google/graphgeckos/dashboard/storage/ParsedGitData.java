@@ -14,6 +14,8 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
+import com.google.cloud.Timestamp;
+
 /**
  * An immutable container used for providing stripped-down git information
  * to the GCDataRepository. Provides functionality for checking whether the information
@@ -27,7 +29,7 @@ package com.google.graphgeckos.dashboard.storage;
  */
 public class ParsedGitData {
   private final String commitHash;
-  private final String timestamp;
+  private final Timestamp timestamp;
   private final String branch;
 
   /**
@@ -37,7 +39,7 @@ public class ParsedGitData {
    * @param timestamp the formatted time when the commit was pushed
    * @param branch branch of the LLVM project on which this commit was pushed
    */
-  public ParsedGitData(String commitHash, String timestamp, String branch) {
+  public ParsedGitData(String commitHash, Timestamp timestamp, String branch) {
     this.commitHash = commitHash;
     this.timestamp = timestamp;
     this.branch = branch;
@@ -67,7 +69,7 @@ public class ParsedGitData {
    *
    * @return the timestamp.
    */
-  String getTimestamp() {
+  Timestamp getTimestamp() {
     return timestamp;
   }
 
@@ -76,7 +78,7 @@ public class ParsedGitData {
    *
    * @return the branch.
    */
-  List<String> getBranch() {
+  String getBranch() {
     return branch;
   }
 }
