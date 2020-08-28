@@ -2,6 +2,7 @@ import * as React from "react";
 
 /**
   * Main List Element to be displayed on the Navigation.
+  * @param {href:String, innerText:String}
  */
 const NavigationItem = props => <li><a href={props.href}>{props.innerText}</a></li>
 
@@ -9,7 +10,7 @@ const NavigationItem = props => <li><a href={props.href}>{props.innerText}</a></
  * Main Navigation List.
  * Instance will be embedded in ./Header component.
  * @param {options: [option]} props arbituary object containing an array of
- * options, where each option = {href:String, text: String}.
+ * options, where each option = {link:String, text: String}.
  */
 export const Navigation = (props) => {
   return (
