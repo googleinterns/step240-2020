@@ -21,6 +21,7 @@ import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
  */
 @Entity(name = "buildLog")
 public class Log {
+
   // Log type (e.g "stdio")
   private final String type;
   // Log link (e.g "http://lab.llvm.org:8011/builders/mlir-nvidia/builds/6403/logs/stdio")
@@ -37,7 +38,7 @@ public class Log {
   /**
    * Returns the type of the log as a String.
    *
-   * @return type of log.
+   * @return type of log. Can be null.
    */
   public String getType() {
     return type;
@@ -46,7 +47,7 @@ public class Log {
   /**
    * Returns a link to the full version of the log.
    *
-   * @return link to log.
+   * @return link to log. Can be null.
    */
   public String getLink() {
     return link;
