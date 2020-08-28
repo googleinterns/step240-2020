@@ -1,6 +1,6 @@
 import * as React from "react";
-import {Wrapper} from "./Wrapper";
 import {BuildSnapshot} from "./BuildSnapshot";
+import {Wrapper} from "./Wrapper";
 
 /**
  * Container Component for BuildSnapshots.
