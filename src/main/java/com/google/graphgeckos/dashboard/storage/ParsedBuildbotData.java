@@ -60,16 +60,6 @@ public class ParsedBuildbotData {
   }
 
   /**
-   * Converts this instance to an instance of
-   * {@link com.gogle.graphgeckos.dashboard.storage.Builder Builder}.
-   *
-   * @return a new Builder instance, with the fields copied from the calling instance.
-   */
-  Builder toBuilder() {
-    return new Builder(builderName, logs, status);
-  }
-
-  /**
    * Getter for the commitHash.
    *
    * @return the commitHash.
