@@ -2,7 +2,7 @@ import * as React from "react";
 
 /**
   * Main List Element to be displayed on the Navigation.
-  * @param {href:String, innerText:String}
+  * @param {href: a URL String to a resource, innerText: The display text}
  */
 const NavigationItem = props => <li><a href={props.href}>{props.innerText}</a></li>
 
