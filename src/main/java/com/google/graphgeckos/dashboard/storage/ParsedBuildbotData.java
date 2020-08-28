@@ -101,7 +101,7 @@ public class ParsedBuildbotData {
    *
    * @return the status.
    */
-  BuildStatus getStatus() {
+  BuilderStatus getStatus() {
     return status;
   }
 }
