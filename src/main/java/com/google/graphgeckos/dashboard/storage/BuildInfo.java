@@ -54,9 +54,9 @@ public class BuildInfo {
   private final List<Builder> builders;
 
   /**
-   * Converts a ParsedGitData object to a BuildInfo object. This is used for adding
-   * entries to the Google Cloud Datastore, from the Git commit information received,
-   * and leaving the {@Code builders} field as empty, for later updates.
+   * Converts a {@link #ParsedGitData ParsedGitData} object to a BuildInfo object.
+   * This is used for adding entries to the Google Cloud Datastore, from the Git commit
+   * information received, and leaving the {@code builders} field as empty, for later updates.
    */
   BuildInfo(ParsedGitData creationData) {
     this.commitHash = creationData.getCommitHash();
@@ -68,16 +68,17 @@ public class BuildInfo {
   /**
    * Getter for the Git commit hash of the associated revision.
    *
-   * @return the commitHash. Cannot be null.
+   * @return commitHash. Cannot be null.
    */
   public String getCommitHash() {
     return commitHash;
   }
 
   /**
-   * Returns time of when the commit was pushed as a com.google.cloud.Timestamp value.
+   * Returns time of when the commit was pushed as a {@link com.google.cloud#Timestamp
+   * Timestamp} value.
    *
-   * @return the timestamp. Cannot be null.
+   * @return timestamp. Cannot be null.
    */
   public Timestamp getTimestamp() {
     return timestamp;
@@ -86,7 +87,7 @@ public class BuildInfo {
   /**
    * Returns name of the Git branch where the revision was pushed.
    *
-   * @return the branch. Cannot be null.
+   * @return branch. Cannot be null.
    */
   public String getBranch() {
     return branch;
