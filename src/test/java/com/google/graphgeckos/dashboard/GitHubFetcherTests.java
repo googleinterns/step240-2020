@@ -1,6 +1,5 @@
 package com.google.graphgeckos.dashboard;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.google.graphgeckos.dashboard.fetchers.github.GitHubController;
@@ -21,33 +20,33 @@ public class GitHubFetcherTests {
   @Autowired
   private MockMvc mvc;
 
-  private static class JsonFactory {
-    private JsonFactory() {}
-
-    static String create(String branch, String commitHash, String timestamp, String repositoryLink) {
-      return String.format("{\"ref\": \"%s\", \"head_commit\": " +
-        "{\"id\": \"%s\", \"timestamp\": \"%s\"}, " +
-        "\"repository\": {\"html_url\": \"%s\"}}", branch, commitHash, timestamp, repositoryLink);
-    }
-  }
-
-  private final String BRANCH = "ref";
-  private final String COMMIT_HASH = "123h3";
-  private final String TIMESTAMP = "00.00";
-  private final String REPOSITORY_LINK = "github/repo";
-  private final String JSON_WITHOUT_UNKNOWN_FIELDS =
-    JsonFactory.create(BRANCH, COMMIT_HASH, TIMESTAMP, REPOSITORY_LINK);
+  private final GithubJsonInfo JSON_WITHOUT_UNKNOWN_FIELDS = new GithubJsonInfo("explicit_json.txt");
 
   @Test
   public void json_without_unknown_fields_is_parsed_correctly() throws Exception {
     mvc.perform(MockMvcRequestBuilders.post("/github-info")
       .contentType("application/json")
-      .content(JSON_WITHOUT_UNKNOWN_FIELDS)
+      .content(JSON_WITHOUT_UNKNOWN_FIELDS.getContent())
       .accept(MediaType.APPLICATION_JSON))
       .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-      .andExpect(jsonPath("branch").value(BRANCH))
-      .andExpect(jsonPath("commitHash").value(COMMIT_HASH))
-      .andExpect(jsonPath("timestamp").value(TIMESTAMP))
-      .andExpect(jsonPath("repositoryLink").value(REPOSITORY_LINK));
+      .andExpect(jsonPath("branch").value(JSON_WITHOUT_UNKNOWN_FIELDS.getBranch()))
+      .andExpect(jsonPath("commitHash").value(JSON_WITHOUT_UNKNOWN_FIELDS.getCommitHash()))
+      .andExpect(jsonPath("timestamp").value(JSON_WITHOUT_UNKNOWN_FIELDS.getTimestamp()))
+      .andExpect(jsonPath("repositoryLink").value(JSON_WITHOUT_UNKNOWN_FIELDS.getRepositoryLink()));
+  }
+
+  private final GithubJsonInfo REAL_JSON = new GithubJsonInfo("real_json.txt");
+
+  @Test
+  public void real_json_is_parsed_correctly() throws Exception {
+    mvc.perform(MockMvcRequestBuilders.post("/github-info")
+      .contentType("application/json")
+      .content(REAL_JSON.getContent())
+      .accept(MediaType.APPLICATION_JSON))
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(jsonPath("branch").value(REAL_JSON.getBranch()))
+      .andExpect(jsonPath("commitHash").value(REAL_JSON.getCommitHash()))
+      .andExpect(jsonPath("timestamp").value(REAL_JSON.getTimestamp()))
+      .andExpect(jsonPath("repositoryLink").value(REAL_JSON.getRepositoryLink()));
   }
 }

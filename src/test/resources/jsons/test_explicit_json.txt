@@ -1,0 +1,10 @@
+{
+    "ref": "master",
+    "head_commit": {
+        "id": "3b22gst2",
+        "timestamp": "2020-08-26T17:01:01+03:00"
+    },
+    "repository": {
+        "html_url": "https://github.com/holounic/university"
+    }
+}
