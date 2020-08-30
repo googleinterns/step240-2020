@@ -17,10 +17,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 @WebMvcTest(controllers = GitHubController.class)
 @AutoConfigureMockMvc
 public class GitHubControllerTests {
+
   @Autowired
   private MockMvc mvc;
 
-  private final GitHubJsonInfo JSON_WITHOUT_UNKNOWN_FIELDS = new GitHubJsonInfo("explicit_json");
+  private final GitHubJsonTestInfo JSON_WITHOUT_UNKNOWN_FIELDS =
+    new GitHubJsonTestInfo("no_unknown_fields_json");
 
   @Test
   public void json_without_unknown_fields_is_parsed_correctly() throws Exception {
@@ -35,7 +37,7 @@ public class GitHubControllerTests {
       .andExpect(jsonPath("repositoryLink").value(JSON_WITHOUT_UNKNOWN_FIELDS.getRepositoryLink()));
   }
 
-  private final GitHubJsonInfo REAL_JSON = new GitHubJsonInfo("real_json");
+  private final GitHubJsonTestInfo REAL_JSON = new GitHubJsonTestInfo("real_json");
 
   @Test
   public void real_json_is_parsed_correctly() throws Exception {

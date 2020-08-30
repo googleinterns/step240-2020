@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CommitData {
+public class GitHubData {
 
   // Name of the branch.
   private String branch;
@@ -49,7 +49,7 @@ public class CommitData {
     repositoryLink = repository.get("html_url").toString();
   }
 
-  CommitData(String commitHash, String branch) {
+  GitHubData(String commitHash, String branch) {
     this.commitHash = commitHash;
     this.branch = branch;
   }
