@@ -1,9 +1,6 @@
 package com.google.graphgeckos.dashboard.fetchers.github;
 
-import com.google.graphgeckos.dashboard.fetchers.github.CommitData;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class GitHubController {
@@ -13,11 +10,9 @@ public class GitHubController {
    * Extracts required data from the json {@see CommitData} and adds it to the Storage.
    * @param commitData json from the GitHub API.
    */
-  @PostMapping("/github-info")
+  @RequestMapping(value = "/github-info", method = RequestMethod.POST, headers = {"content-type=application/json"})
   public CommitData postGitHubInfo(@RequestBody CommitData commitData) {
-    System.out.println(commitData);
     // TODO(issue #64): implement described functionality.
-    assert false;
     return commitData;
   }
 
