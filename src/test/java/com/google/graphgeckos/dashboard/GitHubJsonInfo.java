@@ -6,11 +6,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
-public class GithubJsonInfo {
+public class GitHubJsonInfo {
 
   private static final String PATH = "src/test/resources/jsons/";
   private static final String TEST_PREFIX = "test_";
   private static final String EXPECTED_PREFIX = "expected_";
+  private static final String FILE_FORMAT = ".txt";
 
   private String content;
   private String branch;
@@ -26,7 +27,7 @@ public class GithubJsonInfo {
   private void assignExpectedValues(String[] rawExpected) {
     if (rawExpected.length < 4) {
       throw new IllegalArgumentException(
-        String.format("Wrong file format, expected four line, found %d", rawExpected.length));
+        String.format("Wrong file format, expected four lines, found %d", rawExpected.length));
     }
     branch = rawExpected[0];
     commitHash = rawExpected[1];
@@ -34,14 +35,14 @@ public class GithubJsonInfo {
     repositoryLink = rawExpected[3];
   }
 
-  public GithubJsonInfo(String testName) {
+  public GitHubJsonInfo(String testName) {
     try {
-      content = readFile(PATH + TEST_PREFIX + testName);
+      content = readFile(PATH + TEST_PREFIX + testName + FILE_FORMAT);
     } catch (IOException e) {
       System.out.println("File not found:" + e.getMessage());
     }
     try {
-      String[] expected = readFile(PATH + EXPECTED_PREFIX + testName).split("\n");
+      String[] expected = readFile(PATH + EXPECTED_PREFIX + testName + FILE_FORMAT).split("\n");
       assignExpectedValues(expected);
     } catch (IOException e) {
       System.out.println("File not found:" + e.getMessage());
