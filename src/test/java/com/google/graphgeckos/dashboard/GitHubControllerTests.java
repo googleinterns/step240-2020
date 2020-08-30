@@ -51,4 +51,5 @@ public class GitHubControllerTests {
       .andExpect(jsonPath("timestamp").value(REAL_JSON.getTimestamp()))
       .andExpect(jsonPath("repositoryLink").value(REAL_JSON.getRepositoryLink()));
   }
+  
 }
