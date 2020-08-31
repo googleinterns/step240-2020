@@ -46,27 +46,21 @@ public class Builder {
   }
 
   /**
-   * Returns the name of the builder bot.
-   *
-   * @return builderName. Cannot be null.
+   * Returns the name of the builder bot. Cannot be null.
    */
   public String getBuilderName() {
     return builderName;
   }
 
   /**
-   * Returns the list of logs for each compilation stage.
-   *
-   * @return the list of logs. Cannot be null.
+   * Returns the list of logs for each compilation stage. Cannot be null.
    */
   public List<Log> getLogs() {
     return logs;
   }
 
   /**
-   * Returns the compilation status of the builder.
-   *
-   * @return compile status. Cannot be null.
+   * Returns the compilation status of the builder. Cannot be null.
    */
   public BuilderStatus getStatus() {
     return status;
