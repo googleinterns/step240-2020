@@ -12,7 +12,7 @@ public class GitHubController {
    */
   @RequestMapping(value = "/github-info", method = RequestMethod.POST, headers = {"content-type=application/json"})
   public GitHubData postGitHubInfo(@RequestBody GitHubData gitHubData) {
-    // TODO(issue #64): implement described functionality.
+    // TODO(issue #64): Implement described functionality.
     return gitHubData;
   }
 
