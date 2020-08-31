@@ -34,7 +34,7 @@ import org.springframework.stereotype.Repository;
 /**
  * A DataRepository implementation backed up by Google Datastore.
  * Datastore. Each database entry is modeled by the {@link #BuildInfo BuildInfo} class.
- * The relevant fields for the database, which are described in that class are:
+ * The relevant fields for the database are:
  *    - Kind: "revision"
  *    - Key: commit hash
  * The database indexes after all the BuildInfo fields, besides the {@code builders} list.
