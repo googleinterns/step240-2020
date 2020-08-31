@@ -27,9 +27,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.Date;
 import java.util.List;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
+import org.springframework.stereotype.Repository;
 
 /**
  * Implementation of the DataRepository, with the purpose of providing I/O to the Google Cloud
@@ -48,7 +48,7 @@ import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
  * - https://cloud.google.com/datastore/docs/concepts/
  * - https://spring.io/projects/spring-cloud-gcp#overview
  */
-@SpringBootApplication
+@Repository
 public class GCDataRepository implements DataRepository {
   private DatastoreTemplate storage;
 
