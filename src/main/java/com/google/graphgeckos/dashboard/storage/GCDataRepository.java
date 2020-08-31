@@ -50,44 +50,7 @@ import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
  */
 @SpringBootApplication
 public class GCDataRepository implements DataRepository {
-  /**
-   * This class encapsulates all the parameters for the cleanup subroutine.
-   * Also, provides an easy interface for getting the next timestamp before which
-   * to delete entries. It can be used by multiple GCDataRepository instances.
-   */
-  private static class CleanupParameters {
-    static final long initialDelay = 1;
-    static final long period = 1;
-    static final TimeUnit periodUnit = TimeUnit.MINUTES;
-    static final int ttlTimeUnit = Calendar.MONTH;
-    static final int ttl = -3;
-
-    /**
-     * This method provides a stateless way to retrieve the timestamp before which to
-     * delete all older entries.
-     *
-     * @return Date object with the appropriate "delete before" timestamp.
-     */
-    static Date getEarliestAliveTime() {
-      Calendar calendar = Calendar.getInstance();
-      calendar.setTime(new Date());
-      calendar.add(ttlTimeUnit, ttl);
-      return calendar.getTime();
-    }
-  };
-
   private DatastoreTemplate storage;
-  private final ScheduledExecutorService cleanScheduler = Executors.newScheduledThreadPool(1);
-
-  /**
-   * Constructs the GCDataRepository instance, and schedules the cleanup routine after the
-   * parameters defined in {@link #CleanupParameters CleanupParameters}.
-   */
-  public GCDataRepository() {
-    cleanScheduler.scheduleAtFixedRate(cleanup, CleanupParameters.initialDelay,
-                                                CleanupParameters.period,
-                                                CleanupParameters.periodUnit);
-  }
 
   /**
    * {@inheritDoc}
@@ -173,28 +136,4 @@ public class GCDataRepository implements DataRepository {
   private BuildInfo getRevisionEntry(String commitHash) {
     return storage.findById(commitHash, BuildInfo.class);
   }
-
-  /**
-   * A subroutine created for running at fixed intervals, deleting older entries.
-   * Queries all "revision" type entries, and deletes all which are older than a specified
-   * amount of time. During this operation, the GCDataRepository can be queried, but
-   * there is no guarantee of consistency when querying the entries that are in process
-   * of removal.
-   */
-  private final Runnable cleanup = new Runnable() {
-    public void run() {
-      TimestampValue borderDate = TimestampValue.of(Timestamp.of(
-                                  CleanupParameters.getEarliestAliveTime()));
-
-      Query<Entity> query = Query.newEntityQueryBuilder()
-                                 .setKind("revision")
-                                 .setFilter(PropertyFilter.lt("timestamp", borderDate)).build();
-
-      Iterable<Entity> results = storage.query(query, Entity.class).getIterable();
-
-      for (Entity entity : results) {
-        storage.delete(entity);
-      }
-    }
-  };
 }
