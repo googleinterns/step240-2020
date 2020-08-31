@@ -33,7 +33,6 @@ public enum BuilderStatus {
   /**
    * Returns the String representation of the status.
    *
-   * @return status as a String.
    */
   public String getStatus() {
     return status;
