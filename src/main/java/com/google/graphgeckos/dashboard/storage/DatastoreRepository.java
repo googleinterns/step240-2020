@@ -48,8 +48,8 @@ import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
  * - https://cloud.google.com/datastore/docs/concepts/
  * - https://spring.io/projects/spring-cloud-gcp#overview
  */
-@SpringBootApplication
-public class GCDataRepository implements DataRepository {
+@Repository
+public class DatastoreRepository implements DataRepository {
   /**
    * This class encapsulates all the parameters for the cleanup subroutine.
    * Also, provides an easy interface for getting the next timestamp before which
@@ -76,6 +76,7 @@ public class GCDataRepository implements DataRepository {
     }
   };
 
+  @Autowired
   private DatastoreTemplate storage;
   private final ScheduledExecutorService cleanScheduler = Executors.newScheduledThreadPool(1);
 
@@ -83,7 +84,7 @@ public class GCDataRepository implements DataRepository {
    * Constructs the GCDataRepository instance, and schedules the cleanup routine after the
    * parameters defined in {@link #CleanupParameters CleanupParameters}.
    */
-  public GCDataRepository() {
+  public DatastoreRepository() {
     cleanScheduler.scheduleAtFixedRate(cleanup, CleanupParameters.initialDelay,
                                                 CleanupParameters.period,
                                                 CleanupParameters.periodUnit);
