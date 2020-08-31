@@ -7,24 +7,13 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GitHubData {
 
-  // Name of the branch.
   private String branch;
 
-  /**
-   * Extracts the name of the branch from the reference.
-   * @param ref Git reference.
-   */
-  @JsonProperty("ref")
-  private void extractBranch(String ref) {
-    String[] refComponents = ref.split("/");
-    branch = refComponents[refComponents.length - 1];
-  }
-
-  // Git commit hash.
   private String commitHash;
-
-  // Time of the Git commit push.
+  
   private String timestamp;
+
+  private String repositoryLink;
 
   /**
    * Extracts commit id (also known as commit hash) and timestamp nested fields from the data of the head_commit
@@ -37,9 +26,6 @@ public class GitHubData {
     timestamp = headCommit.get("timestamp").toString();
   }
 
-  // Link to to the repository.
-  private String repositoryLink;
-
   /**
    * Extracts link to the working repository (html_url field value) from the data of the repository field.
    * @param repository representation of the repository field of the GitHub API request json.
@@ -47,6 +33,16 @@ public class GitHubData {
   @JsonProperty("repository")
   private void extractRepositoryLink(Map<String, Object> repository) {
     repositoryLink = repository.get("html_url").toString();
+  }
+
+  /**
+   * Extracts the name of the branch from the reference.
+   * @param ref Git reference.
+   */
+  @JsonProperty("ref")
+  private void extractBranch(String ref) {
+    String[] refComponents = ref.split("/");
+    branch = refComponents[refComponents.length - 1];
   }
 
   GitHubData(String commitHash, String branch) {
