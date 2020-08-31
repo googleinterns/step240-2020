@@ -31,9 +31,7 @@ public enum BuilderStatus {
   }
 
   /**
-   * Returns the String representation of the status.
-   *
-   * @return status as a String.
+   * Returns the String representation of the status. Cannot be null.
    */
   public String getStatus() {
     return status;

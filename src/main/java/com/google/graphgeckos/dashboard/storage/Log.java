@@ -36,18 +36,14 @@ public class Log {
   }
 
   /**
-   * Returns the type of the log as a String.
-   *
-   * @return type of log. Can be null.
+   * Returns the type of the log as a String. Can be null.
    */
   public String getType() {
     return type;
   }
 
   /**
-   * Returns a link to the full version of the log.
-   *
-   * @return link to log. Can be null.
+   * Returns a link to the full version of the log. Can be null.
    */
   public String getLink() {
     return link;
