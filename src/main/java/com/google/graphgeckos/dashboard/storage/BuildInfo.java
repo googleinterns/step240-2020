@@ -56,7 +56,7 @@ public class BuildInfo {
   /**
    * Converts a {@link #ParsedGitData ParsedGitData} object to a BuildInfo object.
    * This is used for adding entries to the Google Cloud Datastore, from the Git commit
-   * information received, and leaving the {@code builders} field as empty, for later updates.
+   * information received, and leaving the {@code builders} field empty, for later updates.
    */
   BuildInfo(ParsedGitData creationData) {
     this.commitHash = creationData.getCommitHash();
