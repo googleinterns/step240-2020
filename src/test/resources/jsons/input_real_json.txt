@@ -1,0 +1,188 @@
+{
+  "ref": "refs/heads/master",
+  "before": "f5b6fa5f16512705a47e62ca6308f657414526c0",
+  "after": "3f38d7e78298f74e29622437f6713a3165cfd8dc",
+  "repository": {
+    "id": 208440024,
+    "node_id": "MDEwOlJlcG9zaXRvcnkyMDg0NDAwMjQ=",
+    "name": "university",
+    "full_name": "holounic/university",
+    "private": false,
+    "owner": {
+      "name": "holounic",
+      "email": "41171543+holounic@users.noreply.github.com",
+      "login": "holounic",
+      "id": 41171543,
+      "node_id": "MDQ6VXNlcjQxMTcxNTQz",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/41171543?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/holounic",
+      "html_url": "https://github.com/holounic",
+      "followers_url": "https://api.github.com/users/holounic/followers",
+      "following_url": "https://api.github.com/users/holounic/following{/other_user}",
+      "gists_url": "https://api.github.com/users/holounic/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/holounic/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/holounic/subscriptions",
+      "organizations_url": "https://api.github.com/users/holounic/orgs",
+      "repos_url": "https://api.github.com/users/holounic/repos",
+      "events_url": "https://api.github.com/users/holounic/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/holounic/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "html_url": "https://github.com/holounic/university",
+    "description": "пожалуйста, не крадите у меня алгосы!",
+    "fork": false,
+    "url": "https://github.com/holounic/university",
+    "forks_url": "https://api.github.com/repos/holounic/university/forks",
+    "keys_url": "https://api.github.com/repos/holounic/university/keys{/key_id}",
+    "collaborators_url": "https://api.github.com/repos/holounic/university/collaborators{/collaborator}",
+    "teams_url": "https://api.github.com/repos/holounic/university/teams",
+    "hooks_url": "https://api.github.com/repos/holounic/university/hooks",
+    "issue_events_url": "https://api.github.com/repos/holounic/university/issues/events{/number}",
+    "events_url": "https://api.github.com/repos/holounic/university/events",
+    "assignees_url": "https://api.github.com/repos/holounic/university/assignees{/user}",
+    "branches_url": "https://api.github.com/repos/holounic/university/branches{/branch}",
+    "tags_url": "https://api.github.com/repos/holounic/university/tags",
+    "blobs_url": "https://api.github.com/repos/holounic/university/git/blobs{/sha}",
+    "git_tags_url": "https://api.github.com/repos/holounic/university/git/tags{/sha}",
+    "git_refs_url": "https://api.github.com/repos/holounic/university/git/refs{/sha}",
+    "trees_url": "https://api.github.com/repos/holounic/university/git/trees{/sha}",
+    "statuses_url": "https://api.github.com/repos/holounic/university/statuses/{sha}",
+    "languages_url": "https://api.github.com/repos/holounic/university/languages",
+    "stargazers_url": "https://api.github.com/repos/holounic/university/stargazers",
+    "contributors_url": "https://api.github.com/repos/holounic/university/contributors",
+    "subscribers_url": "https://api.github.com/repos/holounic/university/subscribers",
+    "subscription_url": "https://api.github.com/repos/holounic/university/subscription",
+    "commits_url": "https://api.github.com/repos/holounic/university/commits{/sha}",
+    "git_commits_url": "https://api.github.com/repos/holounic/university/git/commits{/sha}",
+    "comments_url": "https://api.github.com/repos/holounic/university/comments{/number}",
+    "issue_comment_url": "https://api.github.com/repos/holounic/university/issues/comments{/number}",
+    "contents_url": "https://api.github.com/repos/holounic/university/contents/{+path}",
+    "compare_url": "https://api.github.com/repos/holounic/university/compare/{base}...{head}",
+    "merges_url": "https://api.github.com/repos/holounic/university/merges",
+    "archive_url": "https://api.github.com/repos/holounic/university/{archive_format}{/ref}",
+    "downloads_url": "https://api.github.com/repos/holounic/university/downloads",
+    "issues_url": "https://api.github.com/repos/holounic/university/issues{/number}",
+    "pulls_url": "https://api.github.com/repos/holounic/university/pulls{/number}",
+    "milestones_url": "https://api.github.com/repos/holounic/university/milestones{/number}",
+    "notifications_url": "https://api.github.com/repos/holounic/university/notifications{?since,all,participating}",
+    "labels_url": "https://api.github.com/repos/holounic/university/labels{/name}",
+    "releases_url": "https://api.github.com/repos/holounic/university/releases{/id}",
+    "deployments_url": "https://api.github.com/repos/holounic/university/deployments",
+    "created_at": 1568465578,
+    "updated_at": "2020-08-26T12:10:57Z",
+    "pushed_at": 1598450462,
+    "git_url": "git://github.com/holounic/university.git",
+    "ssh_url": "git@github.com:holounic/university.git",
+    "clone_url": "https://github.com/holounic/university.git",
+    "svn_url": "https://github.com/holounic/university",
+    "homepage": "",
+    "size": 245,
+    "stargazers_count": 3,
+    "watchers_count": 3,
+    "language": "Java",
+    "has_issues": true,
+    "has_projects": true,
+    "has_downloads": true,
+    "has_wiki": true,
+    "has_pages": false,
+    "forks_count": 0,
+    "mirror_url": null,
+    "archived": false,
+    "disabled": false,
+    "open_issues_count": 0,
+    "license": null,
+    "forks": 0,
+    "open_issues": 0,
+    "watchers": 3,
+    "default_branch": "master",
+    "stargazers": 3,
+    "master_branch": "master"
+  },
+  "pusher": {
+    "name": "holounic",
+    "email": "41171543+holounic@users.noreply.github.com"
+  },
+  "sender": {
+    "login": "holounic",
+    "id": 41171543,
+    "node_id": "MDQ6VXNlcjQxMTcxNTQz",
+    "avatar_url": "https://avatars3.githubusercontent.com/u/41171543?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/holounic",
+    "html_url": "https://github.com/holounic",
+    "followers_url": "https://api.github.com/users/holounic/followers",
+    "following_url": "https://api.github.com/users/holounic/following{/other_user}",
+    "gists_url": "https://api.github.com/users/holounic/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/holounic/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/holounic/subscriptions",
+    "organizations_url": "https://api.github.com/users/holounic/orgs",
+    "repos_url": "https://api.github.com/users/holounic/repos",
+    "events_url": "https://api.github.com/users/holounic/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/holounic/received_events",
+    "type": "User",
+    "site_admin": false
+  },
+  "created": false,
+  "deleted": false,
+  "forced": false,
+  "base_ref": null,
+  "compare": "https://github.com/holounic/university/compare/f5b6fa5f1651...3f38d7e78298",
+  "commits": [
+    {
+      "id": "3f38d7e78298f74e29622437f6713a3165cfd8dc",
+      "tree_id": "bd85f1ca930e98fad9230be5e5daadf4954e4703",
+      "distinct": true,
+      "message": "Update README.md",
+      "timestamp": "2020-08-26T17:01:01+03:00",
+      "url": "https://github.com/holounic/university/commit/3f38d7e78298f74e29622437f6713a3165cfd8dc",
+      "author": {
+        "name": "Masha Samsikova",
+        "email": "41171543+holounic@users.noreply.github.com",
+        "username": "holounic"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "username": "web-flow"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "README.md"
+      ]
+    }
+  ],
+  "head_commit": {
+    "id": "3f38d7e78298f74e29622437f6713a3165cfd8dc",
+    "tree_id": "bd85f1ca930e98fad9230be5e5daadf4954e4703",
+    "distinct": true,
+    "message": "Update README.md",
+    "timestamp": "2020-08-26T17:01:01+03:00",
+    "url": "https://github.com/holounic/university/commit/3f38d7e78298f74e29622437f6713a3165cfd8dc",
+    "author": {
+      "name": "Masha Samsikova",
+      "email": "41171543+holounic@users.noreply.github.com",
+      "username": "holounic"
+    },
+    "committer": {
+      "name": "GitHub",
+      "email": "noreply@github.com",
+      "username": "web-flow"
+    },
+    "added": [
+
+    ],
+    "removed": [
+
+    ],
+    "modified": [
+      "README.md"
+    ]
+  }
+}
