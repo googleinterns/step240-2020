@@ -32,7 +32,7 @@ import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
 import org.springframework.stereotype.Repository;
 
 /**
- * Implementation of the DataRepository, with the purpose of providing I/O to the Google Cloud
+ * A DataRepository implementation backed up by Google Datastore.
  * Datastore. Each individual database entry is modeled by the {@link #BuildInfo BuildInfo} class.
  * The relevant fields for the database, which are described in that class are:
  *    - Kind: "revision"
