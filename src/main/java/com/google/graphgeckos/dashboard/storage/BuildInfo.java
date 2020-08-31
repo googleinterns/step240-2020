@@ -66,9 +66,7 @@ public class BuildInfo {
   }
 
   /**
-   * Getter for the Git commit hash of the associated revision.
-   *
-   * @return commitHash. Cannot be null.
+   * Getter for the Git commit hash of the associated revision. Cannot be null.
    */
   public String getCommitHash() {
     return commitHash;
@@ -76,27 +74,22 @@ public class BuildInfo {
 
   /**
    * Returns time of when the commit was pushed as a {@link com.google.cloud#Timestamp
-   * Timestamp} value.
-   *
-   * @return timestamp. Cannot be null.
+   * Timestamp} value. Cannot be null.
    */
   public Timestamp getTimestamp() {
     return timestamp;
   }
 
   /**
-   * Returns name of the Git branch where the revision was pushed.
-   *
-   * @return branch. Cannot be null.
+   * Returns name of the Git branch where the revision was pushed. Cannot be null.
    */
   public String getBranch() {
     return branch;
   }
 
   /**
-   * Returns builders which attempted the compilation of the revision.
-   *
-   * @return the list of builders. Cannot be null, neither it's elements.
+   * Returns builders which attempted the compilation of the revision. Cannot be null, and
+   * neither it's elements.
    */
   public List<Builder> getBuilders() {
     return builders;
