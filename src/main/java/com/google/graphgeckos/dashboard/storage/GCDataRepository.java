@@ -49,7 +49,7 @@ import org.springframework.stereotype.Repository;
  * - https://spring.io/projects/spring-cloud-gcp#overview
  */
 @Repository
-public class GCDataRepository implements DataRepository {
+public class DatastoreRepository implements DataRepository {
   private DatastoreTemplate storage;
 
   /**
