@@ -33,9 +33,9 @@ import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
 import org.springframework.stereotype.Repository;
 
 /**
- * Implementation of the DataRepository, with the purpose of providing I/O to the Google Cloud
- * Datastore. Each individual database entry is modeled by the {@link #BuildInfo BuildInfo} class.
- * The relevant fields for the database, which are described in that class are:
+ * A DataRepository implementation backed up by Google Datastore.
+ * Datastore. Each database entry is modeled by the {@link #BuildInfo BuildInfo} class.
+ * The relevant fields for the database are:
  *    - Kind: "revision"
  *    - Key: commit hash
  * The database indexes after all the BuildInfo fields, besides the {@code builders} list.
@@ -50,7 +50,9 @@ import org.springframework.stereotype.Repository;
  * - https://spring.io/projects/spring-cloud-gcp#overview
  */
 @Repository
-public class GCDataRepository implements DataRepository {
+
+  
+public class DatastoreRepository implements DataRepository {
   @Autowired
   private DatastoreTemplate storage;
 
