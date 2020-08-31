@@ -14,26 +14,24 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
-import com.google.cloud.datastore.DatastoreException;
 import com.google.cloud.datastore.Entity;
-import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.cloud.datastore.TimestampValue;
+import com.google.cloud.datastore.Query;
 import com.google.cloud.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
-import org.springframework.stereotype.Repository;
 
 /**
- * A DataRepository implementation backed up by Google Datastore.
- * Datastore. Each database entry is modeled by the {@link #BuildInfo BuildInfo} class.
- * The relevant fields for the database are:
+ * Implementation of the DataRepository, with the purpose of providing I/O to the Google Cloud
+ * Datastore. Each individual database entry is modeled by the {@link #BuildInfo BuildInfo} class.
+ * The relevant fields for the database, which are described in that class are:
  *    - Kind: "revision"
  *    - Key: commit hash
  *
@@ -47,37 +45,31 @@ import org.springframework.stereotype.Repository;
 public class DatastoreRepository implements DataRepository {
   @Autowired
   private DatastoreTemplate storage;
+  private static final entryTtlInDays = 90;
 
   /**
    * {@inheritDoc}
    */
-  public boolean createRevisionEntry(ParsedGitData entryData) throws IllegalArgumentException {
+  public void createRevisionEntry(ParsedGitData entryData) throws IllegalArgumentException {
     if (entryData == null) {
       throw new IllegalArgumentException("entryData cannot be null");
+    } else if (!entryData.validCreateData()) {
+      throw new IllegalArgumentException("entryData does not contain all necessary fields");
     }
 
     if (getRevisionEntry(entryData.getCommitHash()) == null) {
-      try {
-        storage.save(new BuildInfo(entryData));
-      } catch (DatastoreException e) {
-        e.printStackTrace();
-        System.err.println(e);
-    
-        return false;
-      }
-
-      return true;
+      storage.save(new BuildInfo(entryData););
     }
-
-    return false;
   }
 
   /**
    * {@inheritDoc}
    */
-  public boolean updateRevisionEntry(ParsedBuildbotData updateData) throws IllegalArgumentException {
+  public void updateRevisionEntry(ParsedBuildbotData updateData) throws IllegalArgumentException {
     if (updateData == null) {
       throw new IllegalArgumentException("entryData cannot be null");
+    } else if (updateData.validUpdateData()) {
+      throw new IllegalArgumentException("updateData does not contain all necessary fields");
     }
 
     BuildInfo associatedEntity = getRevisionEntry(updateData.getCommitHash());
@@ -85,25 +77,14 @@ public class DatastoreRepository implements DataRepository {
     if (associatedEntity != null) {
       associatedEntity.addBuilder(updateData.toBuilder());
 
-      try {
-        storage.save(associatedEntity);
-      } catch (DatastoreException e) {
-        e.printStackTrace();
-        System.err.println(e);
-    
-        return false;
-      }
-
-      return true;
+      storage.save(associatedEntity);
     }
-
-    return false;
   }
 
   /**
    * {@inheritDoc}
    */
-  public boolean deleteRevisionEntry(String commitHash) throws IllegalArgumentException {
+  public void deleteRevisionEntry(String commitHash) throws IllegalArgumentException {
     if (commitHash == null) {
       throw new IllegalArgumentException("commitHash cannot be null");
     }
@@ -111,25 +92,14 @@ public class DatastoreRepository implements DataRepository {
     BuildInfo toBeDeleted = getRevisionEntry(commitHash);
 
     if (toBeDeleted != null) {
-      try {
-        storage.delete(toBeDeleted);
-      } catch (DatastoreException e) {
-        e.printStackTrace();
-        System.err.println(e);
-
-        return false;
-      }
-
-      return true;
+      storage.delete(toBeDeleted);
     }
-
-    return false;
   }
 
   /**
    * {@inheritDoc}
    */
-  public List<BuildInfo> getLastRevisionEntries(int number, int offset)
+  public Iterable<BuildInfo> getLastRevisionEntries(int number, int offset)
                                                          throws IllegalArgumentException {
     if (number < 0 || offset < 0) {
       throw new IllegalArgumentException("Both number and offset must be >= 0");
@@ -154,13 +124,53 @@ public class DatastoreRepository implements DataRepository {
   }
 
   /**
-   * {@inheritDoc}
+   * Queries the database for a given entry, that has the Id set to the provided commitHash.
+   * Used to separate the usage from the actual Spring Datastore implementation.
+   * Returns null when nothing was found.
    */
-  public BuildInfo getRevisionEntry(String commitHash) throws IllegalArgumentException {
-    if (commitHash == null) {
-      throw new IllegalArgumentException("commitHash cannot be null");
-    }
-
+  public BuildInfo getRevisionEntry(String commitHash) {
     return storage.findById(commitHash, BuildInfo.class);
+  }
+
+  /**
+   * Queries all "revision" type entries, and deletes all which are older than a specified
+   * amount of time. During this operation, this repository can be queried, but
+   * there is no guarantee of consistency when querying the entries that are in process
+   * of removal.
+   */
+  void deleteEntriesOlderThan(Timestamp oldestDate) {
+    Query<Entity> query = Query.newEntityQueryBuilder()
+                               .setKind("revision")
+                               .setFilter(PropertyFilter.lt("timestamp", oldestDate)).build();
+
+    Iterable<Entity> results = storage.query(query, Entity.class).getIterable();
+
+    for (Entity entity : results) {
+      storage.delete(entity);
+    }
+  }
+
+  /**
+   * A subroutine created for running at fixed intervals, delegating {@code deleteEntriesOlderTHan}
+   * for the deletion procedure. Scheduled for running every Sunday at 00:00 server time.
+   */
+  @Scheduled(cron = "0 0 * * 0")
+  private final Runnable cleanup = new Runnable() {
+    public void run() {
+      deleteEntriesOlderThan(Timestamp.of(getEarliestAliveTime()));
+    }
+  };
+
+  /**
+   * This method provides a stateless way to retrieve the timestamp before which to
+   * delete all older entries.
+   *
+   * @return Date object with the appropriate "delete before" timestamp.
+   */
+  private static Date getEarliestAliveTime() {
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(new Date());
+    calendar.add(Calendar.DAY_OF_MONTH, -ttl);
+    return calendar.getTime();
   }
 }
