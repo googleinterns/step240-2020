@@ -12,7 +12,7 @@ export const BuilderDataTable = props => {
         />
       </thead>
       <tbody>
-        <BuilderRow data={} />
+        {props.data.map(datapoint => <BuilderRow data = {datapoint}/>)}
       </tbody>
     </table>
   );
