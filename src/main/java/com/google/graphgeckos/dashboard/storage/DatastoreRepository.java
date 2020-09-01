@@ -46,8 +46,6 @@ import org.springframework.stereotype.Repository;
  * - https://spring.io/projects/spring-cloud-gcp#overview
  */
 @Repository
-
-  
 public class DatastoreRepository implements DataRepository {
   @Autowired
   private DatastoreTemplate storage;
@@ -55,26 +53,30 @@ public class DatastoreRepository implements DataRepository {
   /**
    * {@inheritDoc}
    */
-  public void createRevisionEntry(ParsedGitData entryData) throws IllegalArgumentException {
+  public boolean createRevisionEntry(ParsedGitData entryData) throws IllegalArgumentException {
     if (entryData == null) {
       throw new IllegalArgumentException("entryData cannot be null");
-    } else if (!entryData.validCreateData()) {
-      throw new IllegalArgumentException("entryData does not contain all necessary fields");
     }
 
     if (getRevisionEntry(entryData.getCommitHash()) == null) {
-      storage.save(new BuildInfo(entryData););
+      try {
+        storage.save(new BuildInfo(entryData));
+      } catch (Exception e) {
+        return false;
+      }
+
+      return true;
     }
+
+    return false;
   }
 
   /**
    * {@inheritDoc}
    */
-  public void updateRevisionEntry(ParsedBuildbotData updateData) throws IllegalArgumentException {
+  public boolean updateRevisionEntry(ParsedBuildbotData updateData) throws IllegalArgumentException {
     if (updateData == null) {
       throw new IllegalArgumentException("entryData cannot be null");
-    } else if (updateData.validUpdateData()) {
-      throw new IllegalArgumentException("updateData does not contain all necessary fields");
     }
 
     BuildInfo associatedEntity = getRevisionEntry(updateData.getCommitHash());
@@ -82,14 +84,22 @@ public class DatastoreRepository implements DataRepository {
     if (associatedEntity != null) {
       associatedEntity.addBuilder(updateData.toBuilder());
 
-      storage.save(associatedEntity);
+      try {
+        storage.save(associatedEntity);
+      } catch (Exception e) {
+        return false;
+      }
+
+      return true;
     }
+
+    return false;
   }
 
   /**
    * {@inheritDoc}
    */
-  public void deleteRevisionEntry(String commitHash) throws IllegalArgumentException {
+  public boolean deleteRevisionEntry(String commitHash) throws IllegalArgumentException {
     if (commitHash == null) {
       throw new IllegalArgumentException("commitHash cannot be null");
     }
@@ -97,8 +107,16 @@ public class DatastoreRepository implements DataRepository {
     BuildInfo toBeDeleted = getRevisionEntry(commitHash);
 
     if (toBeDeleted != null) {
-      storage.delete(toBeDeleted);
+      try {
+        storage.delete(toBeDeleted);
+      } catch (Exception e) {
+        return false;
+      }
+
+      return true;
     }
+
+    return false;
   }
 
   /**
@@ -133,7 +151,11 @@ public class DatastoreRepository implements DataRepository {
    * Used to separate the usage from the actual Spring Datastore implementation.
    * Returns null when nothing was found.
    */
-  private BuildInfo getRevisionEntry(String commitHash) {
+  public BuildInfo getRevisionEntry(String commitHash) throws IllegalArgumentException {
+    if (commitHash == null) {
+      throw new IllegalArgumentException("commitHash cannot be null");
+    }
+
     return storage.findById(commitHash, BuildInfo.class);
   }
 }
