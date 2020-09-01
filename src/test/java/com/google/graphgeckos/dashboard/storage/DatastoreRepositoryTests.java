@@ -29,6 +29,12 @@ public class DatastoreRepositoryTests {
   private final LocalServiceTestHelper helper =
       new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
+  private final long initialCleanupDelayDefault = 1;
+  private final long cleanupPeriodDefault = 1;
+  private final TimeUnit cleanupPeriodTimeunitDefault = TimeUnit.WEEKS;
+  private final int ttlDefault = 3;
+  private final int ttlTimeUnit = Calendar.MONTH;
+
   private BuildInfo getDummyEntity(String commitHash) {
     return new BuildInfo(new ParsedGitData(commitHash, Timestamp.now(), "test"));
   }
@@ -45,6 +51,13 @@ public class DatastoreRepositoryTests {
 
   @Test
   public void testValidRequestSequenceValidData() {
+    DatastoreRepository storage = new DatastoreRepository(initialCleanupDelayDefault,
+                                                          cleanupPeriodDefault,
+                                                          cleanupPeriodTimeunitDefault,
+                                                          ttlDefault,
+                                                          ttlTimeUnitDefault);
+    
+    storage.add(getDummyEntity("1"));
     
   }
 
