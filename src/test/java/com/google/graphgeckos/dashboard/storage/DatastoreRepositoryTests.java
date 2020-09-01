@@ -67,12 +67,12 @@ public class DatastoreRepositoryTests {
   private void testSingleEntityCleanup() {
     DatastoreRepository storage = new DatastoreRepository(initialCleanupDelay, cleanupPeriod,
                                                           cleanupPeriodTimeunit, ttl, ttlTimeUnit);
-    storage.add(getDummyEntity("1"));
+    storage.createRevisionEntry(getDummyEntity("1"));
 
     Thread.sleep(6);
     Assert.assertTrue(storage.getRevisionEntry("1") == null);
     
-    storage.add(getDummyEntity("1"));
+    storage.createRevisionEntry(getDummyEntity("1"));
 
     Thread.sleep(3);
     Assert.assertFalse(storage.getRevisionEntry("1") == null);
@@ -105,21 +105,21 @@ public class DatastoreRepositoryTests {
   private void testMultipleEntityCleanup() {
     DatastoreRepository storage = new DatastoreRepository(initialCleanupDelay, cleanupPeriod,
                                                           cleanupPeriodTimeunit, ttl, ttlTimeUnit);
-    storage.add(getDummyEntity("1"));
-    storage.add(getDummyEntity("2"));
-    storage.add(getDummyEntity("3"));
+    storage.createRevisionEntry(getDummyEntity("1"));
+    storage.createRevisionEntry(getDummyEntity("2"));
+    storage.createRevisionEntry(getDummyEntity("3"));
 
     Thread.sleep(4);
     Assert.assertTrue(storage.getRevisionEntry("1") == null);
     Assert.assertTrue(storage.getRevisionEntry("2") == null);
     Assert.assertTrue(storage.getRevisionEntry("3") == null);
 
-    storage.add(getDummyEntity("1"));
-    storage.add(getDummyEntity("2"));
+    storage.createRevisionEntry(getDummyEntity("1"));
+    storage.createRevisionEntry(getDummyEntity("2"));
 
     Thread.sleep(2);
 
-    storage.add(getDummyEntity("3"));
+    storage.createRevisionEntry(getDummyEntity("3"));
 
     Thread.sleep(3);
     Assert.assertTrue(storage.getRevisionEntry("1") == null);
@@ -130,9 +130,9 @@ public class DatastoreRepositoryTests {
 
     Thread.sleep(1);
 
-    storage.add(getDummyEntity("1"));
-    storage.add(getDummyEntity("2"));
-    storage.add(getDummyEntity("3"));
+    storage.createRevisionEntry(getDummyEntity("1"));
+    storage.createRevisionEntry(getDummyEntity("2"));
+    storage.createRevisionEntry(getDummyEntity("3"));
 
     Thread.sleep(2);
     Assert.assertFalse(storage.getRevisionEntry("1") == null);
