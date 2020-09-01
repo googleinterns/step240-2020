@@ -44,7 +44,27 @@ public class DatastoreRepositoryTests {
   }
 
   @Test
-  public void test() {
+  public void testValidRequestSequenceValidData() {
+    
+  }
+
+  @Test
+  public void testValidRequestSequenceInvalidData() {
+
+  }
+
+  @Test
+  public void testInvalidRequestSequenceValidData() {
+
+  }
+
+  @Test
+  public void testParallelValidRequests() {
+
+  }
+
+  @Test
+  public void testGetLastRevisions() {
 
   }
 }
