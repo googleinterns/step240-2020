@@ -56,11 +56,10 @@ const Tray = (props) => {
   if(props.isOpen !== true) return null;
   return (
     <div>
-      <div>
-        <Subheading time = {props.data.timestamp}/>
-        <BuilderGrid data = {props.data.builders}/>
-      </div>
-      <BuilderDataTable/> 
+      <div>{props.data.timestamp}</div>
+      <div>bot name</div>
+      <BuilderGrid data = {props.data.builders}/>
+      <BuilderDataTable/>
     </div>
   );
 }
