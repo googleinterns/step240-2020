@@ -19,7 +19,7 @@ export const BuildSnapshot = (props) => {
   const trayData = getFields(props.buildData, trayFields, '');
 
   return (
-    <div>
+    <div className = 'build-snapshot'>
       <Header isOpen = {isOpen} onClick = {setIsOpen} data = {headerData}/>
       <Tray isOpen = {isOpen} data = {trayData}/>
     </div>
@@ -36,7 +36,7 @@ export const BuildSnapshot = (props) => {
  */
 const Header = (props) => {
   return (
-    <div className="header" onClick = {() => props.onClick(toggle(props.isOpen))}>
+    <div className = 'header' onClick = {() => props.onClick(toggle(props.isOpen))}>
       <span className = 'header-hash'>{props.data.commitHash}</span>
       <span className = 'header-description'>{props.data.description}</span>
       <FailureGroup group = {'Group'}/>
@@ -61,7 +61,7 @@ const Tray = (props) => {
 
   if(props.isOpen !== true) return null;
   return (
-    <div className='tray'>
+    <div className = 'tray'>
       <span className = 'tray-timespan'>{props.data.timestamp}</span>
       <div className = 'tray-currentbot'><span className = 'bot-display'>{builder.name}</span></div>
       <BuilderGrid onClick = {selectBuilder} data = {props.data.builders}/>
