@@ -63,7 +63,7 @@ const Tray = (props) => {
   return (
     <div class='tray'>
       <span class = 'tray-timespan'>{props.data.timestamp}</span>
-      <div class = 'tray-currentbot'><span class = 'bot-display'>Current Bot Name</span></div>
+      <div class = 'tray-currentbot'><span class = 'bot-display'>{builder.name}</span></div>
       <BuilderGrid onClick = {selectBuilder} data = {props.data.builders}/>
       <BuilderDataTable builder = {builder}/>
     </div>
