@@ -57,7 +57,7 @@ public class DatastoreRepositoryTests {
                                                           ttlDefault,
                                                           ttlTimeUnitDefault);
     
-    storage.add(getDummyEntity("1"));
+    Assert.assertEquals(true, storage.createRevisionEntity(getDummyEntity("1")));
     
   }
 
