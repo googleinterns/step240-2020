@@ -50,7 +50,7 @@ const Header = (props) => {
   *
   * @param props an object containing a 'data' field
   * which encapsualtes the fields from trayFields.
- */
+  */
 const Tray = (props) => {
   // State variable indicating the builder whose data
   // should be rendered to the BuilderDataTable.
