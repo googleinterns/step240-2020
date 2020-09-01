@@ -7,8 +7,8 @@ export const BuilderDataTable = props => {
     <table className='data-table'>
       <thead>
         <BuilderRow 
-            header={true} 
-            data={HEADERS} 
+            data={HEADERS}
+            header
         />
       </thead>
       <tbody>
