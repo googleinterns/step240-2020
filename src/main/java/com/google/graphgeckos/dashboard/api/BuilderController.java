@@ -7,10 +7,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
+
 @RestController
 public class BuilderController {
 
-  // Bean with @ApplicationScope? 
+  // Bean with @ApplicationScope?
+  @Resource(name = "dataRepository")
+  // TODO: change to private static DataRepository dataRepository = new DataRepositoryImplementation();
   private static DataRepository dataRepository;
 
   // TODO: [issue #69] implement interaction between REST API and Storage
