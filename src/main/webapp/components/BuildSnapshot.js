@@ -30,7 +30,7 @@ export const BuildSnapshot = (props) => {
   * Subcomponent that holds the content displayed
   * when the BuildSnapshot is collapsed.
   *
-  * @param props an object containing a 'data' field
+  * @param {*} props an object containing a 'data' field
   * which encapsulates the fields from headerFields.
  */
 const Header = (props) => {
@@ -48,7 +48,7 @@ const Header = (props) => {
   * Subcomponent that holds the content revealed
   * when the BuildSnapshot is open (isOpen === true).
   *
-  * @param props an object containing a 'data' field
+  * @param {*} props an object containing a 'data' field
   * which encapsualtes the fields from trayFields.
   */
 const Tray = (props) => {
