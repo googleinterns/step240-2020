@@ -24,6 +24,7 @@ public class Log {
 
   // Log type (e.g "stdio")
   private final String type;
+
   // Log link (e.g "http://lab.llvm.org:8011/builders/mlir-nvidia/builds/6403/logs/stdio")
   private final String link;
 
