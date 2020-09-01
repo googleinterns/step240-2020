@@ -26,7 +26,6 @@ export const BuildSnapshot = (props) => {
   );
 }
 
-
 /**
   * Subcomponent that holds the content displayed
   * when the BuildSnapshot is collapsed.
