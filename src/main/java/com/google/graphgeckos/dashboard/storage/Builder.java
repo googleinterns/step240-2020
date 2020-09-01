@@ -19,7 +19,7 @@ import java.util.List;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 
 /**
- * Contains the information retrieved from a single build bot. It is used as a subclass
+ * Contains the information retrieved from a single build bot. It is used as a member of BuildInfo...
  * of {@link #BuildInfo BuildInfo}, and for converting ParsedBuildbotData objects
  * to Builder objects, used by BuildInfo.
  */
