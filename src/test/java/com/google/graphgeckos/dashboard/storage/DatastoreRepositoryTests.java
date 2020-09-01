@@ -136,7 +136,7 @@ public class DatastoreRepositoryTests {
 
     Thread.sleep(2);
     Assert.assertFalse(storage.getRevisionEntry("1") == null);
-    Assert.assertFalse(storage.getRevisionEntry("1") == null);
-    Assert.assertFalse(storage.getRevisionEntry("1") == null);
+    Assert.assertFalse(storage.getRevisionEntry("2") == null);
+    Assert.assertFalse(storage.getRevisionEntry("3") == null);
   }
 }
