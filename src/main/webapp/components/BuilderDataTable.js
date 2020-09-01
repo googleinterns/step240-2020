@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-const HEADERS = ['no', 'text', 'log'];
+const HEADERS = ['no.', 'text', 'log'];
 
 export const BuilderDataTable = props => {
   return (
-    <table>
+    <table className='data-table'>
       <thead>
         <BuilderRow 
             header={true} 
