@@ -58,9 +58,9 @@ const Tray = (props) => {
     <div>
       <div>
         <Subheading time = {props.data.timestamp}/>
-        <NameTagGrid data = {props.data.builders}/>
+        <BuilderGrid data = {props.data.builders}/>
       </div>
-      <BuilderDataTable/>
+      <BuilderDataTable/> 
     </div>
   );
 }
