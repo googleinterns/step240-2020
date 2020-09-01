@@ -56,7 +56,7 @@ const Tray = (props) => {
   if(props.isOpen !== true) return null;
   return (
     <div classname="tray">
-      <div>{props.data.timestamp}</div>
+      <span>{props.data.timestamp}</span>
       <div>bot name</div>
       <BuilderGrid data = {props.data.builders}/>
       <BuilderDataTable/>
