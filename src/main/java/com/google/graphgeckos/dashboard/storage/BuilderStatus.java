@@ -7,7 +7,7 @@ public enum BuilderStatus {
   FAILED("failed"),
   PASSED("passed");
 
-  // String representation of the status
+  // String representation of the status.
   private final String status;
 
   BuilderStatus(String status) {

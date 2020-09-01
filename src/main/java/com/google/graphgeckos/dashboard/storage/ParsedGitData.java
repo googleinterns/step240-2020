@@ -76,7 +76,7 @@ public class ParsedGitData {
    *
    * @return the branch.
    */
-  List<String> getBranch() {
+  String getBranch() {
     return branch;
   }
 }
