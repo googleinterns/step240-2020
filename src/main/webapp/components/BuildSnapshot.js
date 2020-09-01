@@ -36,7 +36,7 @@ export const BuildSnapshot = (props) => {
  */
 const Header = (props) => {
   return (
-    <div onClick = {() => props.onClick(toggle(props.isOpen))}>
+    <div className="header" onClick = {() => props.onClick(toggle(props.isOpen))}>
       <span className = 'header-hash'>{props.data.commitHash}</span>
       <span className = 'header-description'>{props.data.description}</span>
       <FailureGroup group = {'Group'}/>
