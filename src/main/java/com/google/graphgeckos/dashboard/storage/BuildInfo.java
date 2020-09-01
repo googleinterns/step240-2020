@@ -47,6 +47,7 @@ public class BuildInfo {
   private final Timestamp timestamp;
 
   @Field(name = "branch")
+  @Unindexed
   private final String branch;
 
   @Field(name = "builders")
