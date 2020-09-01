@@ -17,7 +17,7 @@ package com.google.graphgeckos.dashboard.storage;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 
 /**
- * This class contains the log information from a single compilation stage, from a given build bot.
+ * Contains the log information from a single compilation stage from a given build bot.
  */
 @Entity(name = "buildLog")
 public class Log {
