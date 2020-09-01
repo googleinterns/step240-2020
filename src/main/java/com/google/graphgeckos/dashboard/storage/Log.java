@@ -1,4 +1,4 @@
-package com.google.graphgeckos.dashboard.storage.components;
+package com.google.graphgeckos.dashboard.storage;
 
 /**
  * Represents a log of a buildbot.

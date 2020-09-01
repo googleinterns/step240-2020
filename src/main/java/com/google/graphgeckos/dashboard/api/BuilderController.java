@@ -1,6 +1,6 @@
 package com.google.graphgeckos.dashboard.api;
 
-import com.google.graphgeckos.dashboard.storage.components.BuildInfo;
+import com.google.graphgeckos.dashboard.storage.BuildInfo;
 import com.google.graphgeckos.dashboard.storage.DataRepository;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

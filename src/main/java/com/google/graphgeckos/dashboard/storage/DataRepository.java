@@ -14,10 +14,6 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
-import com.google.graphgeckos.dashboard.storage.components.BuildInfo;
-import com.google.graphgeckos.dashboard.storage.components.ParsedBuildbotData;
-import com.google.graphgeckos.dashboard.storage.components.ParsedGitData;
-
 /**
  * A storage component for creating/updating/deleting revision data, with the possibility
  * of querying entries in bulk, sorted by their timestamp.

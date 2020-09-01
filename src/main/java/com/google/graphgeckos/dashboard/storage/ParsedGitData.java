@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.graphgeckos.dashboard.storage.components;
+package com.google.graphgeckos.dashboard.storage;
 
 /**
  * An immutable container used for providing stripped-down git information
