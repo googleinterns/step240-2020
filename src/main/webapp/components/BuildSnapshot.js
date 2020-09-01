@@ -1,5 +1,5 @@
-import * as React from "react";
-import {getFields} from "./utils/getFields.js";
+import * as React from 'react';
+import {getFields} from './utils/getFields.js';
 
 /**
  * Component used to render Build Information.
@@ -12,11 +12,11 @@ export const BuildSnapshot = (props) => {
   // and the indicator arrow on the Header should be facing downwards.
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const headerFields = ["description", "commitHash", "repository", "status"];
-  const trayFields = ["builders", "timestamp"];
+  const headerFields = ['description', 'commitHash', 'repository', 'status'];
+  const trayFields = ['builders', 'timestamp'];
 
-  const headerData = getFields(props.buildData, headerFields, "");
-  const trayData = getFields(props.buildData, trayFields, "");
+  const headerData = getFields(props.buildData, headerFields, '');
+  const trayData = getFields(props.buildData, trayFields, '');
 
   return (
     <div>
@@ -31,16 +31,16 @@ export const BuildSnapshot = (props) => {
   * Subcomponent that holds the content displayed
   * when the BuildSnapshot is collapsed.
   *
-  * @param props an object containing a "data" field
+  * @param props an object containing a 'data' field
   * which encapsulates the fields from headerFields.
  */
 const Header = (props) => {
   return (
     <div onClick = {() => props.onClick(toggle(props.isOpen))}>
-      <span class="header-hash">{props.data.commitHash}</span>
-      <span class="header-description">{props.data.description}</span>
-      <FailureGroup group =  {"Group"}/>
-      <span class="header-status">{props.data.status}</span>
+      <span class = 'header-hash'>{props.data.commitHash}</span>
+      <span class = 'header-description'>{props.data.description}</span>
+      <FailureGroup group = {'Group'}/>
+      <span class = 'header-status'>{props.data.status}</span>
     </div>
   );
 }
@@ -49,15 +49,15 @@ const Header = (props) => {
   * Subcomponent that holds the content revealed
   * when the BuildSnapshot is collapsed (isOpen === true).
   *
-  * @param props an object containing a "data" field
+  * @param props an object containing a 'data' field
   * which encapsualtes the fields from trayFields.
  */
 const Tray = (props) => {
   if(props.isOpen !== true) return null;
   return (
-    <div class="tray">
-      <span class="tray-timespan">{props.data.timestamp}</span>
-      <div><span>Current Bot Name</span></div>
+    <div class='tray'>
+      <span class = 'tray-timespan'>{props.data.timestamp}</span>
+      <div class = 'tray-currentbot'><span class = 'botdisplay'>Current Bot Name</span></div>
       <BuilderGrid data = {props.data.builders}/>
       <BuilderDataTable/>
     </div>
