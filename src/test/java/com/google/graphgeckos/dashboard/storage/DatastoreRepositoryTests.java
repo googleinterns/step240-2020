@@ -16,9 +16,11 @@ package com.google.graphgeckos.dashboard.storage;
 
 import static org.junit.Assert.assertEquals;
 
-import com.google.appengine.api.datastore.Query;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import com.google.cloud.Timestamp;
+import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +28,10 @@ import org.junit.Test;
 public class DatastoreRepositoryTests {
   private final LocalServiceTestHelper helper =
       new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+
+  private BuildInfo getDummyEntity(String commitHash) {
+    return new BuildInfo(new ParsedGitData(commitHash, Timestamp.now(), "test"));
+  }
 
   @Before
   public void setUp() {
@@ -38,8 +44,7 @@ public class DatastoreRepositoryTests {
   }
 
   @Test
-  private test1() {
-    DatastoreRepository storage = new DatastoreRepository();
-    // do stuff
+  public void test() {
+
   }
 }
