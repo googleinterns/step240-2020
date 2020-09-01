@@ -37,10 +37,10 @@ export const BuildSnapshot = (props) => {
 const Header = (props) => {
   return (
     <div onClick = {() => props.onClick(toggle(props.isOpen))}>
-      <span class = 'header-hash'>{props.data.commitHash}</span>
-      <span class = 'header-description'>{props.data.description}</span>
+      <span className = 'header-hash'>{props.data.commitHash}</span>
+      <span className = 'header-description'>{props.data.description}</span>
       <FailureGroup group = {'Group'}/>
-      <span class = 'header-status'>{props.data.status}</span>
+      <span className = 'header-status'>{props.data.status}</span>
     </div>
   );
 }
@@ -61,9 +61,9 @@ const Tray = (props) => {
 
   if(props.isOpen !== true) return null;
   return (
-    <div class='tray'>
-      <span class = 'tray-timespan'>{props.data.timestamp}</span>
-      <div class = 'tray-currentbot'><span class = 'bot-display'>{builder.name}</span></div>
+    <div className='tray'>
+      <span className = 'tray-timespan'>{props.data.timestamp}</span>
+      <div className = 'tray-currentbot'><span className = 'bot-display'>{builder.name}</span></div>
       <BuilderGrid onClick = {selectBuilder} data = {props.data.builders}/>
       <BuilderDataTable builder = {builder}/>
     </div>
