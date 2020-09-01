@@ -15,6 +15,7 @@
 package com.google.graphgeckos.dashboard.storage;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
@@ -39,6 +40,10 @@ public class DatastoreRepositoryTests {
     return new BuildInfo(new ParsedGitData(commitHash, Timestamp.now(), "test"));
   }
 
+  private ParsedBuildbotData getDummyUpdate(String commitHash) {
+    return new ParsedBuildbotData(commitHash, "tester", new ArrayList<>(), BuilderStatus.PASSED);
+  }
+
   @Before
   public void setUp() {
     helper.setUp();
@@ -57,13 +62,46 @@ public class DatastoreRepositoryTests {
                                                           ttlDefault,
                                                           ttlTimeUnitDefault);
     
-    Assert.assertEquals(true, storage.createRevisionEntity(getDummyEntity("1")));
-    
+    Assert.assertTrue(storage.createRevisionEntry(getDummyEntity("1")));
+    Assert.assertEquals(getDummyEntity("1"), storage.getRevisionEntry("1"));
+    Assert.assertTrue(storage.updateRevisionEntry(getDummyUpdate("1")));
+
+    BuildInfo dummy = getDummyEntity("1");
+    dummy.addBuilder(new Builder(getDummyUpdate("1")));
+    Assert.assertEquals(dummy, storage.getRevisionEntry("1"));
+
+    Assert.assertTrue(storage.deleteRevisionEntry("1"));
+    Assert.assertEquals(null, storage.getRevisionEntry("1"));
+  }
+
+  @Test
+  public void testValidRequestSequenceNullData() {
+    DatastoreRepository storage = new DatastoreRepository(initialCleanupDelayDefault,
+                                                          cleanupPeriodDefault,
+                                                          cleanupPeriodTimeunitDefault,
+                                                          ttlDefault,
+                                                          ttlTimeUnitDefault);
+    Assert.assertFalse(storage.createRevisionEntry(null));
+    Assert.assertFalse(storage.getRevisionEntry(null));
+    Assert.assertFalse(storage.updateRevisionEntry(null));
+    Assert.assertFalse(storage.deleteRevisionEntry(null));
   }
 
   @Test
   public void testValidRequestSequenceInvalidData() {
+    DatastoreRepository storage = new DatastoreRepository(initialCleanupDelayDefault,
+                                                          cleanupPeriodDefault,
+                                                          cleanupPeriodTimeunitDefault,
+                                                          ttlDefault,
+                                                          ttlTimeUnitDefault);
+    Assert.assertTrue(storage.createRevisionEntry(getDummyEntity("1")));
+    Assert.assertFalse(storage.createRevisionEntry(getDummyEntity("1")));
 
+    Assert.assertFalse(storage.updateRevisionEntry(getDummyUpdate("2")));
+
+    Assert.assertEquals(null, storage.getRevisionEntry("2"));
+
+    Assert.assertTrue(storage.deleteRevisionEntry("2"));
   }
 
   @Test
