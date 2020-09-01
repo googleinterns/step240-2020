@@ -1,4 +1,6 @@
-package com.google.graphgeckos.dashboard.storage;
+package com.google.graphgeckos.dashboard.storage.components;
+
+import com.google.graphgeckos.dashboard.storage.components.Builder;
 
 import java.util.ArrayList;
 import java.util.Date;

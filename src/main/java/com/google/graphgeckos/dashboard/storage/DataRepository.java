@@ -14,6 +14,10 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
+import com.google.graphgeckos.dashboard.storage.components.BuildInfo;
+import com.google.graphgeckos.dashboard.storage.components.ParsedBuildbotData;
+import com.google.graphgeckos.dashboard.storage.components.ParsedGitData;
+
 /**
  * A storage component for creating/updating/deleting revision data, with the possibility
  * of querying entries in bulk, sorted by their timestamp.
@@ -25,7 +29,7 @@ public interface DataRepository {
    *
    * @param entryData a ParsedGitData instance, must have a non-null "commitHash" field
    * @throws IllegalArgumentException if entryData is null, or {@link 
-   *       com.google.graphgeckos.dashboard.storage.ParsedGitData#validCreateData()
+   *       ParsedGitData#validCreateData()
    *       entryData.validCreateData()} returns false
    */
   void createRevisionEntry(ParsedGitData entryData) throws IllegalArgumentException;
@@ -37,7 +41,7 @@ public interface DataRepository {
    *
    * @param updateData a ParsedBuildbotData instance, must have a non-null "commitHash" field
    * @throws IllegalArgumentException if updateData or {@link
-   *       com.google.graphgeckos.dashboard.storage.ParsedBuildbotData#validUpdateData()
+   *       ParsedBuildbotData#validUpdateData()
    *       updateData.validUpdateData()} returns false
    */
   void updateRevisionEntry(ParsedBuildbotData updateData) throws IllegalArgumentException;

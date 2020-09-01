@@ -1,4 +1,4 @@
-package com.google.graphgeckos.dashboard.storage;
+package com.google.graphgeckos.dashboard.storage.components;
 
 /**
  * Represents buildbot statuses: "failed" or "passed".

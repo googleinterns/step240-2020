@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.graphgeckos.dashboard.storage;
+package com.google.graphgeckos.dashboard.storage.components;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public class ParsedBuildbotData {
    * @param commitHash the commit hash of the revision this data refers to
    * @param builderName the name of the builder which performed the compilation
    * @param logs logs for each individual stage of compilation. See {@link
-   *      com.google.graphgeckos.dashboard.storage.Log Log}
+   *      Log Log}
    * @param status the results of the compilation (true for passed, false for failed)
    */
   public ParsedBuildbotData(String commitHash, String builderName,
@@ -64,7 +64,7 @@ public class ParsedBuildbotData {
 
   /**
    * Converts this instance to an instance of
-   * {@link com.google.graphgeckos.dashboard.storage.Builder Builder}.
+   * {@link Builder Builder}.
    *
    * @return a new Builder instance, with the fields copied from the calling instance.
    */
