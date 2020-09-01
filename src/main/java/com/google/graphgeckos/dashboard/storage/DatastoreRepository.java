@@ -38,10 +38,6 @@ import org.springframework.stereotype.Repository;
  * The relevant fields for the database are:
  *    - Kind: "revision"
  *    - Key: commit hash
- * The database indexes after all the BuildInfo fields, besides the {@code builders} list.
- * It is unfeasable to query after the list of builders, since it would not be possible to
- * replicate such a list without querying the database for it first, and the complexity
- * of the indexing and querying would be great, without any apparent value.
  *
  * Useful links:
  * - https://googleapis.dev/java/google-cloud-datastore/latest/index.html
