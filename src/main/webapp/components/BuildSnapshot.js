@@ -47,19 +47,25 @@ const Header = (props) => {
 
 /**
   * Subcomponent that holds the content revealed
-  * when the BuildSnapshot is collapsed (isOpen === true).
+  * when the BuildSnapshot is open (isOpen === true).
   *
   * @param props an object containing a 'data' field
   * which encapsualtes the fields from trayFields.
  */
 const Tray = (props) => {
+  // State variable indicating the builder whose data
+  // should be rendered to the BuilderDataTable.
+  // Represents the index of the builder in props.data.builders
+  const [selectedBuilder,selectBuilder] = React.useState(0);
+  const builder = props.data.builders[selectedBuilder];
+
   if(props.isOpen !== true) return null;
   return (
     <div class='tray'>
       <span class = 'tray-timespan'>{props.data.timestamp}</span>
-      <div class = 'tray-currentbot'><span class = 'botdisplay'>Current Bot Name</span></div>
-      <BuilderGrid data = {props.data.builders}/>
-      <BuilderDataTable/>
+      <div class = 'tray-currentbot'><span class = 'bot-display'>Current Bot Name</span></div>
+      <BuilderGrid onClick = {selectBuilder} data = {props.data.builders}/>
+      <BuilderDataTable builder = {builder}/>
     </div>
   );
 }
