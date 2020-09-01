@@ -64,7 +64,7 @@ public class DatastoreRepositoryTests {
    * cleanup w/ delete: 11s
    */
   @Test
-  private testSingleEntityCleanup() {
+  private void testSingleEntityCleanup() {
     DatastoreRepository storage = new DatastoreRepository(initialCleanupDelay, cleanupPeriod,
                                                           cleanupPeriodTimeunit, ttl, ttlTimeUnit);
     storage.add(getDummyEntity("1"));
@@ -102,7 +102,7 @@ public class DatastoreRepositoryTests {
    * check : 12s
    */
   @Test
-  private testMultipleEntityCleanup() {
+  private void testMultipleEntityCleanup() {
     DatastoreRepository storage = new DatastoreRepository(initialCleanupDelay, cleanupPeriod,
                                                           cleanupPeriodTimeunit, ttl, ttlTimeUnit);
     storage.add(getDummyEntity("1"));
