@@ -24,9 +24,8 @@ public interface DataRepository {
    * If there already is an entry with the same commit hash, ignores the request.
    *
    * @param entryData a ParsedGitData instance, must have a non-null "commitHash" field
-   * @throws IllegalArgumentException if entryData is null, or {@link 
-   *       com.google.graphgeckos.dashboard.storage.ParsedGitData#validCreateData()
-   *       entryData.validCreateData()} returns false
+   * @return true if operation completed successfully.
+   * @throws IllegalArgumentException if entryData is null
    */
   void createRevisionEntry(ParsedGitData entryData) throws IllegalArgumentException;
 
@@ -36,9 +35,8 @@ public interface DataRepository {
    * ignores the request.
    *
    * @param updateData a ParsedBuildbotData instance, must have a non-null "commitHash" field
-   * @throws IllegalArgumentException if updateData or {@link
-   *       com.google.graphgeckos.dashboard.storage.ParsedBuildbotData#validUpdateData()
-   *       updateData.validUpdateData()} returns false
+   * @return true if operation completed successfully.
+   * @throws IllegalArgumentException if updateData is null.
    */
   void updateRevisionEntry(ParsedBuildbotData updateData) throws IllegalArgumentException;
 
@@ -48,6 +46,7 @@ public interface DataRepository {
    *
    * @param commitHash the String representation of the commit hash of the revision data to
    * be deleted
+   * @return true if operation completed successfully.
    * @throws IllegalArgumentException if commitHash is null
    */
   void deleteRevisionEntry(String commitHash) throws IllegalArgumentException;
@@ -67,4 +66,15 @@ public interface DataRepository {
    */
   Iterable<BuildInfo> getLastRevisionEntries(int number, int offset)
                                                           throws IllegalArgumentException;
+
+  /**
+   * Queries the database for a given entry, that has the primary key set
+   * to the provided commitHash.
+   *
+   * @param commitHash the commitHash to search for
+   * @return null if no object was found, else a BuildInfo instance of the database entry
+   *     associated to that commitHash.
+   * @throws IllegalArgumentException if commitHash is null
+   */
+  public BuildInfo getRevisionEntry(String commitHash) throws IllegalArgumentException;
 }
