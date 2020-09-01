@@ -37,10 +37,6 @@ import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
  * The relevant fields for the database, which are described in that class are:
  *    - Kind: "revision"
  *    - Key: commit hash
- * The database indexes after all the BuildInfo fields, besides the {@code builders} list.
- * It is unfeasable to query after the list of builders, since it would not be possible to
- * replicate such a list without querying the database for it first, and the complexity
- * of the indexing and querying would be great, without any apparent value.
  *
  * Useful links:
  * - https://googleapis.dev/java/google-cloud-datastore/latest/index.html
@@ -55,12 +51,14 @@ public class DatastoreRepository implements DataRepository {
    * Also, provides an easy interface for getting the next timestamp before which
    * to delete entries. It can be used by multiple GCDataRepository instances.
    */
-  private static class CleanupParameters {
-    static final long initialDelay = 1;
-    static final long period = 1;
-    static final TimeUnit periodUnit = TimeUnit.MINUTES;
-    static final int ttlTimeUnit = Calendar.MONTH;
-    static final int ttl = -3;
+  private class DataRetentionParameters {
+    static int ttlTimeUnit;
+    static int ttl;
+
+    DataRetentionParameters(int ttlTimeUnit, int ttl) {
+      this.ttlTimeUnit = ttlTimeUnit;
+      this.ttl = ttl;
+    }
 
     /**
      * This method provides a stateless way to retrieve the timestamp before which to
@@ -68,7 +66,7 @@ public class DatastoreRepository implements DataRepository {
      *
      * @return Date object with the appropriate "delete before" timestamp.
      */
-    static Date getEarliestAliveTime() {
+    Date getEarliestAliveTime() {
       Calendar calendar = Calendar.getInstance();
       calendar.setTime(new Date());
       calendar.add(ttlTimeUnit, ttl);
@@ -79,15 +77,18 @@ public class DatastoreRepository implements DataRepository {
   @Autowired
   private DatastoreTemplate storage;
   private final ScheduledExecutorService cleanScheduler = Executors.newScheduledThreadPool(1);
+  private final DataRetentionParameters dataRetentionParameters;
 
   /**
    * Constructs the GCDataRepository instance, and schedules the cleanup routine after the
    * parameters defined in {@link #CleanupParameters CleanupParameters}.
    */
-  public DatastoreRepository() {
-    cleanScheduler.scheduleAtFixedRate(cleanup, CleanupParameters.initialDelay,
-                                                CleanupParameters.period,
-                                                CleanupParameters.periodUnit);
+  public DatastoreRepository(long initialDelay, long period, TimeUnit periodUnit,
+                             int ttlTimeUnit, int ttl) {
+    dataRetentionParameters = new DataRetentionParameters(ttlTimeUnit, ttl);
+    cleanScheduler.scheduleAtFixedRate(cleanup, initialDelay,
+                                                period,
+                                                periodUnit);
   }
 
   /**
@@ -171,7 +172,7 @@ public class DatastoreRepository implements DataRepository {
    * Used to separate the usage from the actual Spring Datastore implementation.
    * Returns null when nothing was found.
    */
-  private BuildInfo getRevisionEntry(String commitHash) {
+  public BuildInfo getRevisionEntry(String commitHash) {
     return storage.findById(commitHash, BuildInfo.class);
   }
 
@@ -186,7 +187,7 @@ public class DatastoreRepository implements DataRepository {
   private final Runnable cleanup = new Runnable() {
     public void run() {
       TimestampValue borderDate = TimestampValue.of(Timestamp.of(
-                                  CleanupParameters.getEarliestAliveTime()));
+                                  dataRetentionParameters.getEarliestAliveTime()));
 
       Query<Entity> query = Query.newEntityQueryBuilder()
                                  .setKind("revision")
