@@ -55,7 +55,7 @@ const Header = (props) => {
 const Tray = (props) => {
   if(props.isOpen !== true) return null;
   return (
-    <div>
+    <div classname="tray">
       <div>{props.data.timestamp}</div>
       <div>bot name</div>
       <BuilderGrid data = {props.data.builders}/>
