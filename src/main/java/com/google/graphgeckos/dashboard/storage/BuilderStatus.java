@@ -17,7 +17,7 @@ package com.google.graphgeckos.dashboard.storage;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 
 /**
- * Represents buildbot statuses: "failed" or "passed".
+ * Represents buildbot statuses.
  */
 @Entity(name = "buildStatus")
 public enum BuilderStatus {
