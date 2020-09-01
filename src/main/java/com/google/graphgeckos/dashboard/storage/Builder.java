@@ -26,7 +26,7 @@ import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 @Entity(name = "builder")
 public class Builder {
 
-  private final String builderName;
+  private final String name;
 
   // The logs of each compilation stage, stored as described by {@link #Log Log}.
   private final List<Log> logs;
@@ -40,7 +40,7 @@ public class Builder {
    * null.
    */
   Builder(ParsedBuildBotData botData) {
-    this.builderName = botData.getBuilderName();
+    this.name = botData.getBuilderName();
     this.logs = new ArrayList<>(botData.getLogs());
     this.status = botData.getStatus();
   }
@@ -48,8 +48,8 @@ public class Builder {
   /**
    * Returns the name of the builder bot. Cannot be null.
    */
-  public String getBuilderName() {
-    return builderName;
+  public String getName() {
+    return name;
   }
 
   /**
