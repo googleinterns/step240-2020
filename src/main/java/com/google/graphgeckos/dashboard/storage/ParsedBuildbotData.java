@@ -43,9 +43,14 @@ public class ParsedBuildbotData {
    * @param logs logs for each individual stage of compilation. See {@link
    *      #com.google.graphgeckos.dashboard.storage.Log Log}
    * @param status the results of the compilation (true for passed, false for failed)
+   * @throws IllegalArgumentException if either parameter is null
    */
   public ParsedBuildbotData(String commitHash, String builderName,
-                            List<Log> logs, BuilderStatus status) {
+                            List<Log> logs, BuilderStatus status) throws IllegalArgumentException {
+    if (commitHash != null && builderName != null && logs != null && status != null) {
+      throw new IllegalArgumentException("no field in ParsedBuildbotData can be null");
+    }
+
     this.commitHash = commitHash;
     this.builderName = builderName;
     this.logs = new ArrayList<>(logs);
