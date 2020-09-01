@@ -58,7 +58,7 @@ const Tray = (props) => {
   const [selectedBuilder,selectBuilder] = React.useState(0);
   const builder = props.data.builders[selectedBuilder];
 
-  if(props.isOpen !== true) return null;
+  if (props.isOpen !== true) { return null };
   return (
     <div className = 'tray'>
       <span className = 'tray-timespan'>{props.data.timestamp}</span>
