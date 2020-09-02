@@ -63,8 +63,7 @@ public interface DataRepository {
    *     {@code offset} and {@code number}, returns all the available entries from that range.
    * @throws IllegalArgumentException if either number or offset are < 0
    */
-  List<BuildInfo> getLastRevisionEntries(int number, int offset)
-                                                          throws IllegalArgumentException;
+  List<BuildInfo> getLastRevisionEntries(int number, int offset) throws IllegalArgumentException;
 
   /**
    * Queries the database for a given entry, that has the primary key set
