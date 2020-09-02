@@ -9,7 +9,11 @@ import {Wrapper} from "./Wrapper";
  * rendered through BuildSnapshot.
  */
 export const BuildSnapshotContainer = (props) => {
-  const data = props.data;
+  const SOURCE = '/data';
+  const [data, setData] = React.useState([]);
+
+  React.useEffect(() => fetch(SOURCE).then(res => setData(res.json())), []);
+
   return (
     <Wrapper>
       {data.map(snapshotData => <BuildSnapshot data={snapshotData}/>)}
