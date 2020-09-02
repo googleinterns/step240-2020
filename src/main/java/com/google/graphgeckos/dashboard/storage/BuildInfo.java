@@ -16,7 +16,6 @@ package com.google.graphgeckos.dashboard.storage;
 
 import com.google.cloud.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Unindexed;
