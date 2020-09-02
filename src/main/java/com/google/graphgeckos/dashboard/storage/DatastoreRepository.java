@@ -136,7 +136,7 @@ public class DatastoreRepository implements DataRepository {
 
   /**
    * Queries all "revision" type entries, and deletes all which are older than a specified
-   * amount of time. During this operation, the GCDataRepository can be queried, but
+   * amount of time. During this operation, this repository can be queried, but
    * there is no guarantee of consistency when querying the entries that are in process
    * of removal.
    */
