@@ -31,6 +31,12 @@ public class BuildStep {
   // BuildStep text (e.g "clean-src-dir skipped")
   private final String text;
 
+  // Indicator of whether or not the step is complete.
+  private final boolean isFinished;
+
+  // Indicator of whether or not the step has started.
+  private final boolean isStarted;
+
   /**
    * Constructs an instance of BuildStep. Both name and text can be null.
    */
@@ -58,5 +64,19 @@ public class BuildStep {
    */
   public int getStepNumber() {
     return stepNumber;
+  }
+
+  /**
+   * Returns a boolean indicating if the step has been started.
+   */
+  public int isStarted() {
+    return isStarted;
+  }
+
+  /**
+   * Returns a boolean indicating if the step has been completed.
+   */
+  public int isFinished() {
+    return isFinished;
   }
 }
