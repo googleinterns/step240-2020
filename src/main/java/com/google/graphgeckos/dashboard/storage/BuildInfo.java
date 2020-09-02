@@ -95,4 +95,9 @@ public class BuildInfo {
     return builders;
   }
 
+  public boolean equals(BuildInfo other) {
+    return this.commitHash == other.commitHash && this.timestamp.equals(other.timestamp) &&
+           this.branch == other.branch && this.builders.equals(other.builders);
+  }
+
 }
