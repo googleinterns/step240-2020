@@ -91,7 +91,7 @@ public class DatastoreRepositoryTests {
    * Test multiple deletions for all entries older than the timestamp.
    */
   @Test
-  private void testMultipleEntityCleanupAllDeleted() {
+  public void testMultipleEntityCleanupAllDeleted() {
     DatastoreRepository storage = new DatastoreRepository();
 
     BuildInfo dummy1 = getDummyEntity("1");
@@ -113,7 +113,7 @@ public class DatastoreRepositoryTests {
    * Test partial deletion of entries.
    */
   @Test
-  private void testMultipleEntityCleanupPartialDeleted() {
+  public void testMultipleEntityCleanupPartialDeleted() {
     DatastoreRepository storage = new DatastoreRepository();
 
     BuildInfo dummy1 = getDummyEntity("1");
@@ -136,7 +136,7 @@ public class DatastoreRepositoryTests {
    * Test no deletion of entries.
    */
   @Test
-  private void testMultipleEntityCleanupNoDeletion() {
+  public void testMultipleEntityCleanupNoDeletion() {
     DatastoreRepository storage = new DatastoreRepository();
 
     BuildInfo dummy1 = getDummyEntity("1");
