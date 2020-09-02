@@ -14,6 +14,7 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
+import java.util.Arrays;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 
 /**
@@ -43,9 +44,12 @@ public class BuildStep {
   /**
    * Constructs an instance of BuildStep. Both name and text can be null.
    */
-  BuildStep(String name, String text, boolean isFinished, boolean isStarted, Log[] logs) {
+  BuildStep(String name, String[] text, boolean isFinished, boolean isStarted, Log[] logs) {
     this.name = name;
-    this.text = text;
+    this.text = Arrays.toString(text);
+    this.isFinished = isFinished;
+    this.isStarted = isStarted;
+    this.logs = logs;
   }
 
   /**
