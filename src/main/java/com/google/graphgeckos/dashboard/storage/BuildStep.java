@@ -25,15 +25,15 @@ public class BuildStep {
   // BuildStep name (e.g "clean-src-dir")
   private final String name;
 
-  // BuildStep link (e.g "http://lab.llvm.org:8011/builders/mlir-nvidia/builds/6403/logs/stdio")
-  private final String link;
+  // BuildStep text (e.g "http://lab.llvm.org:8011/builders/mlir-nvidia/builds/6403/logs/stdio")
+  private final String text;
 
   /**
-   * Constructs an instance of BuildStep. Both name and link can be null.
+   * Constructs an instance of BuildStep. Both name and text can be null.
    */
-  BuildStep(String name, String link) {
+  BuildStep(String name, String text) {
     this.name = name;
-    this.link = link;
+    this.text = text;
   }
 
   /**
@@ -44,10 +44,10 @@ public class BuildStep {
   }
 
   /**
-   * Returns a link to the full version of the log. Can be null.
+   * Returns a text to the full version of the log. Can be null.
    */
-  public String getLink() {
-    return link;
+  public String getText() {
+    return text;
   }
 
 }
