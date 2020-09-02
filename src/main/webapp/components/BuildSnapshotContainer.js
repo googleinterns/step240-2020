@@ -18,7 +18,9 @@ export const BuildSnapshotContainer = React.memo((props) => {
     * infinite callbacks as component refreshes.
     * @see <a href="www.robinwieruch.de/react-hooks-fetch-data">Fetching</a>
     */
-    React.useEffect(() => fetch(SOURCE).then(res => setData(res.json())), []);
+    React.useEffect(() => {
+      fetch(SOURCE).then(res => setData(res.json()));
+    }, []);
 
     return (
       <Wrapper>
