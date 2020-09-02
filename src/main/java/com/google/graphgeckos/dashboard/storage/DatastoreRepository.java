@@ -140,7 +140,7 @@ public class DatastoreRepository implements DataRepository {
    * there is no guarantee of consistency when querying the entries that are in process
    * of removal.
    */
-  void deleteEntriesOlderThan(TimestampValue oldestDate) {
+  void deleteEntriesOlderThan(Timestamp oldestDate) {
     Query<Entity> query = Query.newEntityQueryBuilder()
                                .setKind("revision")
                                .setFilter(PropertyFilter.lt("timestamp", oldestDate)).build();
@@ -159,7 +159,7 @@ public class DatastoreRepository implements DataRepository {
   @Scheduled(cron = "0 0 * * 0")
   private final Runnable cleanup = new Runnable() {
     public void run() {
-      deleteEntriesOlderThan(TimestampValue.of(Timestamp.of(getEarliestAliveTime())));
+      deleteEntriesOlderThan(Timestamp.of(getEarliestAliveTime()));
     }
   };
 
