@@ -24,7 +24,7 @@ public interface DataRepository {
    * If there already is an entry with the same commit hash, ignores the request.
    *
    * @param entryData a ParsedGitData instance, must have a non-null "commitHash" field
-   * @return true if operation completed successfully.
+   * @return true only if the operation completed successfully.
    * @throws IllegalArgumentException if entryData is null
    */
   boolean createRevisionEntry(ParsedGitData entryData) throws IllegalArgumentException;
@@ -35,7 +35,7 @@ public interface DataRepository {
    * ignores the request.
    *
    * @param updateData a ParsedBuildbotData instance, must have a non-null "commitHash" field
-   * @return true if operation completed successfully.
+   * @return true only if the operation completed successfully.
    * @throws IllegalArgumentException if updateData is null.
    */
   boolean updateRevisionEntry(ParsedBuildbotData updateData) throws IllegalArgumentException;
@@ -46,7 +46,7 @@ public interface DataRepository {
    *
    * @param commitHash the String representation of the commit hash of the revision data to
    * be deleted
-   * @return true if operation completed successfully.
+   * @return true only if the operation completed successfully.
    * @throws IllegalArgumentException if commitHash is null
    */
   boolean deleteRevisionEntry(String commitHash) throws IllegalArgumentException;
