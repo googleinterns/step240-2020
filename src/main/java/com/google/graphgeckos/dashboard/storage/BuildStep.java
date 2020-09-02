@@ -19,28 +19,28 @@ import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 /**
  * Contains the log information from a single compilation stage from a given build bot.
  */
-@Entity(name = "buildLog")
-public class Log {
+@Entity(name = "buildStep")
+public class BuildStep {
 
-  // Log type (e.g "stdio")
-  private final String type;
+  // BuildStep name (e.g "clean-src-dir")
+  private final String name;
 
-  // Log link (e.g "http://lab.llvm.org:8011/builders/mlir-nvidia/builds/6403/logs/stdio")
+  // BuildStep link (e.g "http://lab.llvm.org:8011/builders/mlir-nvidia/builds/6403/logs/stdio")
   private final String link;
 
   /**
-   * Constructs an instance of Log. Both type and link can be null.
+   * Constructs an instance of BuildStep. Both name and link can be null.
    */
-  Log(String type, String link) {
-    this.type = type;
+  BuildStep(String name, String link) {
+    this.name = name;
     this.link = link;
   }
 
   /**
-   * Returns the type of the log as a String. Can be null.
+   * Returns the name of the log as a String. Can be null.
    */
-  public String getType() {
-    return type;
+  public String getName() {
+    return name;
   }
 
   /**
