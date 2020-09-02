@@ -20,8 +20,6 @@ import static org.junit.Assert.assertTrue;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.cloud.Timestamp;
-import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,12 +27,6 @@ import org.junit.Test;
 public class DatastoreRepositoryTests {
   private final LocalServiceTestHelper helper =
       new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
-
-  private final long initialCleanupDelay = 3;
-  private final long cleanupPeriod = 4;
-  private final TimeUnit cleanupPeriodTimeunit = TimeUnit.MILLISECONDS;
-  private final int ttl = 2;
-  private final int ttlTimeUnit = Calendar.MILLISECOND;
 
   private BuildInfo getDummyEntity(String commitHash) {
     return new BuildInfo(new ParsedGitData(commitHash, Timestamp.now(), "test"));
@@ -52,90 +44,76 @@ public class DatastoreRepositoryTests {
 
   /**
    * Tests proper deleting/preserving a single entity stored in the datastore.
-   *
-   * Timeline:
-   * add : 0s
-   * ttl expires : 2s
-   * cleanup w/ delete : 3s
-   * check : 6s
-   * add : 6s
-   * cleanup w/out delete: 7s
-   * ttl expires: 8s
-   * check: 9s
-   * cleanup w/ delete: 11s
    */
   @Test
   private void testSingleEntityCleanup() {
-    DatastoreRepository storage = new DatastoreRepository(initialCleanupDelay, cleanupPeriod,
-                                                          cleanupPeriodTimeunit, ttl, ttlTimeUnit);
-    storage.createRevisionEntry(getDummyEntity("1"));
+    DatastoreRepository storage = new DatastoreRepository();
 
-    Thread.sleep(6);
+    // Test deletion when entry is older than the timestamp
+    BuildInfo dummy = getDummyEntity("1");
+    storage.createRevisionEntry(dummy);
+    storage.deleteEntriesOlderThan(Timestamp.now());
     Assert.assertTrue(storage.getRevisionEntry("1") == null);
-    
-    storage.createRevisionEntry(getDummyEntity("1"));
 
-    Thread.sleep(3);
+    // Test preservation when the entry is created at the same time as the timestamp
+    dummy = getDummyEntity("1");
+    storage.createRevisionEntry(dummy);
+    Timestamp savedTime = dummy.getTimestamp();
+    storage.deleteEntriesOlderThan(savedTime);
     Assert.assertFalse(storage.getRevisionEntry("1") == null);
+    storage.deleteRevisionEntry("1");
 
-    Thread.sleep(2);
-    Assert.assertTrue(storage.getRevisionEntry("1") == null);
+    // Test preservation when the entry is newer than the timestamp
+    dummy = getDummyEntity("1");
+    storage.createRevisionEntry(dummy);
+    storage.deleteEntriesOlderThan(savedTime);
+    Assert.assertFalse(storage.getRevisionEntry("1") == null);
   }
 
   /**
    * Tests proper deleting/preserving three entities stored in the datastore.
-   *
-   * Timeline:
-   * add all 3 : 0s
-   * ttl expires : 2s
-   * cleanup w/ delete : 3s
-   * check : 4s
-   * add 1 & 2 : 4s
-   * add 3 : 6s
-   * ttl expires 1 & 2 : 6s
-   * cleanup w/ partial delete : 7s
-   * ttl expires 3 : 8s
-   * check : 9s
-   * manual delete 3 : 9s
-   * add all 3 : 10s
-   * cleanup w/out delete: 11s
-   * ttl expires all 3 : 12s
-   * check : 12s
    */
   @Test
   private void testMultipleEntityCleanup() {
-    DatastoreRepository storage = new DatastoreRepository(initialCleanupDelay, cleanupPeriod,
-                                                          cleanupPeriodTimeunit, ttl, ttlTimeUnit);
-    storage.createRevisionEntry(getDummyEntity("1"));
-    storage.createRevisionEntry(getDummyEntity("2"));
-    storage.createRevisionEntry(getDummyEntity("3"));
+    DatastoreRepository storage = new DatastoreRepository();
+    BuildInfo dummy1 = getDummyEntity("1");
+    BuildInfo dummy2 = getDummyEntity("2");
+    BuildInfo dummy3 = getDummyEntity("3");
 
-    Thread.sleep(4);
+    // Test multiple deletions for all entries older than the timestamp
+    storage.createRevisionEntry(dummy1);
+    storage.createRevisionEntry(dummy2);
+    storage.createRevisionEntry(dummy3);
+
+    storage.deleteEntriesOlderThan(Timestamp.now());
     Assert.assertTrue(storage.getRevisionEntry("1") == null);
     Assert.assertTrue(storage.getRevisionEntry("2") == null);
     Assert.assertTrue(storage.getRevisionEntry("3") == null);
 
-    storage.createRevisionEntry(getDummyEntity("1"));
-    storage.createRevisionEntry(getDummyEntity("2"));
+    // Test partial deletion of entries
+    dummy3 = getDummyEntity("3");
 
-    Thread.sleep(2);
+    storage.createRevisionEntry(dummy1);
+    storage.createRevisionEntry(dummy2);
+    storage.createRevisionEntry(dummy3);
+    Timestamp savedTime = dummy3.getTimestamp();
 
-    storage.createRevisionEntry(getDummyEntity("3"));
-
-    Thread.sleep(3);
+    storage.deleteEntriesOlderThan(savedTime);
     Assert.assertTrue(storage.getRevisionEntry("1") == null);
     Assert.assertTrue(storage.getRevisionEntry("2") == null);
     Assert.assertFalse(storage.getRevisionEntry("3") == null);
+    storage.deleteRevisionEntry("3");
 
-    storage.delete("3");
+    // Test no deletion of entries
+    dummy1 = getDummyEntity("1");
+    dummy2 = getDummyEntity("2");
+    dummy3 = getDummyEntity("3");
 
-    Thread.sleep(1);
+    storage.createRevisionEntry(dummy1);
+    storage.createRevisionEntry(dummy2);
+    storage.createRevisionEntry(dummy3);
 
-    storage.createRevisionEntry(getDummyEntity("1"));
-    storage.createRevisionEntry(getDummyEntity("2"));
-    storage.createRevisionEntry(getDummyEntity("3"));
-
-    Thread.sleep(2);
+    storage.deleteEntriesOlderThan(savedtime);
     Assert.assertFalse(storage.getRevisionEntry("1") == null);
     Assert.assertFalse(storage.getRevisionEntry("2") == null);
     Assert.assertFalse(storage.getRevisionEntry("3") == null);
