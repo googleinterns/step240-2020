@@ -18,7 +18,7 @@ import java.util.Arrays;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 
 /**
- * Contains the log information from a single compilation stage from a given build bot.
+ * Contains the information for an individual step of a build.
  */
 @Entity(name = "buildStep")
 public class BuildStep {
