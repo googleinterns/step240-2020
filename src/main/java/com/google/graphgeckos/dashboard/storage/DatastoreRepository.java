@@ -15,16 +15,13 @@
 package com.google.graphgeckos.dashboard.storage;
 
 import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.cloud.datastore.TimestampValue;
-import com.google.cloud.datastore.Query;
 import com.google.cloud.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
