@@ -45,8 +45,6 @@ import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
 public class DatastoreRepository implements DataRepository {
   @Autowired
   private DatastoreTemplate storage;
-  private final ScheduledExecutorService cleanScheduler = Executors.newScheduledThreadPool(1);
-  private final DataRetentionParameters dataRetentionParameters;
   private static final entryTtlInDays = 90;
 
   /**
