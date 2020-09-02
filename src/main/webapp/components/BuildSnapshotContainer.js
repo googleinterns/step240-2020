@@ -8,20 +8,22 @@ import {Wrapper} from "./Wrapper";
  * @param {*} props input property containing an array of build data to be
  * rendered through BuildSnapshot.
  */
-export const BuildSnapshotContainer = (props) => {
-  const SOURCE = '/data';
-  const [data, setData] = React.useState([]);
+export const BuildSnapshotContainer = React.memo((props) => {
+    const SOURCE = '/data';
+    const [data, setData] = React.useState([]);
 
-  /* Fetch data when component is mounted.
-   * Pass in empty array as second paramater to prevent
-   * Infinite callbacks as component refreshes.
-   * @see <a href="https://www.robinwieruch.de/react-hooks-fetch-data">Here</a>
-  */
-  React.useEffect(() => fetch(SOURCE).then(res => setData(res.json())), []);
+    /**
+    * Fetch data when component is mounted.
+    * Pass in empty array as second paramater to prevent
+    * Infinite callbacks as component refreshes.
+    * @see <a href="www.robinwieruch.de/react-hooks-fetch-data">Fetching</a>
+    */
+    React.useEffect(() => fetch(SOURCE).then(res => setData(res.json())), []);
 
-  return (
-    <Wrapper>
-      {data.map(snapshotData => <BuildSnapshot data={snapshotData}/>)}
-    </Wrapper>
-  );
-}
+    return (
+      <Wrapper>
+        {data.map(snapshotData => <BuildSnapshot data={snapshotData}/>)}
+      </Wrapper>
+    );
+  }
+);
