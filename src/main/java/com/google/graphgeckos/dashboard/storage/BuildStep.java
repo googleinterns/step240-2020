@@ -43,7 +43,7 @@ public class BuildStep {
   /**
    * Constructs an instance of BuildStep. Both name and text can be null.
    */
-  BuildStep(String name, String text) {
+  BuildStep(String name, String text, boolean isFinished, boolean isStarted, Log[] logs) {
     this.name = name;
     this.text = text;
   }
