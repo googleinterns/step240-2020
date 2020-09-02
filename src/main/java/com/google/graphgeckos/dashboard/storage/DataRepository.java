@@ -58,13 +58,12 @@ public interface DataRepository {
    * @param number the number of database entries to retrieve
    * @param offset the offset from the latest database entry, for which to consider
    *     the requested number of entries
-   * @return an iterable object containing at most {@code number} entries starting
-   *     from the latest entry - {@code offset}. If the database has not enough entries
-   *     for the requested {@code offset} and {@code number}, returns all the available
-   *     entries from that range.
+   * @return a list containing at most {@code number} entries starting from the latest
+   *     entry - {@code offset}. If the database has not enough entries for the requested
+   *     {@code offset} and {@code number}, returns all the available entries from that range.
    * @throws IllegalArgumentException if either number or offset are < 0
    */
-  Iterable<BuildInfo> getLastRevisionEntries(int number, int offset)
+  List<BuildInfo> getLastRevisionEntries(int number, int offset)
                                                           throws IllegalArgumentException;
 
   /**
