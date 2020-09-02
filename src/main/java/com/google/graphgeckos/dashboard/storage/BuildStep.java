@@ -25,7 +25,7 @@ public class BuildStep {
   // BuildStep name (e.g "clean-src-dir")
   private final String name;
 
-  // BuildStep text (e.g "http://lab.llvm.org:8011/builders/mlir-nvidia/builds/6403/logs/stdio")
+  // BuildStep text (e.g "clean-src-dir skipped")
   private final String text;
 
   /**
