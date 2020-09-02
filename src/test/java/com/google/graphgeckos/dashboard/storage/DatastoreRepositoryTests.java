@@ -47,6 +47,9 @@ public class DatastoreRepositoryTests {
     helper.tearDown();
   }
 
+  /**
+   * Tests a single sequence of add/update/get/delete requests on the database.
+   */
   @Test
   public void testRequestSequenceValidData() {
     DatastoreRepository storage = new DatastoreRepository();
@@ -66,6 +69,9 @@ public class DatastoreRepositoryTests {
     Assert.assertEquals(null, storage.getRevisionEntry("1"));
   }
 
+  /**
+   * Tests the behaviour of add/update/get/delete requests on null data.
+   */
   @Test
   public void testRequestsNullData() {
     DatastoreRepository storage = new DatastoreRepository();
@@ -76,6 +82,9 @@ public class DatastoreRepositoryTests {
     Assert.assertFalse(storage.deleteRevisionEntry(null));
   }
 
+  /**
+   * Tests erroneous parameters on the add/update/get/delete methods.
+   */
   @Test
   public void testRequestSequenceInvalidData() {
     DatastoreRepository storage = new DatastoreRepository();
@@ -94,6 +103,9 @@ public class DatastoreRepositoryTests {
     Assert.assertTrue(storage.deleteRevisionEntry("2"));
   }
 
+  /**
+   * Tests multiple threads creating update requests for the same entities.
+   */
   @Test
   public void testParallelBurstRequests() {
     DatastoreRepository storage = new DatastoreRepository();
@@ -120,8 +132,44 @@ public class DatastoreRepositoryTests {
     Assert.assertTrue(storage.deleteRevisionEntry("2"));
   }
 
+  /**
+   * Test possible cases of the getLastRevisions query.
+   */
   @Test
   public void testGetLastRevisions() {
+    DatastoreRepository storage = new DatastoreRepository();
 
+    // Test regular "last entries" query
+    BuildInfo dummy1 = getDummyEntity("1");
+    BuildInfo dummy2 = getDummyEntity("2");
+    BuildInfo dummy3 = getDummyEntity("3");
+    BuildInfo dummy4 = getDummyEntity("4");
+    BuildInfo dummy5 = getDummyEntity("5");
+
+    Assert.assertTrue(storage.createRevisionEntry(dummy1));
+    Assert.assertTrue(storage.createRevisionEntry(dummy2));
+    Assert.assertTrue(storage.createRevisionEntry(dummy3));
+    Assert.assertTrue(storage.createRevisionEntry(dummy4));
+    Assert.assertTrue(storage.createRevisionEntry(dummy5));
+
+    List<BuildInfo> results = storage.getLastRevisionEntries(3, 0);
+    AssertEquals(results.size(), 3);
+    AssertEquals(results.get(0), dummy5);
+    AssertEquals(results.get(1), dummy4);
+    AssertEquals(results.get(2), dummy3);
+
+    // Test query with offset
+    results = storage.getLastRevisionEntries(3, 2);
+    AssertEquals(results.size(), 3);
+    AssertEquals(results.get(0), dummy3);
+    AssertEquals(results.get(1), dummy2);
+    AssertEquals(results.get(2), dummy1);
+
+    // Test query after an entry has been deleted
+    Assert.assertTrue(storage.deleteRevisionEntry("3"));
+    List<BuildInfo> results = storage.getLastRevisionEntries(2, 2);
+    AssertEquals(results.size(), 2);
+    AssertEquals(results.get(0), dummy2);
+    AssertEquals(results.get(1), dummy1);
   }
 }
