@@ -46,50 +46,11 @@ import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
  */
 @Repository
 public class DatastoreRepository implements DataRepository {
-  /**
-   * This class encapsulates all the parameters for the cleanup subroutine.
-   * Also, provides an easy interface for getting the next timestamp before which
-   * to delete entries. It can be used by multiple GCDataRepository instances.
-   */
-  private class DataRetentionParameters {
-    static int ttlTimeUnit;
-    static int ttl;
-
-    DataRetentionParameters(int ttlTimeUnit, int ttl) {
-      this.ttlTimeUnit = ttlTimeUnit;
-      this.ttl = ttl;
-    }
-
-    /**
-     * This method provides a stateless way to retrieve the timestamp before which to
-     * delete all older entries.
-     *
-     * @return Date object with the appropriate "delete before" timestamp.
-     */
-    Date getEarliestAliveTime() {
-      Calendar calendar = Calendar.getInstance();
-      calendar.setTime(new Date());
-      calendar.add(ttlTimeUnit, ttl);
-      return calendar.getTime();
-    }
-  };
-
   @Autowired
   private DatastoreTemplate storage;
   private final ScheduledExecutorService cleanScheduler = Executors.newScheduledThreadPool(1);
   private final DataRetentionParameters dataRetentionParameters;
-
-  /**
-   * Constructs the GCDataRepository instance, and schedules the cleanup routine after the
-   * parameters defined in {@link #CleanupParameters CleanupParameters}.
-   */
-  public DatastoreRepository(long initialDelay, long period, TimeUnit periodUnit,
-                             int ttlTimeUnit, int ttl) {
-    dataRetentionParameters = new DataRetentionParameters(ttlTimeUnit, ttl);
-    cleanScheduler.scheduleAtFixedRate(cleanup, initialDelay,
-                                                period,
-                                                periodUnit);
-  }
+  private static final entryTtlInDays = 90;
 
   /**
    * {@inheritDoc}
@@ -176,28 +137,45 @@ public class DatastoreRepository implements DataRepository {
     return storage.findById(commitHash, BuildInfo.class);
   }
 
-
   /**
-   * A subroutine created for running at fixed intervals, deleting older entries.
    * Queries all "revision" type entries, and deletes all which are older than a specified
    * amount of time. During this operation, the GCDataRepository can be queried, but
    * there is no guarantee of consistency when querying the entries that are in process
    * of removal.
    */
+  void deleteEntriesOlderThan(TimestampValue oldestDate) {
+    Query<Entity> query = Query.newEntityQueryBuilder()
+                               .setKind("revision")
+                               .setFilter(PropertyFilter.lt("timestamp", oldestDate)).build();
+
+    Iterable<Entity> results = storage.query(query, Entity.class).getIterable();
+
+    for (Entity entity : results) {
+      storage.delete(entity);
+    }
+  }
+
+  /**
+   * A subroutine created for running at fixed intervals, delegating {@code deleteEntriesOlderTHan}
+   * for the deletion procedure. Scheduled for running every Sunday at 00:00 server time.
+   */
+  @Scheduled(cron = "0 0 * * 0")
   private final Runnable cleanup = new Runnable() {
     public void run() {
-      TimestampValue borderDate = TimestampValue.of(Timestamp.of(
-                                  dataRetentionParameters.getEarliestAliveTime()));
-
-      Query<Entity> query = Query.newEntityQueryBuilder()
-                                 .setKind("revision")
-                                 .setFilter(PropertyFilter.lt("timestamp", borderDate)).build();
-
-      Iterable<Entity> results = storage.query(query, Entity.class).getIterable();
-
-      for (Entity entity : results) {
-        storage.delete(entity);
-      }
+      deleteEntriesOlderThan(TimestampValue.of(Timestamp.of(getEarliestAliveTime())));
     }
   };
+
+  /**
+   * This method provides a stateless way to retrieve the timestamp before which to
+   * delete all older entries.
+   *
+   * @return Date object with the appropriate "delete before" timestamp.
+   */
+  private static Date getEarliestAliveTime() {
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(new Date());
+    calendar.add(ttlTimeUnit, ttl);
+    return calendar.getTime();
+  }
 }
