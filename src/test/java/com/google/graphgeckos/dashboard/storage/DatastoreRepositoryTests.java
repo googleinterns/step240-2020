@@ -30,12 +30,6 @@ public class DatastoreRepositoryTests {
   private final LocalServiceTestHelper helper =
       new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
-  private final long initialCleanupDelayDefault = 1;
-  private final long cleanupPeriodDefault = 1;
-  private final TimeUnit cleanupPeriodTimeunitDefault = TimeUnit.WEEKS;
-  private final int ttlDefault = 3;
-  private final int ttlTimeUnit = Calendar.MONTH;
-
   private BuildInfo getDummyEntity(String commitHash) {
     return new BuildInfo(new ParsedGitData(commitHash, Timestamp.now(), "test"));
   }
@@ -56,11 +50,7 @@ public class DatastoreRepositoryTests {
 
   @Test
   public void testValidRequestSequenceValidData() {
-    DatastoreRepository storage = new DatastoreRepository(initialCleanupDelayDefault,
-                                                          cleanupPeriodDefault,
-                                                          cleanupPeriodTimeunitDefault,
-                                                          ttlDefault,
-                                                          ttlTimeUnitDefault);
+    DatastoreRepository storage = new DatastoreRepository();
     
     Assert.assertTrue(storage.createRevisionEntry(getDummyEntity("1")));
     Assert.assertEquals(getDummyEntity("1"), storage.getRevisionEntry("1"));
@@ -76,11 +66,8 @@ public class DatastoreRepositoryTests {
 
   @Test
   public void testValidRequestSequenceNullData() {
-    DatastoreRepository storage = new DatastoreRepository(initialCleanupDelayDefault,
-                                                          cleanupPeriodDefault,
-                                                          cleanupPeriodTimeunitDefault,
-                                                          ttlDefault,
-                                                          ttlTimeUnitDefault);
+    DatastoreRepository storage = new DatastoreRepository();
+
     Assert.assertFalse(storage.createRevisionEntry(null));
     Assert.assertFalse(storage.getRevisionEntry(null));
     Assert.assertFalse(storage.updateRevisionEntry(null));
