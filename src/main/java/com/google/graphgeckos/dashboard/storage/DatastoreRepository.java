@@ -172,7 +172,7 @@ public class DatastoreRepository implements DataRepository {
   private static Date getEarliestAliveTime() {
     Calendar calendar = Calendar.getInstance();
     calendar.setTime(new Date());
-    calendar.add(ttlTimeUnit, ttl);
+    calendar.add(Calendar.DAY_OF_MONTH, -ttl);
     return calendar.getTime();
   }
 }
