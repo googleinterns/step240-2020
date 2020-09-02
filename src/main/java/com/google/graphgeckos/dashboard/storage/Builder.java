@@ -36,10 +36,14 @@ public class Builder {
 
   /**
    * Converts a {@link #ParsedBuildbotData ParsedBuildbotData} object to a Builder object.
-   * The fields should be sanitized before this operation, as no field in Builder may be
-   * null.
+   *
+   * @throws IllegalArgumentException if {@code botData} is null
    */
   Builder(ParsedBuildBotData botData) {
+    if (botData == null) {
+      throw new IllegalArgumentException("botData cannot be null in Builder constructor");
+    }
+
     this.name = botData.getBuilderName();
     this.logs = new ArrayList<>(botData.getLogs());
     this.status = botData.getStatus();
