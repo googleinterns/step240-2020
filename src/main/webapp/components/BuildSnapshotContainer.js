@@ -15,7 +15,7 @@ export const BuildSnapshotContainer = (props) => {
   /* Fetch data when component is mounted.
    * Pass in empty array as second paramater to prevent
    * Infinite callbacks as component refreshes.
-   * @see <a href="https://www.robinwieruch.de/react-hooks-fetch-data">Fetching</a>
+   * @see <a href="https://www.robinwieruch.de/react-hooks-fetch-data">Here</a>
   */
   React.useEffect(() => fetch(SOURCE).then(res => setData(res.json())), []);
 
