@@ -15,6 +15,8 @@
 package com.google.graphgeckos.dashboard.storage;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
