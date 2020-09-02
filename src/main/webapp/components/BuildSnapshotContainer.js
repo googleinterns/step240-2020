@@ -15,7 +15,7 @@ export const BuildSnapshotContainer = React.memo((props) => {
     /**
     * Fetch data when component is mounted.
     * Pass in empty array as second paramater to prevent
-    * Infinite callbacks as component refreshes.
+    * infinite callbacks as component refreshes.
     * @see <a href="www.robinwieruch.de/react-hooks-fetch-data">Fetching</a>
     */
     React.useEffect(() => fetch(SOURCE).then(res => setData(res.json())), []);
