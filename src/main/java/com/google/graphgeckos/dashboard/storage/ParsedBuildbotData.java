@@ -14,6 +14,9 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  * An immutable container used for providing stripped-down build bot information
  * to the GCDataRepository. Provides functionality for checking whether the information
@@ -45,7 +48,7 @@ public class ParsedBuildbotData {
                             List<Log> logs, BuilderStatus status) {
     this.commitHash = commitHash;
     this.builderName = builderName;
-    this.logs = new LinkedList<>(logs);
+    this.logs = new ArrayList<>(logs);
     this.status = status;
   }
 
@@ -101,7 +104,7 @@ public class ParsedBuildbotData {
    *
    * @return the status.
    */
-  BuilderStatus getStatus() {
+  BuildStatus getStatus() {
     return status;
   }
 }
