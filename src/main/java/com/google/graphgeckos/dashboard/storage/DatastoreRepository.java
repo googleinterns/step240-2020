@@ -147,9 +147,7 @@ public class DatastoreRepository implements DataRepository {
   }
 
   /**
-   * Queries the database for a given entry, that has the Id set to the provided commitHash.
-   * Used to separate the usage from the actual Spring Datastore implementation.
-   * Returns null when nothing was found.
+   * {@inheritDoc}
    */
   public BuildInfo getRevisionEntry(String commitHash) throws IllegalArgumentException {
     if (commitHash == null) {
