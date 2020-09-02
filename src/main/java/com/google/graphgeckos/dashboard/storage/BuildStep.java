@@ -37,6 +37,9 @@ public class BuildStep {
   // Indicator of whether or not the step has started.
   private final boolean isStarted;
 
+  // All the logs associated with this step.
+  private final Log[] logs;
+
   /**
    * Constructs an instance of BuildStep. Both name and text can be null.
    */
@@ -78,5 +81,12 @@ public class BuildStep {
    */
   public int isFinished() {
     return isFinished;
+  }
+
+  /**
+   * Returns an array of the logs associated with this step. Can be null.
+   */
+  public Log[] getLogs() {
+    return logs;
   }
 }
