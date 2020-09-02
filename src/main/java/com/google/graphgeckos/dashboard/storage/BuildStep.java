@@ -22,6 +22,9 @@ import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 @Entity(name = "buildStep")
 public class BuildStep {
 
+  // Order of the step
+  private final int stepNumber;
+
   // BuildStep name (e.g "clean-src-dir")
   private final String name;
 
@@ -50,4 +53,10 @@ public class BuildStep {
     return text;
   }
 
+  /**
+   * Returns the order of the step. Value always >= 0.
+   */
+  public int getStepNumber() {
+    return stepNumber;
+  }
 }
