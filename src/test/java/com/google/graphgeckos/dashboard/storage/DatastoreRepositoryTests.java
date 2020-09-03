@@ -81,10 +81,10 @@ public class DatastoreRepositoryTests {
   public void testRequestsNullData() {
     DatastoreRepository storage = new DatastoreRepository();
 
-    Assert.assertFalse(storage.createRevisionEntry(null));
-    Assert.assertFalse(storage.getRevisionEntry(null));
-    Assert.assertFalse(storage.updateRevisionEntry(null));
-    Assert.assertFalse(storage.deleteRevisionEntry(null));
+    Assert.assertThrows(IllegalArgumentException.class, storage.createRevisionEntry(null));
+    Assert.assertThrows(IllegalArgumentException.class, storage.getRevisionEntry(null));
+    Assert.assertThrows(IllegalArgumentException.class, storage.updateRevisionEntry(null));
+    Assert.assertThrows(IllegalArgumentException.class, storage.deleteRevisionEntry(null));
   }
 
   @Test
