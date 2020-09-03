@@ -24,11 +24,10 @@ public interface DataRepository {
    * If there already is an entry with the same commit hash, ignores the request.
    *
    * @param entryData a ParsedGitData instance, must have a non-null "commitHash" field
-   * @throws IllegalArgumentException if entryData is null, or {@link 
-   *       com.google.graphgeckos.dashboard.storage.ParsedGitData#validCreateData()
-   *       entryData.validCreateData()} returns false
+   * @return true only if the operation completed successfully.
+   * @throws IllegalArgumentException if entryData is null
    */
-  void createRevisionEntry(ParsedGitData entryData) throws IllegalArgumentException;
+  boolean createRevisionEntry(ParsedGitData entryData) throws IllegalArgumentException;
 
   /**
    * Updates an existing revision's database entry, with the individual information from
@@ -36,11 +35,10 @@ public interface DataRepository {
    * ignores the request.
    *
    * @param updateData a ParsedBuildbotData instance, must have a non-null "commitHash" field
-   * @throws IllegalArgumentException if updateData or {@link
-   *       com.google.graphgeckos.dashboard.storage.ParsedBuildbotData#validUpdateData()
-   *       updateData.validUpdateData()} returns false
+   * @return true only if the operation completed successfully.
+   * @throws IllegalArgumentException if updateData is null.
    */
-  void updateRevisionEntry(ParsedBuildbotData updateData) throws IllegalArgumentException;
+  boolean updateRevisionEntry(ParsedBuildbotData updateData) throws IllegalArgumentException;
 
   /**
    * Deletes a revision's database entry, based on it's commit hash. Has no effect if there
@@ -48,9 +46,10 @@ public interface DataRepository {
    *
    * @param commitHash the String representation of the commit hash of the revision data to
    * be deleted
+   * @return true only if the operation completed successfully.
    * @throws IllegalArgumentException if commitHash is null
    */
-  void deleteRevisionEntry(String commitHash) throws IllegalArgumentException;
+  boolean deleteRevisionEntry(String commitHash) throws IllegalArgumentException;
 
   /**
    * Queries the database for a specified amount of entries of type "revision", going down
@@ -59,12 +58,21 @@ public interface DataRepository {
    * @param number the number of database entries to retrieve
    * @param offset the offset from the latest database entry, for which to consider
    *     the requested number of entries
-   * @return an iterable object containing at most {@code number} entries starting
-   *     from the latest entry - {@code offset}. If the database has not enough entries
-   *     for the requested {@code offset} and {@code number}, returns all the available
-   *     entries from that range.
+   * @return a list containing at most {@code number} entries starting from the latest
+   *     entry - {@code offset}. If the database has not enough entries for the requested
+   *     {@code offset} and {@code number}, returns all the available entries from that range.
    * @throws IllegalArgumentException if either number or offset are < 0
    */
-  Iterable<BuildInfo> getLastRevisionEntries(int number, int offset)
-                                                          throws IllegalArgumentException;
+  List<BuildInfo> getLastRevisionEntries(int number, int offset) throws IllegalArgumentException;
+
+  /**
+   * Queries the database for a given entry, that has the primary key set
+   * to the provided commitHash.
+   *
+   * @param commitHash the commitHash to search for
+   * @return null if no object was found, else a BuildInfo instance of the database entry
+   *     associated to that commitHash.
+   * @throws IllegalArgumentException if commitHash is null
+   */
+  BuildInfo getRevisionEntry(String commitHash) throws IllegalArgumentException;
 }
