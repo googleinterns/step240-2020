@@ -7,7 +7,7 @@ import * as React from 'react';
  * @param {string} props.href hyperlink for the href attribute.
  * @param {string} props.innerText rendered text content of node.
  */
-const NavigationItem = props => {
+const NavigationItem = (props) => {
   <li><a href = {props.href}>{props.innerText}</a></li>
 }
 
