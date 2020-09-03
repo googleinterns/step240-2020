@@ -15,6 +15,8 @@
 package com.google.graphgeckos.dashboard.storage;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -187,5 +189,115 @@ public class DatastoreRepositoryTests {
     AssertEquals(results.size(), 2);
     AssertEquals(results.get(0), dummy2);
     AssertEquals(results.get(1), dummy1);
+  }
+
+  /**
+   * Test deletion when entry is older than the timestamp.
+   */
+  @Test
+  public void testSingleEntityOlderCleanup() {
+    DatastoreRepository storage = new DatastoreRepository();
+
+    BuildInfo dummy = getDummyEntity("1");
+    storage.createRevisionEntry(dummy);
+    storage.deleteEntriesOlderThan(Timestamp.now());
+
+    Assert.assertNull(storage.getRevisionEntry("1"));
+  }
+
+  /**
+   * Test preservation when the entry is created at the same time as the timestamp.
+   */
+  @Test
+  public void testSingleEntitySameAgeCleanup() {
+    DatastoreRepository storage = new DatastoreRepository();
+
+    dummy = getDummyEntity("1");
+    storage.createRevisionEntry(dummy);
+    Timestamp savedTime = dummy.getTimestamp();
+    storage.deleteEntriesOlderThan(savedTime);
+
+    Assert.assertNotNull(storage.getRevisionEntry("1"));
+  }
+
+  /**
+   * Test preservation when the entry is newer than the timestamp.
+   */
+  @Test
+  public void testSingleEntityNewerCleanup() {
+    DatastoreRepository storage = new DatastoreRepository();
+
+    dummy = getDummyEntity("1");
+    storage.createRevisionEntry(dummy);
+    storage.deleteEntriesOlderThan(savedTime);
+
+    Assert.assertNotNull(storage.getRevisionEntry("1"));
+  }
+
+  /**
+   * Test multiple deletions for all entries older than the timestamp.
+   */
+  @Test
+  public void testMultipleEntityCleanupAllDeleted() {
+    DatastoreRepository storage = new DatastoreRepository();
+
+    BuildInfo dummy1 = getDummyEntity("1");
+    BuildInfo dummy2 = getDummyEntity("2");
+    BuildInfo dummy3 = getDummyEntity("3");
+
+    storage.createRevisionEntry(dummy1);
+    storage.createRevisionEntry(dummy2);
+    storage.createRevisionEntry(dummy3);
+
+    storage.deleteEntriesOlderThan(Timestamp.now());
+
+    Assert.assertNull(storage.getRevisionEntry("1"));
+    Assert.assertNull(storage.getRevisionEntry("2"));
+    Assert.assertNull(storage.getRevisionEntry("3"));
+  }
+
+  /**
+   * Test partial deletion of entries.
+   */
+  @Test
+  public void testMultipleEntityCleanupPartialDeleted() {
+    DatastoreRepository storage = new DatastoreRepository();
+
+    BuildInfo dummy1 = getDummyEntity("1");
+    BuildInfo dummy2 = getDummyEntity("2");
+    BuildInfo dummy3 = getDummyEntity("3");
+
+    storage.createRevisionEntry(dummy1);
+    storage.createRevisionEntry(dummy2);
+    storage.createRevisionEntry(dummy3);
+    Timestamp savedTime = dummy3.getTimestamp();
+
+    storage.deleteEntriesOlderThan(savedTime);
+
+    Assert.assertNull(storage.getRevisionEntry("1"));
+    Assert.assertNull(storage.getRevisionEntry("2"));
+    Assert.assertNotNull(storage.getRevisionEntry("3"));
+  }
+
+  /**
+   * Test no deletion of entries.
+   */
+  @Test
+  public void testMultipleEntityCleanupNoDeletion() {
+    DatastoreRepository storage = new DatastoreRepository();
+
+    BuildInfo dummy1 = getDummyEntity("1");
+    BuildInfo dummy2 = getDummyEntity("2");
+    BuildInfo dummy3 = getDummyEntity("3");
+
+    storage.createRevisionEntry(dummy1);
+    storage.createRevisionEntry(dummy2);
+    storage.createRevisionEntry(dummy3);
+
+    storage.deleteEntriesOlderThan(savedtime);
+
+    Assert.assertNotNull(storage.getRevisionEntry("1"));
+    Assert.assertNotNull(storage.getRevisionEntry("2"));
+    Assert.assertNotNull(storage.getRevisionEntry("3"));
   }
 }
