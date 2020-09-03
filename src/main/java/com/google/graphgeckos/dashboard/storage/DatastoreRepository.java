@@ -14,6 +14,7 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
+import com.google.cloud.datastore.DatastoreException;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
@@ -58,7 +59,10 @@ public class DatastoreRepository implements DataRepository {
     if (getRevisionEntry(entryData.getCommitHash()) == null) {
       try {
         storage.save(new BuildInfo(entryData));
-      } catch (Exception e) {
+      } catch (DatastoreException e) {
+        e.printStackTrace();
+        System.err.println(e);
+    
         return false;
       }
 
@@ -83,7 +87,10 @@ public class DatastoreRepository implements DataRepository {
 
       try {
         storage.save(associatedEntity);
-      } catch (Exception e) {
+      } catch (DatastoreException e) {
+        e.printStackTrace();
+        System.err.println(e);
+    
         return false;
       }
 
@@ -106,7 +113,10 @@ public class DatastoreRepository implements DataRepository {
     if (toBeDeleted != null) {
       try {
         storage.delete(toBeDeleted);
-      } catch (Exception e) {
+      } catch (DatastoreException e) {
+        e.printStackTrace();
+        System.err.println(e);
+
         return false;
       }
 
