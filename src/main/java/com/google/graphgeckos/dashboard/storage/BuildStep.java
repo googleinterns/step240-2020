@@ -39,7 +39,7 @@ public class BuildStep {
   private final boolean isStarted;
 
   // All the logs associated with this step
-  private final <List>BuildStep logs;
+  private final <List>Log logs;
 
   /**
    * Constructs an instance of BuildStep. Both name and text can be null.
@@ -49,7 +49,7 @@ public class BuildStep {
     this.text = Arrays.toString(text);
     this.isFinished = isFinished;
     this.isStarted = isStarted;
-    this.logs = logs;
+    this.logs = Arrays.asList(logs);
   }
 
   /**
