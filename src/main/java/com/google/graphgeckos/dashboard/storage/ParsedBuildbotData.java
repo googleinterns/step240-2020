@@ -43,7 +43,7 @@ public class ParsedBuildbotData {
    * @param logs logs for each individual stage of compilation. See {@link
    *      #com.google.graphgeckos.dashboard.storage.Log Log}
    * @param status the results of the compilation (true for passed, false for failed)
-   * @throws IllegalArgumentException if either parameter is null
+   * @throws IllegalArgumentException if any parameter is null
    */
   public ParsedBuildbotData(String commitHash, String builderName,
                             List<Log> logs, BuilderStatus status) throws IllegalArgumentException {
@@ -55,16 +55,6 @@ public class ParsedBuildbotData {
     this.builderName = builderName;
     this.logs = new ArrayList<>(logs);
     this.status = status;
-  }
-
-  /**
-   * Converts this instance to an instance of
-   * {@link com.gogle.graphgeckos.dashboard.storage.Builder Builder}.
-   *
-   * @return a new Builder instance, with the fields copied from the calling instance.
-   */
-  Builder toBuilder() {
-    return new Builder(builderName, logs, status);
   }
 
   /**
