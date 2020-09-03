@@ -39,7 +39,7 @@ public class BuildStep {
   private final boolean isStarted;
 
   // All the logs associated with this step
-  private final Log[] logs;
+  private final <List>BuildStep logs;
 
   /**
    * Constructs an instance of BuildStep. Both name and text can be null.
