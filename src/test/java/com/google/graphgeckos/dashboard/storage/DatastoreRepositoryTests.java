@@ -22,6 +22,10 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.cloud.Timestamp;
 import java.util.ArrayList;
+
+import com.google.graphgeckos.dashboard.components.BuildInfo;
+import com.google.graphgeckos.dashboard.components.Builder;
+import com.google.graphgeckos.dashboard.components.BuilderStatus;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

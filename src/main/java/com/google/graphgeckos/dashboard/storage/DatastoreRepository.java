@@ -18,17 +18,14 @@ import com.google.cloud.datastore.DatastoreException;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
-import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
-import com.google.cloud.datastore.TimestampValue;
-import com.google.cloud.Timestamp;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
+import com.google.graphgeckos.dashboard.components.BuildInfo;
+import com.google.graphgeckos.dashboard.components.Builder;
+import com.google.graphgeckos.dashboard.components.GitHubData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
