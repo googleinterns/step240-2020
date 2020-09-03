@@ -22,6 +22,7 @@ import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Field;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Unindexed;
 import org.springframework.data.annotation.Id;
+import org.springframework.lang.NonNull;
 
 /**
  * This class encapsulates all the information gathered about a specific revision.
@@ -53,7 +54,7 @@ public class BuildInfo {
 
   @Field(name = "builders")
   @Unindexed
-  private final List<Builder> builders;
+  private final List<Builder> builders = new ArrayList<>();
 
   /**
    * This is used for adding entries to the Google Cloud Datastore, from the Git commit
@@ -63,7 +64,6 @@ public class BuildInfo {
     commitHash = creationData.getCommitHash();
     timestamp = Timestamp.of(new Date(creationData.getTimestamp()));
     branch = creationData.getBranch();
-    builders = new ArrayList<>();
   }
 
   /**
@@ -93,6 +93,13 @@ public class BuildInfo {
    */
   public List<Builder> getBuilders() {
     return builders;
+  }
+
+  /**
+   * Adds {@code builder} to the list of builders.
+   */
+  public void addBuilder(@NonNull Builder builder) {
+    builders.add(builder);
   }
 
   @Override
