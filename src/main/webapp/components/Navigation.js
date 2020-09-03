@@ -4,8 +4,8 @@ import * as React from 'react';
  * Main List Element to be displayed on the Navigation.
  *
  * @param {Object} props
- * @param {String} href hyperlink for the href attribute.
- * @param {String} innerText rendered text content of node.
+ * @param {string} props.href hyperlink for the href attribute.
+ * @param {string} props.innerText rendered text content of node.
  */
 const NavigationItem = props => {
   <li><a href = {props.href}>{props.innerText}</a></li>
@@ -17,9 +17,8 @@ const NavigationItem = props => {
   *
   * @param {Object} props
   * @param {Object} props.options an array of navigation options.
-  * @param {Object} props.options.option a navigation option.
-  * @param {String} props.options.option.link an external URL.
-  * @param {String} props.options.option.text the displayed text.
+  * @param {string} props.options[].link an external URL attached to option.
+  * @param {string} props.options[].text the displayed text for the option.
   */
 export const Navigation = (props) => {
   return (
