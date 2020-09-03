@@ -14,6 +14,8 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
+import java.util.List;
+
 /**
  * A storage component for creating/updating/deleting revision data, with the possibility
  * of querying entries in bulk, sorted by their timestamp.
@@ -27,7 +29,7 @@ public interface DataRepository {
    * @return true only if the operation completed successfully.
    * @throws IllegalArgumentException if entryData is null
    */
-  boolean createRevisionEntry(ParsedGitData entryData) throws IllegalArgumentException;
+  boolean createRevisionEntry(GitHubData entryData) throws IllegalArgumentException;
 
   /**
    * Updates an existing revision's database entry, with the individual information from
