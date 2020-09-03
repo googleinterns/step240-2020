@@ -16,37 +16,85 @@ package com.google.graphgeckos.dashboard.storage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
+import org.springframework.data.annotation.Transient;
 
 /**
  * Contains the information retrieved from a single build bot. It is used as a member of BuildInfo...
- * of {@link #BuildInfo BuildInfo}, and for converting ParsedBuildbotData objects
- * to Builder objects, used by BuildInfo.
+ * of {@link BuildInfo}
  */
 @Entity(name = "builder")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Builder {
 
-  private final String name;
+  @Transient
+  private String commitHash;
 
-  // The logs of each compilation stage, stored as described by {@link #Log Log}.
-  private final List<Log> logs;
-
-  // Builder compilation status, as described by {@link #BuilderStatus BuilderStatus}.
-  private final BuilderStatus status;
+  // Name of the buildbot.
+  private String name;
 
   /**
-   * Converts a {@link #ParsedBuildbotData ParsedBuildbotData} object to a Builder object.
-   *
-   * @throws IllegalArgumentException if {@code botData} is null
+   * The logs of each compilation stage, stored as described by {@link Log}.
    */
-  Builder(ParsedBuildBotData botData) throws IllegalArgumentException {
-    if (botData == null) {
-      throw new IllegalArgumentException("botData cannot be null in Builder constructor");
-    }
+  private final List<Log> logs = new ArrayList<>();
 
-    this.name = botData.getBuilderName();
-    this.logs = new ArrayList<>(botData.getLogs());
-    this.status = botData.getStatus();
+  /**
+   * Builder compilation status, as described by {@link BuilderStatus}.
+   */
+  private BuilderStatus status;
+
+  /**
+   * Extracts nested commitHash field from the json.
+   * @param sourceStamp Representation of the json component,
+   *                    where the commitHash field is located.
+   */
+  @JsonProperty("sourceStamp")
+  public void extractCommitHash(Map<String, Object> sourceStamp) {
+    commitHash = sourceStamp.get("revision").toString();
+  }
+
+
+  /**
+   * Defines builder status based on a phrase provided in parsed json.
+   * If something failed, then the buidbot is considered as failed {@code FAILED}.
+   * If something lost, then the buildbot is considered lost {@code LOST}.
+   * Otherwise the buildbot is considered passed {@code PASSED}.
+   * @param words Words of the "text" json field.
+   */
+  @JsonProperty("text")
+  private void extractStatus(List<String> words) {
+    for (String word : words) {
+      if (word.equals("failed")) {
+        status = BuilderStatus.FAILED;
+        break;
+      }
+      if (word.equals("lost")) {
+        status = BuilderStatus.LOST;
+        break;
+      }
+      if (word.equals("successful")) {
+        status = BuilderStatus.PASSED;
+      }
+    }
+  }
+
+  /**
+   * Unpacks logs represented as list of lists of two strings,
+   * where the first one is a type of the log and the second one
+   * is a link to the log.
+   * @param logs Representation of the json component, where the logs are located.
+   */
+  @JsonProperty("logs")
+  private void unpackLogs(List<String[]> logs) {
+    logs.forEach(x -> this.logs.add(new Log(x)));
+  }
+
+  public Builder(@JsonProperty("builderName") String name) {
+    this.name = name;
   }
 
   /**
