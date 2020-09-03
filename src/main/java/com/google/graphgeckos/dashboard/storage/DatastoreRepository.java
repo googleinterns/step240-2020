@@ -64,7 +64,6 @@ public class DatastoreRepository implements DataRepository {
       storage.save(new BuildInfo(entryData));
     } catch (DatastoreException e) {
       e.printStackTrace();
-      System.err.println(e);
       return false;
     }
     return true;
@@ -86,7 +85,6 @@ public class DatastoreRepository implements DataRepository {
       storage.save(associatedEntity);
     } catch (DatastoreException e) {
       e.printStackTrace();
-      System.err.println(e);
       return false;
     }
     return true;
@@ -107,7 +105,6 @@ public class DatastoreRepository implements DataRepository {
       storage.delete(toBeDeleted);
     } catch (DatastoreException e) {
       e.printStackTrace();
-      System.err.println(e);
       return false;
     }
     return true;
