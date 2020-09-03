@@ -47,7 +47,7 @@ public class ParsedBuildbotData {
    */
   public ParsedBuildbotData(String commitHash, String builderName,
                             List<Log> logs, BuilderStatus status) throws IllegalArgumentException {
-    if (commitHash != null && builderName != null && logs != null && status != null) {
+    if (commitHash == null || builderName == null || logs == null || status == null) {
       throw new IllegalArgumentException("no field in ParsedBuildbotData can be null");
     }
 
