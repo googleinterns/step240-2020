@@ -1,5 +1,6 @@
 package com.google.graphgeckos.dashboard.fetchers.github;
 
+import com.google.graphgeckos.dashboard.storage.GitHubData;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

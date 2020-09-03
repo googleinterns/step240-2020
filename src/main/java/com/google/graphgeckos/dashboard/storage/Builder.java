@@ -34,8 +34,14 @@ public class Builder {
   @Transient
   private String commitHash;
 
-  // Name of the buildbot.
-  private String name;
+  @Transient
+  private String branch;
+
+  /* The timestamp of the build. */
+  private String timestamp;
+
+  /* Name of the buildbot. */
+  private final String name;
 
   /**
    * The logs of each compilation stage, stored as described by {@link Log}.
@@ -48,15 +54,17 @@ public class Builder {
   private BuilderStatus status;
 
   /**
-   * Extracts nested commitHash field from the json.
+   * Extracts nested commitHash("revision"), branch("branch") and timestamp("when")
+   * fields from the json.
    * @param sourceStamp Representation of the json component,
-   *                    where the commitHash field is located.
+   *                    where the commitHash and the branch fields is located.
    */
   @JsonProperty("sourceStamp")
-  public void extractCommitHash(Map<String, Object> sourceStamp) {
+  public void unpackSourceStamp(Map<String, Object> sourceStamp) {
     commitHash = sourceStamp.get("revision").toString();
+    branch = sourceStamp.get("branch").toString();
+    timestamp = sourceStamp.get("when").toString();
   }
-
 
   /**
    * Defines builder status based on a phrase provided in parsed json.
@@ -116,6 +124,27 @@ public class Builder {
    */
   public BuilderStatus getStatus() {
     return status;
+  }
+
+  /**
+   * Returns the commit hash of the commit tested by the current buildbot.
+   */
+  public String getCommitHash() {
+    return commitHash;
+  }
+
+  /**
+   * Returns the branch of the commit tested by the current buildbot.
+   */
+  public String getBranch() {
+    return branch;
+  }
+
+  /**
+   * Returns the timestamp of the build.
+   */
+  public String getTimestamp() {
+    return timestamp;
   }
 
 }

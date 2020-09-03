@@ -38,7 +38,7 @@ public interface DataRepository {
    * @return true only if the operation completed successfully.
    * @throws IllegalArgumentException if updateData is null.
    */
-  boolean updateRevisionEntry(ParsedBuildbotData updateData) throws IllegalArgumentException;
+  boolean updateRevisionEntry(Builder updateData) throws IllegalArgumentException;
 
   /**
    * Deletes a revision's database entry, based on it's commit hash. Has no effect if there

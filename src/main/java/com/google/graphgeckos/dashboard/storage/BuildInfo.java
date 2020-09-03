@@ -16,6 +16,7 @@ package com.google.graphgeckos.dashboard.storage;
 
 import com.google.cloud.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Field;
@@ -55,15 +56,14 @@ public class BuildInfo {
   private final List<Builder> builders;
 
   /**
-   * Converts a {@link ParsedGitData} object to a BuildInfo object.
    * This is used for adding entries to the Google Cloud Datastore, from the Git commit
    * information received, and leaving the {@code builders} field empty, for later updates.
    */
-  BuildInfo(ParsedGitData creationData) {
-    this.commitHash = creationData.getCommitHash();
-    this.timestamp = creationData.getTimestamp();
-    this.branch = creationData.getBranch();
-    this.builders = new ArrayList<>();
+  public BuildInfo(Builder creationData) {
+    commitHash = creationData.getCommitHash();
+    timestamp = Timestamp.of(new Date(creationData.getTimestamp()));
+    branch = creationData.getBranch();
+    builders = new ArrayList<>();
   }
 
   /**
