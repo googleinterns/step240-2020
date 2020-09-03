@@ -26,13 +26,13 @@ import java.util.ArrayList;
  * Fields included: 
  * -commitHash: the commit hash of the revision built by a certain build bot.
  * -builderName: the name of the build bot which performed the compilation.
- * -logs: name of the stage and links to the logs for each stage of the compilation.
+ * -buildSteps: metadata and links to the logs for each stage of the compilation.
  * -status: the final result of the compilation (passed or failed).
  */
 public class ParsedBuildbotData {
   private final String commitHash;
   private final String builderName;
-  private final List<Log> logs;
+  private final List<BuildStep> buildSteps;
   private final BuilderStatus status;
 
   /**
@@ -40,15 +40,15 @@ public class ParsedBuildbotData {
    *
    * @param commitHash the commit hash of the revision this data refers to
    * @param builderName the name of the builder which performed the compilation
-   * @param logs logs for each individual stage of compilation. See {@link
-   *      #com.google.graphgeckos.dashboard.storage.Log Log}
+   * @param buildSteps step data for each individual stage of compilation. See {@link
+   *      #com.google.graphgeckos.dashboard.storage.BuildStep BuildStep}
    * @param status the results of the compilation (true for passed, false for failed)
    */
   public ParsedBuildbotData(String commitHash, String builderName,
-                            List<Log> logs, BuilderStatus status) {
+                            List<BuildStep> buildSteps, BuilderStatus status) {
     this.commitHash = commitHash;
     this.builderName = builderName;
-    this.logs = new ArrayList<>(logs);
+    this.buildSteps = new ArrayList<>(buildSteps);
     this.status = status;
   }
 
@@ -59,7 +59,7 @@ public class ParsedBuildbotData {
    * @return true if all required fields are available, false if not.
    */
   boolean validUpdateData() {
-    return (commitHash != null && builderName != null && logs != null && status != null);
+    return (commitHash != null && builderName != null && buildSteps != null && status != null);
   }
 
   /**
@@ -69,7 +69,7 @@ public class ParsedBuildbotData {
    * @return a new Builder instance, with the fields copied from the calling instance.
    */
   Builder toBuilder() {
-    return new Builder(builderName, logs, status);
+    return new Builder(builderName, buildSteps, status);
   }
 
   /**
@@ -91,12 +91,12 @@ public class ParsedBuildbotData {
   }
 
   /**
-   * Getter for the logs.
+   * Getter for the buildSteps.
    *
-   * @return the logs.
+   * @return the buildSteps.
    */
-  List<Log> getLogs() {
-    return logs;
+  List<BuildStep> getBuildSteps() {
+    return buildSteps;
   }
 
   /**
