@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import com.google.graphgeckos.dashboard.components.BuildInfo;
 import com.google.graphgeckos.dashboard.components.Builder;
 import com.google.graphgeckos.dashboard.components.BuilderStatus;
+import com.google.graphgeckos.dashboard.components.GitHubData;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,11 +36,11 @@ public class DatastoreRepositoryTests {
       new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
   private BuildInfo getDummyEntity(String commitHash) {
-    return new BuildInfo(new ParsedGitData(commitHash, Timestamp.now(), "test"));
+    return new BuildInfo(new GitHubData(commitHash, Timestamp.now(), "test"));
   }
 
-  private ParsedBuildbotData getDummyUpdate(String commitHash) {
-    return new ParsedBuildbotData(commitHash, "tester", new ArrayList<>(), BuilderStatus.PASSED);
+  private Builder getDummyUpdate(String commitHash) {
+    return new Builder(commitHash, "tester", new ArrayList<>(), BuilderStatus.PASSED);
   }
 
   @Before

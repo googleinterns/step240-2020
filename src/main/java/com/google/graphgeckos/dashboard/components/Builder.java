@@ -15,10 +15,12 @@
 package com.google.graphgeckos.dashboard.components;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.cloud.Timestamp;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 import org.springframework.data.annotation.Transient;
 
@@ -33,11 +35,8 @@ public class Builder {
   @Transient
   private String commitHash;
 
-  @Transient
-  private String branch;
-
   /* The timestamp of the build. */
-  private String timestamp;
+  private Timestamp timestamp;
 
   /* Name of the buildbot. */
   private final String name;
@@ -55,14 +54,12 @@ public class Builder {
   /**
    * Extracts nested commitHash("revision"), branch("branch") and timestamp("when")
    * fields from the json.
-   * @param sourceStamp Representation of the json component,
-   *                    where the commitHash and the branch fields is located.
+   * @param sourceStamp Representation of the json component, where the commitHash field is located.
    */
   @JsonProperty("sourceStamp")
   public void unpackSourceStamp(Map<String, Object> sourceStamp) {
     commitHash = sourceStamp.get("revision").toString();
-    branch = sourceStamp.get("branch").toString();
-    timestamp = sourceStamp.get("when").toString();
+    timestamp = Timestamp.of(new Date(sourceStamp.get("when").toString()));
   }
 
   /**
@@ -104,6 +101,13 @@ public class Builder {
     this.name = name;
   }
 
+  public Builder(String commitHash, String name, List<Log> logs, BuilderStatus status) {
+    this.commitHash = commitHash;
+    this.name = name;
+    this.logs.addAll(logs);
+    this.status = status;
+  }
+
   /**
    * Returns the name of the builder bot. Cannot be null.
    */
@@ -133,16 +137,9 @@ public class Builder {
   }
 
   /**
-   * Returns the branch of the commit tested by the current buildbot.
-   */
-  public String getBranch() {
-    return branch;
-  }
-
-  /**
    * Returns the timestamp of the build.
    */
-  public String getTimestamp() {
+  public Timestamp getTimestamp() {
     return timestamp;
   }
 
