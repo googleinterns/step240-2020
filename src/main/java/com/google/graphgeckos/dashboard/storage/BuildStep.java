@@ -42,7 +42,7 @@ public class BuildStep {
   private final <List>Log logs;
 
   /**
-   * Constructs an instance of BuildStep. Both name and text can be null.
+   * Constructs an instance of BuildStep. name, text and logs can be null.
    */
   BuildStep(String name, String[] text, boolean isFinished, boolean isStarted, Log[] logs) {
     this.name = name;
