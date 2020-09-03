@@ -165,16 +165,6 @@ public class DatastoreRepository implements DataRepository {
     return storage.findById(commitHash, BuildInfo.class);
   }
 
-
-  /**
-   * Queries the database for a given entry, that has the Id set to the provided commitHash.
-   * Used to separate the usage from the actual Spring Datastore implementation.
-   * Returns null when nothing was found.
-   */
-  public BuildInfo getRevisionEntry(String commitHash) {
-    return storage.findById(commitHash, BuildInfo.class);
-  }
-
   /**
    * Queries all "revision" type entries, and deletes all which are older than a specified
    * amount of time. During this operation, this repository can be queried, but
