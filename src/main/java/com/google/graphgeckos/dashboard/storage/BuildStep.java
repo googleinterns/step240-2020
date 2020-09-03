@@ -32,13 +32,13 @@ public class BuildStep {
   // BuildStep text (e.g "clean-src-dir skipped")
   private final String text;
 
-  // Indicator of whether or not the step is complete.
+  // Indicator of whether or not the step is complete
   private final boolean isFinished;
 
-  // Indicator of whether or not the step has started.
+  // Indicator of whether or not the step has started
   private final boolean isStarted;
 
-  // All the logs associated with this step.
+  // All the logs associated with this step
   private final Log[] logs;
 
   /**
