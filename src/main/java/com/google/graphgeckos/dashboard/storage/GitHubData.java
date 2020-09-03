@@ -1,4 +1,4 @@
-package com.google.graphgeckos.dashboard.fetchers.github;
+package com.google.graphgeckos.dashboard.storage;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -45,7 +45,7 @@ public class GitHubData {
     branch = refComponents[refComponents.length - 1];
   }
 
-  GitHubData(String commitHash, String branch) {
+  public GitHubData(String commitHash, String branch) {
     this.commitHash = commitHash;
     this.branch = branch;
   }

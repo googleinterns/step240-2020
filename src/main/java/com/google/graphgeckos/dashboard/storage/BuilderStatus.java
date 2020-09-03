@@ -15,6 +15,7 @@
 package com.google.graphgeckos.dashboard.storage;
 
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
+import org.springframework.lang.NonNull;
 
 /**
  * Represents buildbot statuses.
@@ -22,11 +23,12 @@ import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 @Entity(name = "buildStatus")
 public enum BuilderStatus {
   FAILED("failed"),
-  PASSED("passed");
+  PASSED("passed"),
+  LOST("lost");
 
   private final String status;
 
-  BuilderStatus(String status) {
+  BuilderStatus(@NonNull String status) {
     this.status = status;
   }
 

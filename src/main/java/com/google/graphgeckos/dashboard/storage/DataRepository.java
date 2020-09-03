@@ -29,7 +29,7 @@ public interface DataRepository {
    * @return true only if the operation completed successfully.
    * @throws IllegalArgumentException if entryData is null
    */
-  boolean createRevisionEntry(ParsedGitData entryData) throws IllegalArgumentException;
+  boolean createRevisionEntry(GitHubData entryData) throws IllegalArgumentException;
 
   /**
    * Updates an existing revision's database entry, with the individual information from
@@ -40,7 +40,7 @@ public interface DataRepository {
    * @return true only if the operation completed successfully.
    * @throws IllegalArgumentException if updateData is null.
    */
-  boolean updateRevisionEntry(ParsedBuildbotData updateData) throws IllegalArgumentException;
+  boolean updateRevisionEntry(Builder updateData) throws IllegalArgumentException;
 
   /**
    * Deletes a revision's database entry, based on it's commit hash. Has no effect if there
