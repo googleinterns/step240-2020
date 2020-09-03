@@ -73,4 +73,15 @@ public interface DataRepository {
    *     associated to that commitHash.
    */
   BuildInfo getRevisionEntry(String commitHash);
+
+  /**
+   * Checks if the given entry is present.
+   *
+   * @param commitHash the commitHash to search for.
+   * @return false if no object was found, else returns true.
+   */
+  default boolean hasRevisionEntry(String commitHash) {
+    return getRevisionEntry(commitHash) != null;
+  }
+
 }

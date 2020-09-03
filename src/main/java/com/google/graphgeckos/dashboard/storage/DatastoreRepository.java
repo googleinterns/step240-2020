@@ -35,7 +35,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * A DataRepository implementation backed up by Google Datastore.
- * Datastore. Each database entry is modeled by the {@link #BuildInfo BuildInfo} class.
+ * Datastore. Each database entry is modeled by the {@link BuildInfo} class.
  * The relevant fields for the database are:
  * - Kind: "revision"
  * - Key: commit hash
@@ -56,7 +56,7 @@ public class DatastoreRepository implements DataRepository {
    */
   @Override
   public boolean createRevisionEntry(@NonNull GitHubData entryData) {
-    if (getRevisionEntry(entryData.getCommitHash()) != null) {
+    if (hasRevisionEntry(entryData.getCommitHash())) {
       return false;
     }
 
@@ -142,4 +142,5 @@ public class DatastoreRepository implements DataRepository {
   public BuildInfo getRevisionEntry(@NonNull String commitHash) {
     return storage.findById(commitHash, BuildInfo.class);
   }
+
 }
