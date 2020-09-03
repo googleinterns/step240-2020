@@ -22,7 +22,7 @@ const NavigationItem = props => {
   */
 export const Navigation = (props) => {
   return (
-    <ul>
+    <ul className="navigation">
       {props.options.map (option => 
           <NavigationItem href={option.link} innerText={option.text}/>
       )}
