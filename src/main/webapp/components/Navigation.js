@@ -11,8 +11,11 @@ const NavigationItem = props =>
      * Main Navigation List.
      * Instance will be embedded in ./Header component.
      *
-     * @param {options: [option]} props arbituary object containing an array of
-     * options, where each option = {link:String, text: String}.
+     * @param {Object} props
+     * @param {Object} props.options an array of navigation options.
+     * @param {Object} props.options.option a navigation option.
+     * @param {String} props.options.option.link an external URL.
+     * @param {String} props.options.option.text the displayed text.
      */
     export const Navigation = (props) => {
   return (
