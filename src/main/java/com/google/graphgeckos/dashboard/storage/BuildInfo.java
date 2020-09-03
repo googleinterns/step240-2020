@@ -55,7 +55,7 @@ public class BuildInfo {
   private final List<Builder> builders;
 
   /**
-   * Converts a {@link #ParsedGitData ParsedGitData} object to a BuildInfo object.
+   * Converts a {@link ParsedGitData} object to a BuildInfo object.
    * This is used for adding entries to the Google Cloud Datastore, from the Git commit
    * information received, and leaving the {@code builders} field empty, for later updates.
    */
@@ -74,8 +74,7 @@ public class BuildInfo {
   }
 
   /**
-   * Returns time of when the commit was pushed as a {@link com.google.cloud#Timestamp
-   * Timestamp} value. Cannot be null.
+   * Returns time of when the commit was pushed as a {@link com.google.cloud.Timestamp} value. Cannot be null.
    */
   public Timestamp getTimestamp() {
     return timestamp;
@@ -96,9 +95,17 @@ public class BuildInfo {
     return builders;
   }
 
-  public boolean equals(BuildInfo other) {
-    return this.commitHash == other.commitHash && this.timestamp.equals(other.timestamp) &&
-           this.branch == other.branch && this.builders.equals(other.builders);
+  @Override
+  public boolean equals(Object o) {
+    if (o == this) {
+      return true;
+    }
+    if (!(o instanceof BuildInfo)) {
+      return false;
+    }
+    BuildInfo other = (BuildInfo) o;
+    return this.commitHash.equals(other.commitHash) && this.timestamp.equals(other.timestamp) &&
+           this.branch.equals(other.branch) && this.builders.equals(other.builders);
   }
 
 }
