@@ -117,35 +117,6 @@ public class DatastoreRepositoryTests {
   }
 
   /**
-   * Tests multiple threads creating update requests for the same entities.
-   */
-  @Test
-  public void testParallelBurstRequests() {
-    DatastoreRepository storage = new DatastoreRepository();
-
-    Assert.assertTrue(storage.createRevisionEntry(getDummyEntity("1")));
-    Assert.assertTrue(storage.createRevisionEntry(getDummyEntity("2")));
-
-    Runnable burstRequest = () -> {
-      for (int i = 0; i < 10; ++i) {
-        Assert.assertTrue(storage.updateRevisionEntry(getDummyUpdate("1")));
-        Assert.assertTrue(storage.updateRevisionEntry(getDummyUpdate("2")));
-      }
-    }
-
-    Thread thread1 = new Thread(burstRequest);
-    Thread thread2 = new Thread(burstRequest);
-    Thread thread3 = new Thread(burstRequest);
-
-    thread1.start();
-    thread2.start();
-    thread3.start();
-
-    Assert.assertTrue(storage.deleteRevisionEntry("1"));
-    Assert.assertTrue(storage.deleteRevisionEntry("2"));
-  }
-
-  /**
    * Test possible cases of the getLastRevisions query.
    */
   @Test
