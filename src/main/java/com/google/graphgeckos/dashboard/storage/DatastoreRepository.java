@@ -127,7 +127,7 @@ public class DatastoreRepository implements DataRepository {
       .setLimit(number)
       .build();
 
-    List<BuildInfo> toBeReturned = new ArrayList<BuildInfo>();
+    List<BuildInfo> toBeReturned = new ArrayList<>();
     storage.query(query, BuildInfo.class).getIterable().forEach(toBeReturned::add);
     return toBeReturned;
   }
