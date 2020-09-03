@@ -21,10 +21,12 @@ import com.google.cloud.datastore.StructuredQuery.OrderBy;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.cloud.datastore.TimestampValue;
 import com.google.cloud.Timestamp;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
@@ -35,9 +37,9 @@ import org.springframework.stereotype.Repository;
  * A DataRepository implementation backed up by Google Datastore.
  * Datastore. Each database entry is modeled by the {@link #BuildInfo BuildInfo} class.
  * The relevant fields for the database are:
- *    - Kind: "revision"
- *    - Key: commit hash
- *
+ * - Kind: "revision"
+ * - Key: commit hash
+ * <p>
  * Useful links:
  * - https://googleapis.dev/java/google-cloud-datastore/latest/index.html
  * - https://googleapis.dev/java/spring-cloud-gcp/1.2.2.RELEASE/index.html
@@ -54,21 +56,18 @@ public class DatastoreRepository implements DataRepository {
    */
   @Override
   public boolean createRevisionEntry(@NonNull GitHubData entryData) {
-
-    if (getRevisionEntry(entryData.getCommitHash()) == null) {
-      try {
-        storage.save(new BuildInfo(entryData));
-      } catch (DatastoreException e) {
-        e.printStackTrace();
-        System.err.println(e);
-
-        return false;
-      }
-
-      return true;
+    if (getRevisionEntry(entryData.getCommitHash()) != null) {
+      return false;
     }
 
-    return false;
+    try {
+      storage.save(new BuildInfo(entryData));
+    } catch (DatastoreException e) {
+      e.printStackTrace();
+      System.err.println(e);
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -78,22 +77,19 @@ public class DatastoreRepository implements DataRepository {
   public boolean updateRevisionEntry(@NonNull Builder updateData) {
     BuildInfo associatedEntity = getRevisionEntry(updateData.getCommitHash());
 
-    if (associatedEntity != null) {
-      associatedEntity.addBuilder(updateData);
-
-      try {
-        storage.save(associatedEntity);
-      } catch (DatastoreException e) {
-        e.printStackTrace();
-        System.err.println(e);
-    
-        return false;
-      }
-
-      return true;
+    if (associatedEntity == null) {
+      return false;
     }
 
-    return false;
+    associatedEntity.addBuilder(updateData);
+    try {
+      storage.save(associatedEntity);
+    } catch (DatastoreException e) {
+      e.printStackTrace();
+      System.err.println(e);
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -103,20 +99,18 @@ public class DatastoreRepository implements DataRepository {
   public boolean deleteRevisionEntry(@NonNull String commitHash) {
     BuildInfo toBeDeleted = getRevisionEntry(commitHash);
 
-    if (toBeDeleted != null) {
-      try {
-        storage.delete(toBeDeleted);
-      } catch (DatastoreException e) {
-        e.printStackTrace();
-        System.err.println(e);
-
-        return false;
-      }
-
-      return true;
+    if (toBeDeleted == null) {
+      return false;
     }
 
-    return false;
+    try {
+      storage.delete(toBeDeleted);
+    } catch (DatastoreException e) {
+      e.printStackTrace();
+      System.err.println(e);
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -124,26 +118,20 @@ public class DatastoreRepository implements DataRepository {
    */
   @Override
   public List<BuildInfo> getLastRevisionEntries(int number, int offset)
-                                                         throws IllegalArgumentException {
+    throws IllegalArgumentException {
     if (number < 0 || offset < 0) {
       throw new IllegalArgumentException("Both number and offset must be >= 0");
     }
 
     Query<Entity> query = Query.newEntityQueryBuilder()
-                               .setKind("revision")
-                               .setOrderBy(OrderBy.desc("timestamp"))
-                               .setOffset(offset)
-                               .setLimit(number)
-                               .build();
-
-    Iterable<BuildInfo> results = storage.query(query, BuildInfo.class).getIterable();
+      .setKind("revision")
+      .setOrderBy(OrderBy.desc("timestamp"))
+      .setOffset(offset)
+      .setLimit(number)
+      .build();
 
     List<BuildInfo> toBeReturned = new ArrayList<BuildInfo>();
-
-    for (BuildInfo entity : results) {
-      toBeReturned.add(entity);
-    }
-
+    storage.query(query, BuildInfo.class).getIterable().forEach(toBeReturned::add);
     return toBeReturned;
   }
 
