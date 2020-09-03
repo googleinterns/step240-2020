@@ -14,6 +14,8 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
+import java.util.List;
+
 /**
  * A storage component for creating/updating/deleting revision data, with the possibility
  * of querying entries in bulk, sorted by their timestamp.

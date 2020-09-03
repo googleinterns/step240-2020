@@ -39,7 +39,7 @@ public class Builder {
    *
    * @throws IllegalArgumentException if {@code botData} is null
    */
-  Builder(ParsedBuildBotData botData) throws IllegalArgumentException {
+  Builder(ParsedBuildbotData botData) throws IllegalArgumentException {
     if (botData == null) {
       throw new IllegalArgumentException("botData cannot be null in Builder constructor");
     }
