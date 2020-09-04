@@ -15,7 +15,7 @@
 package com.google.graphgeckos.dashboard.storage;
 
 import com.google.graphgeckos.dashboard.components.BuildInfo;
-import com.google.graphgeckos.dashboard.components.Builder;
+import com.google.graphgeckos.dashboard.components.BuildBotData;
 import com.google.graphgeckos.dashboard.components.GitHubData;
 
 import java.util.List;
@@ -42,7 +42,7 @@ public interface DataRepository {
    * @param updateData a ParsedBuildbotData instance, must have a non-null "commitHash" field
    * @return true only if the operation completed successfully.
    */
-  boolean updateRevisionEntry(Builder updateData);
+  boolean updateRevisionEntry(BuildBotData updateData);
 
   /**
    * Deletes a revision's database entry, based on it's commit hash. Has no effect if there

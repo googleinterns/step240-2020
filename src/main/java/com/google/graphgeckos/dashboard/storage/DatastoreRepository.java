@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.graphgeckos.dashboard.components.BuildInfo;
-import com.google.graphgeckos.dashboard.components.Builder;
+import com.google.graphgeckos.dashboard.components.BuildBotData;
 import com.google.graphgeckos.dashboard.components.GitHubData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
@@ -70,7 +70,7 @@ public class DatastoreRepository implements DataRepository {
    * {@inheritDoc}
    */
   @Override
-  public boolean updateRevisionEntry(@NonNull Builder updateData) {
+  public boolean updateRevisionEntry(@NonNull BuildBotData updateData) {
     BuildInfo associatedEntity = getRevisionEntry(updateData.getCommitHash());
 
     if (associatedEntity == null) {

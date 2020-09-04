@@ -24,7 +24,7 @@ import com.google.cloud.Timestamp;
 import java.util.ArrayList;
 
 import com.google.graphgeckos.dashboard.components.BuildInfo;
-import com.google.graphgeckos.dashboard.components.Builder;
+import com.google.graphgeckos.dashboard.components.BuildBotData;
 import com.google.graphgeckos.dashboard.components.BuilderStatus;
 import com.google.graphgeckos.dashboard.components.GitHubData;
 import org.junit.After;
@@ -39,8 +39,8 @@ public class DatastoreRepositoryTests {
     return new BuildInfo(new GitHubData(commitHash, Timestamp.now(), "test"));
   }
 
-  private Builder getDummyUpdate(String commitHash) {
-    return new Builder(commitHash, "tester", new ArrayList<>(), BuilderStatus.PASSED);
+  private BuildBotData getDummyUpdate(String commitHash) {
+    return new BuildBotData(commitHash, "tester", new ArrayList<>(), BuilderStatus.PASSED);
   }
 
   @Before
@@ -67,7 +67,7 @@ public class DatastoreRepositoryTests {
 
     Assert.assertTrue(storage.updateRevisionEntry(getDummyUpdate("1")));
     BuildInfo dummy = getDummyEntity("1");
-    dummy.addBuilder(new Builder(getDummyUpdate("1")));
+    dummy.addBuilder(new BuildBotData(getDummyUpdate("1")));
     Assert.assertEquals(dummy, storage.getRevisionEntry("1"));
   }
 

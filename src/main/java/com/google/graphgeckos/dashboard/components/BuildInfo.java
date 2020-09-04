@@ -16,7 +16,6 @@ package com.google.graphgeckos.dashboard.components;
 
 import com.google.cloud.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
@@ -55,7 +54,7 @@ public class BuildInfo {
 
   @Field(name = "builders")
   @Unindexed
-  private final List<Builder> builders = new ArrayList<>();
+  private final List<BuildBotData> builders = new ArrayList<>();
 
   /**
    * This is used for adding entries to the Google Cloud Datastore, from the Git commit
@@ -92,14 +91,14 @@ public class BuildInfo {
    * Returns builders which attempted the compilation of the revision. Cannot be null, and
    * neither it's elements.
    */
-  public List<Builder> getBuilders() {
+  public List<BuildBotData> getBuilders() {
     return builders;
   }
 
   /**
    * Adds {@code builder} to the list of builders.
    */
-  public void addBuilder(@NonNull Builder builder) {
+  public void addBuilder(@NonNull BuildBotData builder) {
     builders.add(builder);
   }
 

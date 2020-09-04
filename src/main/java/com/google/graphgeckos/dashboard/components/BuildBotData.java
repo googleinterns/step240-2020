@@ -30,7 +30,7 @@ import org.springframework.data.annotation.Transient;
  */
 @Entity(name = "builder")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Builder {
+public class BuildBotData {
 
   @Transient
   private String commitHash;
@@ -97,11 +97,11 @@ public class Builder {
     logs.forEach(x -> this.logs.add(new Log(x)));
   }
 
-  public Builder(@JsonProperty("builderName") String name) {
+  public BuildBotData(@JsonProperty("builderName") String name) {
     this.name = name;
   }
 
-  public Builder(String commitHash, String name, List<Log> logs, BuilderStatus status) {
+  public BuildBotData(String commitHash, String name, List<Log> logs, BuilderStatus status) {
     this.commitHash = commitHash;
     this.name = name;
     this.logs.addAll(logs);
