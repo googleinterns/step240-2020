@@ -3,7 +3,6 @@ package com.google.graphgeckos.dashboard.components;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.cloud.Timestamp;
-
 import java.util.Date;
 import java.util.Map;
 
