@@ -18,10 +18,8 @@ import com.google.cloud.datastore.DatastoreException;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import com.google.graphgeckos.dashboard.components.BuildInfo;
 import com.google.graphgeckos.dashboard.components.BuildBotData;
 import com.google.graphgeckos.dashboard.components.GitHubData;
@@ -56,7 +54,6 @@ public class DatastoreRepository implements DataRepository {
     if (hasRevisionEntry(entryData.getCommitHash())) {
       return false;
     }
-
     try {
       storage.save(new BuildInfo(entryData));
     } catch (DatastoreException e) {

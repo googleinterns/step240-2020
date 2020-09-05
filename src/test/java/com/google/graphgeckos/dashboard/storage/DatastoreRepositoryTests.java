@@ -17,12 +17,10 @@ package com.google.graphgeckos.dashboard.storage;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.cloud.Timestamp;
 import java.util.ArrayList;
-
 import com.google.graphgeckos.dashboard.components.BuildInfo;
 import com.google.graphgeckos.dashboard.components.BuildBotData;
 import com.google.graphgeckos.dashboard.components.BuilderStatus;
