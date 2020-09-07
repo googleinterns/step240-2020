@@ -59,7 +59,7 @@ public class BuildInfo {
    * This is used for adding entries to the Google Cloud Datastore, from the Git commit
    * information received, and leaving the {@code builders} field empty, for later updates.
    */
-  public BuildInfo(ParsedGitData creationData) {
+  public BuildInfo(GitHubData creationData) {
     this.commitHash = creationData.getCommitHash();
     this.timestamp = creationData.getTimestamp();
     this.branch = creationData.getBranch();

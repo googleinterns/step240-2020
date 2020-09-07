@@ -20,7 +20,7 @@ import com.google.graphgeckos.dashboard.datatypes.BuildBotInfo;
 import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
 import com.google.graphgeckos.dashboard.datatypes.BuilderStatus;
 import com.google.graphgeckos.dashboard.datatypes.ParsedBuildbotData;
-import com.google.graphgeckos.dashboard.datatypes.ParsedGitData;
+import com.google.graphgeckos.dashboard.datatypes.GitHubData;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
@@ -39,8 +39,8 @@ public class DatastoreRepositoryTests {
     return new BuildInfo(getDummyGitData(commitHash));
   }
 
-  private ParsedGitData getDummyGitData(String commitHash) {
-    return new ParsedGitData(commitHash, Timestamp.now(), "test");
+  private GitHubData getDummyGitData(String commitHash) {
+    return new GitHubData(commitHash, Timestamp.now(), "test");
   }
 
   private ParsedBuildbotData getDummyUpdate(String commitHash) {
