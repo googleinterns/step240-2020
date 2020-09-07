@@ -38,21 +38,17 @@ public class ParsedGitData {
    * @param commitHash the commit hash of the revision this data refers to
    * @param timestamp the time when the commit was pushed
    * @param branch branch of the LLVM project on which this commit was pushed
+   * @throws IllegalArgumentException if commitHash is null
    */
-  public ParsedGitData(String commitHash, Timestamp timestamp, String branch) {
+  public ParsedGitData(String commitHash, Timestamp timestamp, String branch)
+                                                                throws IllegalArgumentException {
+    if (commitHash == null) {
+      throw new IllegalArgumentException("ParsedGitData's commitHash cannot be null");
+    }
+
     this.commitHash = commitHash;
     this.timestamp = timestamp;
     this.branch = branch;
-  }
-
-  /**
-   * Checks for the existance of the fields necessary for creating a database entry.
-   * Does not check the validity of each field.
-   *
-   * @return true if all required fields are available, false if not.
-   */
-  boolean validCreateData() {
-    return commitHash != null;
   }
 
   /**
