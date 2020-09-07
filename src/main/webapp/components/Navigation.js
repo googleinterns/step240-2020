@@ -12,7 +12,7 @@ const NavigationItem = (props) => {
     <li>
       <a href = {props.href}>{props.innerText}</a>
     </li>
-  )
+  );
 }
 
 /**
