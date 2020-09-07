@@ -16,6 +16,11 @@ package com.google.graphgeckos.dashboard.storage;
 
 import com.google.cloud.datastore.testing.LocalDatastoreHelper;
 import com.google.cloud.Timestamp;
+import com.google.graphgeckos.dashboard.datatypes.Builder;
+import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
+import com.google.graphgeckos.dashboard.datatypes.BuilderStatus;
+import com.google.graphgeckos.dashboard.datatypes.ParsedBuildbotData;
+import com.google.graphgeckos.dashboard.datatypes.ParsedGitData;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
