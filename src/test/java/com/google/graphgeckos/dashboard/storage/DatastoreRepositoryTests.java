@@ -14,24 +14,28 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import com.google.cloud.datastore.testing.LocalDatastoreHelper;
 import com.google.cloud.Timestamp;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.TimeoutException;
+import java.util.List;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 public class DatastoreRepositoryTests {
-  private final LocalServiceTestHelper helper =
-      new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+  LocalDatastoreHelper emulator = LocalDatastoreHelper.newBuilder().setConsistency(1.0)
+                                                                   .setStoreOnDisk(false)
+                                                                   .build();
 
   private BuildInfo getDummyEntity(String commitHash) {
-    return new BuildInfo(new ParsedGitData(commitHash, Timestamp.now(), "test"));
+    return new BuildInfo(getDummyGitData(commitHash));
+  }
+
+  private ParsedGitData getDummyGitData(String commitHash) {
+    return new ParsedGitData(commitHash, Timestamp.now(), "test");
   }
 
   private ParsedBuildbotData getDummyUpdate(String commitHash) {
@@ -39,27 +43,28 @@ public class DatastoreRepositoryTests {
   }
 
   @Before
-  public void setUp() {
-    helper.setUp();
+  public void setUp() throws IOException, InterruptedException {
+    emulator.start();
   }
 
   @After
-  public void tearDown() {
-    helper.tearDown();
+  public void tearDown() throws IOException, InterruptedException, TimeoutException  {
+    emulator.stop();
   }
 
   @Test
-  public void testValidAddition() {
+  public void testValidAddition() throws IOException, InterruptedException{
     DatastoreRepository storage = new DatastoreRepository();
     
-    Assert.assertTrue(storage.createRevisionEntry(getDummyEntity("1")));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1")));
     Assert.assertEquals(getDummyEntity("1"), storage.getRevisionEntry("1"));
   }
 
   @Test
-  public void testValidUpdate() {
+  public void testValidUpdate() throws IOException, InterruptedException {
     DatastoreRepository storage = new DatastoreRepository();
 
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1")));
     Assert.assertTrue(storage.updateRevisionEntry(getDummyUpdate("1")));
     BuildInfo dummy = getDummyEntity("1");
     dummy.addBuilder(new Builder(getDummyUpdate("1")));
@@ -67,9 +72,10 @@ public class DatastoreRepositoryTests {
   }
 
   @Test
-  public void testValidDeletion() {
+  public void testValidDeletion() throws IOException, InterruptedException {
     DatastoreRepository storage = new DatastoreRepository();
 
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1")));
     Assert.assertTrue(storage.deleteRevisionEntry("1"));
     Assert.assertNull(storage.getRevisionEntry("1"));
   }
@@ -78,39 +84,50 @@ public class DatastoreRepositoryTests {
    * Tests the behaviour of add/update/get/delete requests on null data.
    */
   @Test
-  public void testRequestsNullData() {
+  public void testRequestsNullData() throws IOException, InterruptedException {
     DatastoreRepository storage = new DatastoreRepository();
 
-    Assert.assertThrows(IllegalArgumentException.class, storage.createRevisionEntry(null));
-    Assert.assertThrows(IllegalArgumentException.class, storage.getRevisionEntry(null));
-    Assert.assertThrows(IllegalArgumentException.class, storage.updateRevisionEntry(null));
-    Assert.assertThrows(IllegalArgumentException.class, storage.deleteRevisionEntry(null));
+    Assert.assertThrows(IllegalArgumentException.class, () -> {
+      storage.createRevisionEntry(null);
+    });
+
+    Assert.assertThrows(IllegalArgumentException.class, () -> {
+      storage.getRevisionEntry(null);
+    });
+
+    Assert.assertThrows(IllegalArgumentException.class, () -> { 
+      storage.updateRevisionEntry(null); 
+    });
+
+    Assert.assertThrows(IllegalArgumentException.class, () -> { 
+      storage.deleteRevisionEntry(null); 
+    });
   }
 
   @Test
-  public void testAddingSameEntry() {
+  public void testAddingSameEntry() throws IOException, InterruptedException {
     DatastoreRepository storage = new DatastoreRepository();
 
-    Assert.assertTrue(storage.createRevisionEntry(getDummyEntity("1")));
-    Assert.assertFalse(storage.createRevisionEntry(getDummyEntity("1")));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1")));
+    Assert.assertFalse(storage.createRevisionEntry(getDummyGitData("1")));
   }
 
   @Test
-  public void testUpdatingInexistentEntry() {
+  public void testUpdatingInexistentEntry() throws IOException, InterruptedException {
     DatastoreRepository storage = new DatastoreRepository();
 
     Assert.assertFalse(storage.updateRevisionEntry(getDummyUpdate("2")));
   }
 
   @Test
-  public void testGettingInexistentEntry() {
+  public void testGettingInexistentEntry() throws IOException, InterruptedException {
     DatastoreRepository storage = new DatastoreRepository();
 
     Assert.assertNull(storage.getRevisionEntry("2"));
   }
 
   @Test
-  public void testDeletingInexistentEntry() {
+  public void testDeletingInexistentEntry() throws IOException, InterruptedException {
     DatastoreRepository storage = new DatastoreRepository();
 
     Assert.assertTrue(storage.deleteRevisionEntry("2"));
@@ -120,7 +137,7 @@ public class DatastoreRepositoryTests {
    * Test possible cases of the getLastRevisions query.
    */
   @Test
-  public void testGetLastRevisionsRegularQuery() {
+  public void testGetLastRevisionsRegularQuery() throws IOException, InterruptedException {
     DatastoreRepository storage = new DatastoreRepository();
 
     BuildInfo dummy1 = getDummyEntity("1");
@@ -129,21 +146,21 @@ public class DatastoreRepositoryTests {
     BuildInfo dummy4 = getDummyEntity("4");
     BuildInfo dummy5 = getDummyEntity("5");
 
-    Assert.assertTrue(storage.createRevisionEntry(dummy1));
-    Assert.assertTrue(storage.createRevisionEntry(dummy2));
-    Assert.assertTrue(storage.createRevisionEntry(dummy3));
-    Assert.assertTrue(storage.createRevisionEntry(dummy4));
-    Assert.assertTrue(storage.createRevisionEntry(dummy5));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1")));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("2")));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("3")));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("4")));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("5")));
 
     List<BuildInfo> results = storage.getLastRevisionEntries(3, 0);
-    AssertEquals(results.size(), 3);
-    AssertEquals(results.get(0), dummy5);
-    AssertEquals(results.get(1), dummy4);
-    AssertEquals(results.get(2), dummy3);
+    Assert.assertEquals(results.size(), 3);
+    Assert.assertEquals(results.get(0), dummy5);
+    Assert.assertEquals(results.get(1), dummy4);
+    Assert.assertEquals(results.get(2), dummy3);
   }
 
   @Test
-  public void testGetLastRevisionsQueryOffset() {
+  public void testGetLastRevisionsQueryOffset() throws IOException, InterruptedException {
     DatastoreRepository storage = new DatastoreRepository();
 
     BuildInfo dummy1 = getDummyEntity("1");
@@ -152,21 +169,21 @@ public class DatastoreRepositoryTests {
     BuildInfo dummy4 = getDummyEntity("4");
     BuildInfo dummy5 = getDummyEntity("5");
 
-    Assert.assertTrue(storage.createRevisionEntry(dummy1));
-    Assert.assertTrue(storage.createRevisionEntry(dummy2));
-    Assert.assertTrue(storage.createRevisionEntry(dummy3));
-    Assert.assertTrue(storage.createRevisionEntry(dummy4));
-    Assert.assertTrue(storage.createRevisionEntry(dummy5));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1")));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("2")));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("3")));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("4")));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("5")));
 
     List<BuildInfo> results = storage.getLastRevisionEntries(3, 2);
-    AssertEquals(results.size(), 3);
-    AssertEquals(results.get(0), dummy3);
-    AssertEquals(results.get(1), dummy2);
-    AssertEquals(results.get(2), dummy1);
+    Assert.assertEquals(results.size(), 3);
+    Assert.assertEquals(results.get(0), dummy3);
+    Assert.assertEquals(results.get(1), dummy2);
+    Assert.assertEquals(results.get(2), dummy1);
   }
 
   @Test
-  public void testGetLastRevisionsQueryAfterDeletion() {
+  public void testGetLastRevisionsQueryAfterDeletion() throws IOException, InterruptedException {
     DatastoreRepository storage = new DatastoreRepository();
 
     BuildInfo dummy1 = getDummyEntity("1");
@@ -175,17 +192,17 @@ public class DatastoreRepositoryTests {
     BuildInfo dummy4 = getDummyEntity("4");
     BuildInfo dummy5 = getDummyEntity("5");
 
-    Assert.assertTrue(storage.createRevisionEntry(dummy1));
-    Assert.assertTrue(storage.createRevisionEntry(dummy2));
-    Assert.assertTrue(storage.createRevisionEntry(dummy3));
-    Assert.assertTrue(storage.createRevisionEntry(dummy4));
-    Assert.assertTrue(storage.createRevisionEntry(dummy5));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1")));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("2")));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("3")));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("4")));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("5")));
 
     Assert.assertTrue(storage.deleteRevisionEntry("3"));
   
     List<BuildInfo> results = storage.getLastRevisionEntries(2, 2);
-    AssertEquals(results.size(), 2);
-    AssertEquals(results.get(0), dummy2);
-    AssertEquals(results.get(1), dummy1);
+    Assert.assertEquals(results.size(), 2);
+    Assert.assertEquals(results.get(0), dummy2);
+    Assert.assertEquals(results.get(1), dummy1);
   }
 }
