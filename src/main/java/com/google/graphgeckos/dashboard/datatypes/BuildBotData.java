@@ -32,6 +32,13 @@ import org.springframework.data.annotation.Transient;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BuildBotData {
 
+  /**
+   * The commit hash, it is fetched from the BuildBot API.
+   * This field is transient because it is only needed to
+   * determine which commit this data belongs to and put
+   * it in the right {@link BuildInfo} in the storage.
+   * Used in {@link com.google.graphgeckos.dashboard.storage.DatastoreRepository}.
+   */
   @Transient
   private String commitHash;
 
