@@ -14,8 +14,8 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
+import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
 import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
-import com.google.graphgeckos.dashboard.datatypes.ParsedBuildbotData;
 import com.google.graphgeckos.dashboard.datatypes.ParsedGitData;
 import java.util.List;
 
@@ -43,7 +43,7 @@ public interface DataRepository {
    * @return true only if the operation completed successfully.
    * @throws IllegalArgumentException if updateData is null.
    */
-  boolean updateRevisionEntry(ParsedBuildbotData updateData) throws IllegalArgumentException;
+  boolean updateRevisionEntry(BuildBotData updateData) throws IllegalArgumentException;
 
   /**
    * Deletes a revision's database entry, based on it's commit hash. Has no effect if there
