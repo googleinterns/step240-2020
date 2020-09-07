@@ -39,7 +39,7 @@ public interface DataRepository {
    * a particular buildbot. If there is no entry associated with the provided commit hash,
    * ignores the request.
    *
-   * @param updateData a ParsedBuildbotData instance, must have a non-null "commitHash" field
+   * @param updateData a BuildBotData instance, must have a non-null "commitHash" field
    * @return true only if the operation completed successfully.
    * @throws IllegalArgumentException if updateData is null.
    */
