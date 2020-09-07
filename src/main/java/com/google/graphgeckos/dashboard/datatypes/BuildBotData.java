@@ -25,7 +25,7 @@ import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 import org.springframework.data.annotation.Transient;
 
 /**
- * Contains the information retrieved from a single build bot. It is used as a member of BuildInfo...
+ * Contains the information retrieved from a single build bot. It is used as a member
  * of {@link BuildInfo}
  */
 @Entity(name = "builder")
