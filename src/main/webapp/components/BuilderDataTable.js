@@ -25,7 +25,7 @@ export const BuilderDataTable = props => {
       <tbody>
         {props.buildSteps.map(datapoint => 
           <tr>
-            {BUILD_STEP_FIELDS.forEach(field => <td>{datapoint[field]}</td>)}
+            {BUILD_STEP_FIELDS.map(field => <td>{datapoint[field]}</td>)}
           </tr>
         )}
       </tbody>
