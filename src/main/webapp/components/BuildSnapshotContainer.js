@@ -1,6 +1,5 @@
 import * as React from "react";
 import {BuildSnapshot} from "./BuildSnapshot";
-import {Wrapper} from "./Wrapper";
 
 /**
  * Container Component for BuildSnapshots.
@@ -24,9 +23,9 @@ export const BuildSnapshotContainer = React.memo((props) =>
     }, []);
 
     return (
-      <Wrapper>
+      <div>
         {data.map(snapshotData => <BuildSnapshot data={snapshotData}/>)}
-      </Wrapper>
+      </div>
     );
   }
 );
