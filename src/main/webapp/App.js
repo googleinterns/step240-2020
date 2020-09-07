@@ -9,9 +9,9 @@ import {Header} from "./components/Header";
  */
 export const App = (props) => {
   return (
-    <div>
+    <React.Fragment>
       <Header/>
       <BuildSnapshotContainer/>
-    </div>
+    </React.Fragment>
   );
 }
