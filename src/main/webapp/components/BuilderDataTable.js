@@ -1,18 +1,20 @@
 import * as React from 'react';
+import {BuilderRow} from './BuilderRow';
 
-const HEADERS = ['no.', 'text', 'log'];
+const HEADERS = ['no', 'text', 'log'];
 
 export const BuilderDataTable = props => {
   return (
     <table className='data-table'>
       <thead>
-        <BuilderRow 
-            data={HEADERS}
-            header
-        />
+        <tr>{HEADERS.map(header => <th>{header}</th>)}</tr>
       </thead>
       <tbody>
-        {props.data.map(datapoint => <BuilderRow data = {datapoint}/>)}
+        {props.data.map(datapoint => 
+          <tr>
+            {HEADERS.forEach(header => <td>{datapoint[header]}</td>)}
+          </tr>
+        )}
       </tbody>
     </table>
   );
