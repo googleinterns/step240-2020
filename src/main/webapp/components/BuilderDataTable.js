@@ -11,7 +11,7 @@ const HEADERS = ['no.', 'text', 'log'];
  * Table responsible for displaying the data for a builder.
  *
  * @param {Object[]} props.buildSteps - The build steps for a given builder.
- * @param {string} props.buildSteps[].step_number - The relative order of 
+ * @param {number} props.buildSteps[].step_number - The relative order of 
  * the build step.
  * @param {string} props.buildSteps[].text - Output text related to 
  * the build step.
