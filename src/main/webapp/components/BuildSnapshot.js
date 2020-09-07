@@ -4,7 +4,13 @@ import {getFields} from './utils/getFields.js';
 /**
  * Component used to render Build Information.
  *
- * @param {*} props input properties containing build information
+ * @param {Object[]} props.buildData - Aggregated data on latest commit build.
+ * @param {string} props.buildData[].description - Commit message.
+ * @param {Object[]} props.buildData[].builders - Bots that built this commit.
+ * @param {string} props.buildData[].commitHash - Commit hash.
+ * @param {string} props.buildData[].repository - URL to the GitHub repository.
+ * @param {string} props.buildData[].status - The status of the build.
+ * @param {string} props.buildData[].timestamp - Timestamp of commit push.
  */
 export const BuildSnapshot = (props) => {
   // State variable indicating whether the BuildSnapshot is open or closed.
@@ -30,8 +36,14 @@ export const BuildSnapshot = (props) => {
  * Subcomponent that holds the content displayed
  * when the BuildSnapshot is collapsed.
  *
- * @param {*} props an object containing a 'data' field
- * which encapsulates the fields from headerFields.
+ * @param {boolean} props.isOpen - Indicates if the Tray should be open.
+ * @param {Object} onClick - A callback function responsible
+ * for toggling the visibility of the Tray via the onClick event.
+ * @param {Object} props.data - Build information to be displayed on Header.
+ * @param {string} props.data[].description - The commit message.
+ * @param {string} props.data[].commitHash - The commit hash.
+ * @param {string} props.data[].repository - URL to the GitHub repository.
+ * @param {string} props.buildData[].status - The status of the build.
  */
 const Header = (props) => {
   return (
@@ -46,10 +58,12 @@ const Header = (props) => {
 
 /**
  * Subcomponent that holds the content revealed
- * when the BuildSnapshot is open (isOpen === true).
+ * when the BuildSnapshot is open (props.isOpen === true).
  *
- * @param {*} props an object containing a 'data' field
- * which encapsualtes the fields from trayFields.
+ * @param {boolean} props.isOpen - Indicates if the Tray should be open.
+ * @param {Object[]} props.data.builders - Bots that built this commit.
+ * @param {string} props.data.builders[].name - The name of the given Build Bot.
+ * @param {string} props.data.timestamp - The timestamp of the given build bot.
  */
 const Tray = (props) => {
   // State variable indicating the builder whose data
