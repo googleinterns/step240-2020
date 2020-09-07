@@ -14,6 +14,9 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  * An immutable container used for providing stripped-down build bot information
  * to the GCDataRepository. Provides functionality for checking whether the information
@@ -40,33 +43,18 @@ public class ParsedBuildbotData {
    * @param logs logs for each individual stage of compilation. See {@link
    *      #com.google.graphgeckos.dashboard.storage.Log Log}
    * @param status the results of the compilation (true for passed, false for failed)
+   * @throws IllegalArgumentException if any parameter is null
    */
   public ParsedBuildbotData(String commitHash, String builderName,
-                            List<Log> logs, BuilderStatus status) {
+                            List<Log> logs, BuilderStatus status) throws IllegalArgumentException {
+    if (commitHash == null || builderName == null || logs == null || status == null) {
+      throw new IllegalArgumentException("no field in ParsedBuildbotData can be null");
+    }
+
     this.commitHash = commitHash;
     this.builderName = builderName;
-    this.logs = new LinkedList<>(logs);
+    this.logs = new ArrayList<>(logs);
     this.status = status;
-  }
-
-  /**
-   * Checks for the existance of the fields necessary for updating a database entry.
-   * Does not check the validity of each field.
-   *
-   * @return true if all required fields are available, false if not.
-   */
-  boolean validUpdateData() {
-    return (commitHash != null && builderName != null && logs != null && status != null);
-  }
-
-  /**
-   * Converts this instance to an instance of
-   * {@link com.gogle.graphgeckos.dashboard.storage.Builder Builder}.
-   *
-   * @return a new Builder instance, with the fields copied from the calling instance.
-   */
-  Builder toBuilder() {
-    return new Builder(builderName, logs, status);
   }
 
   /**
@@ -101,7 +89,7 @@ public class ParsedBuildbotData {
    *
    * @return the status.
    */
-  BuildStatus getStatus() {
+  BuilderStatus getStatus() {
     return status;
   }
 }

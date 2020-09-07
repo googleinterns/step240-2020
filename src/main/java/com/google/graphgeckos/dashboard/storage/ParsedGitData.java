@@ -14,6 +14,8 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
+import com.google.cloud.Timestamp;
+
 /**
  * An immutable container used for providing stripped-down git information
  * to the GCDataRepository. Provides functionality for checking whether the information
@@ -27,30 +29,26 @@ package com.google.graphgeckos.dashboard.storage;
  */
 public class ParsedGitData {
   private final String commitHash;
-  private final String timestamp;
+  private final Timestamp timestamp;
   private final String branch;
 
   /**
    * Constructs an immutable instance of the ParsedGitData.
    *
    * @param commitHash the commit hash of the revision this data refers to
-   * @param timestamp the formatted time when the commit was pushed
+   * @param timestamp the time when the commit was pushed
    * @param branch branch of the LLVM project on which this commit was pushed
+   * @throws IllegalArgumentException if commitHash is null
    */
-  public ParsedGitData(String commitHash, String timestamp, String branch) {
+  public ParsedGitData(String commitHash, Timestamp timestamp, String branch)
+                                                                throws IllegalArgumentException {
+    if (commitHash == null) {
+      throw new IllegalArgumentException("ParsedGitData's commitHash cannot be null");
+    }
+
     this.commitHash = commitHash;
     this.timestamp = timestamp;
     this.branch = branch;
-  }
-
-  /**
-   * Checks for the existance of the fields necessary for creating a database entry.
-   * Does not check the validity of each field.
-   *
-   * @return true if all required fields are available, false if not.
-   */
-  boolean validCreateData() {
-    return commitHash != null;
   }
 
   /**
@@ -67,7 +65,7 @@ public class ParsedGitData {
    *
    * @return the timestamp.
    */
-  String getTimestamp() {
+  Timestamp getTimestamp() {
     return timestamp;
   }
 
@@ -76,7 +74,7 @@ public class ParsedGitData {
    *
    * @return the branch.
    */
-  List<String> getBranch() {
+  String getBranch() {
     return branch;
   }
 }

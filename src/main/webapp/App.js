@@ -1,7 +1,6 @@
 import * as React from "react";
 import {BuildSnapshotContainer} from "./components/BuildSnapshotContainer";
 import {Header} from "./components/Header";
-import {Wrapper} from "./components/Wrapper";
 
 /**
  * Main App that is Rendered to the Page.
@@ -10,9 +9,9 @@ import {Wrapper} from "./components/Wrapper";
  */
 export const App = (props) => {
   return (
-    <Wrapper>
+    <div>
       <Header/>
       <BuildSnapshotContainer/>
-    </Wrapper>
+    </div>
   );
 }
