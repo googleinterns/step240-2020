@@ -20,7 +20,7 @@ import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
 import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
 import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
-import com.google.graphgeckos.dashboard.datatypes.ParsedGitData;
+import com.google.graphgeckos.dashboard.datatypes.GitHubData;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,7 @@ public class DatastoreRepository implements DataRepository {
   /**
    * {@inheritDoc}
    */
-  public boolean createRevisionEntry(ParsedGitData entryData) throws IllegalArgumentException {
+  public boolean createRevisionEntry(GitHubData entryData) throws IllegalArgumentException {
     if (entryData == null) {
       throw new IllegalArgumentException("entryData cannot be null");
     }
