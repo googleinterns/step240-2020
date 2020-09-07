@@ -9,7 +9,7 @@ const BUILD_STEP_FIELDS = ['step_number', 'text', 'logs'];
 const HEADERS = ['no.', 'text', 'log'];
 
 /**
- * Table responsible for storing the data for a builder.
+ * Table responsible for displaying the data for a builder.
  *
  * @param {Object[]} props.buildSteps - The build steps for a given builder.
  * @param {string} props.buildSteps[].step_number - The relative order of the build step.
