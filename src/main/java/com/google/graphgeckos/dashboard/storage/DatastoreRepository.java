@@ -18,10 +18,8 @@ import com.google.cloud.datastore.DatastoreException;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
 import com.google.graphgeckos.dashboard.datatypes.Builder;
 import com.google.graphgeckos.dashboard.datatypes.ParsedBuildbotData;
