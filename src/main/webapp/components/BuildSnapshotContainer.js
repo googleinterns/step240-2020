@@ -8,7 +8,8 @@ import {Wrapper} from "./Wrapper";
  * @param {*} props input property containing an array of build data to be
  * rendered through BuildSnapshot.
  */
-export const BuildSnapshotContainer = React.memo((props) => {
+export const BuildSnapshotContainer = React.memo((props) =>
+  {
     const SOURCE = '/data';
     const [data, setData] = React.useState([]);
 
