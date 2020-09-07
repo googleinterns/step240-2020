@@ -52,7 +52,7 @@ public class BuildInfo {
 
   @Field(name = "builders")
   @Unindexed
-  private final List<Builder> builders;
+  private final List<BuildBotData> builders;
 
   /**
    * Converts a {@link #ParsedGitData ParsedGitData} object to a BuildInfo object.
@@ -92,11 +92,11 @@ public class BuildInfo {
    * Returns builders which attempted the compilation of the revision. Cannot be null, and
    * neither it's elements.
    */
-  public List<Builder> getBuilders() {
+  public List<BuildBotData> getBuilders() {
     return builders;
   }
 
-  public void addBuilder(Builder update) {
+  public void addBuilder(BuildBotData update) {
     builders.add(update);
   }
 

@@ -16,7 +16,7 @@ package com.google.graphgeckos.dashboard.storage;
 
 import com.google.cloud.datastore.testing.LocalDatastoreHelper;
 import com.google.cloud.Timestamp;
-import com.google.graphgeckos.dashboard.datatypes.Builder;
+import com.google.graphgeckos.dashboard.datatypes.BuildBotInfo;
 import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
 import com.google.graphgeckos.dashboard.datatypes.BuilderStatus;
 import com.google.graphgeckos.dashboard.datatypes.ParsedBuildbotData;
@@ -72,7 +72,7 @@ public class DatastoreRepositoryTests {
     Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1")));
     Assert.assertTrue(storage.updateRevisionEntry(getDummyUpdate("1")));
     BuildInfo dummy = getDummyEntity("1");
-    dummy.addBuilder(new Builder(getDummyUpdate("1")));
+    dummy.addBuilder(new BuildBotInfo(getDummyUpdate("1")));
     Assert.assertEquals(dummy, storage.getRevisionEntry("1"));
   }
 

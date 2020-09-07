@@ -18,9 +18,8 @@ import com.google.cloud.datastore.DatastoreException;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
+import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
 import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
-import com.google.graphgeckos.dashboard.datatypes.Builder;
-import com.google.graphgeckos.dashboard.datatypes.ParsedBuildbotData;
 import com.google.graphgeckos.dashboard.datatypes.ParsedGitData;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +72,7 @@ public class DatastoreRepository implements DataRepository {
   /**
    * {@inheritDoc}
    */
-  public boolean updateRevisionEntry(ParsedBuildbotData updateData) throws IllegalArgumentException {
+  public boolean updateRevisionEntry(BuildBotData updateData) throws IllegalArgumentException {
     if (updateData == null) {
       throw new IllegalArgumentException("entryData cannot be null");
     }
@@ -81,7 +80,7 @@ public class DatastoreRepository implements DataRepository {
     BuildInfo associatedEntity = getRevisionEntry(updateData.getCommitHash());
 
     if (associatedEntity != null) {
-      associatedEntity.addBuilder(new Builder(updateData));
+      associatedEntity.addBuilder(new BuildBotData(updateData));
 
       try {
         storage.save(associatedEntity);
