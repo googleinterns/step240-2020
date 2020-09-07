@@ -16,7 +16,6 @@ package com.google.graphgeckos.dashboard.datatypes;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 
 /**
