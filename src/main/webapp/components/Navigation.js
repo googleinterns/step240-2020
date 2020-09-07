@@ -10,7 +10,7 @@ import * as React from 'react';
 const NavigationItem = (props) => {
   return (
     <li>
-      <a href = {props.href}>{props.innerText}</a>
+      <a href={props.href}>{props.innerText}</a>
     </li>
   );
 }
@@ -26,7 +26,7 @@ const NavigationItem = (props) => {
   */
 export const Navigation = (props) => {
   return (
-    <ul className="navigation">
+    <ul className='navigation'>
       {props.options.map (option => 
           <NavigationItem href={option.link} innerText={option.text}/>
       )}
