@@ -23,7 +23,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.cloud.Timestamp;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 import org.springframework.data.annotation.Transient;
-import org.springframework.lang.NonNull;
 
 /**
  * Contains the information retrieved from a single build bot. It is used as a member of BuildInfo...
@@ -112,35 +111,35 @@ public class BuildBotData {
   /**
    * Returns the name of the builder bot. Cannot be null.
    */
-  @NonNull public String getName() {
+  public String getName() {
     return name;
   }
 
   /**
    * Returns the list of logs for each compilation stage. Cannot be null.
    */
-  @NonNull public List<Log> getLogs() {
+  public List<Log> getLogs() {
     return logs;
   }
 
   /**
    * Returns the compilation status of the builder. Cannot be null.
    */
-  @NonNull public BuilderStatus getStatus() {
+  public BuilderStatus getStatus() {
     return status;
   }
 
   /**
    * Returns the commit hash of the commit tested by the current buildbot.
    */
-  @NonNull public String getCommitHash() {
+  public String getCommitHash() {
     return commitHash;
   }
 
   /**
    * Returns the timestamp of the build.
    */
-  @NonNull public Timestamp getTimestamp() {
+  public Timestamp getTimestamp() {
     return timestamp;
   }
 
