@@ -21,19 +21,22 @@ import com.google.cloud.datastore.StructuredQuery.OrderBy;
 import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
 import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
 import com.google.graphgeckos.dashboard.datatypes.GitHubData;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
 /**
  * A DataRepository implementation backed up by Google Datastore.
  * Each database entry is modeled by the {@link #BuildInfo BuildInfo} class.
  * The relevant fields for the database are:
- *    - Kind: "revision"
- *    - Key: commit hash
- *
+ * - Kind: "revision"
+ * - Key: commit hash
+ * <p>
  * Useful links:
  * - https://googleapis.dev/java/google-cloud-datastore/latest/index.html
  * - https://googleapis.dev/java/spring-cloud-gcp/1.2.2.RELEASE/index.html
@@ -48,116 +51,88 @@ public class DatastoreRepository implements DataRepository {
   /**
    * {@inheritDoc}
    */
-  public boolean createRevisionEntry(GitHubData entryData) throws IllegalArgumentException {
-    if (entryData == null) {
-      throw new IllegalArgumentException("entryData cannot be null");
+  @Override
+  public boolean createRevisionEntry(@NonNull GitHubData entryData) {
+    if (hasRevisionEntry(entryData.getCommitHash())) {
+      return false;
     }
 
-    if (getRevisionEntry(entryData.getCommitHash()) == null) {
-      try {
-        storage.save(new BuildInfo(entryData));
-      } catch (DatastoreException e) {
-        e.printStackTrace();
-        System.err.println(e);
-    
-        return false;
-      }
-
-      return true;
+    try {
+      storage.save(new BuildInfo(entryData));
+    } catch (DatastoreException e) {
+      e.printStackTrace();
+      return false;
     }
-
-    return false;
+    return true;
   }
 
   /**
    * {@inheritDoc}
    */
-  public boolean updateRevisionEntry(BuildBotData updateData) throws IllegalArgumentException {
-    if (updateData == null) {
-      throw new IllegalArgumentException("entryData cannot be null");
-    }
-
+  @Override
+  public boolean updateRevisionEntry(@NonNull BuildBotData updateData) {
     BuildInfo associatedEntity = getRevisionEntry(updateData.getCommitHash());
-
-    if (associatedEntity != null) {
-      associatedEntity.addBuilder(new BuildBotData(updateData));
-
-      try {
-        storage.save(associatedEntity);
-      } catch (DatastoreException e) {
-        e.printStackTrace();
-        System.err.println(e);
-    
-        return false;
-      }
-
-      return true;
+    if (associatedEntity == null) {
+      return false;
     }
 
-    return false;
+    associatedEntity.addBuilder(updateData);
+    try {
+      storage.save(associatedEntity);
+    } catch (DatastoreException e) {
+      e.printStackTrace();
+      return false;
+    }
+
+    return true;
   }
 
   /**
    * {@inheritDoc}
    */
-  public boolean deleteRevisionEntry(String commitHash) throws IllegalArgumentException {
-    if (commitHash == null) {
-      throw new IllegalArgumentException("commitHash cannot be null");
-    }
-
+  @Override
+  public boolean deleteRevisionEntry(@NonNull String commitHash) {
     BuildInfo toBeDeleted = getRevisionEntry(commitHash);
-
-    if (toBeDeleted != null) {
-      try {
-        storage.delete(toBeDeleted);
-      } catch (DatastoreException e) {
-        e.printStackTrace();
-        System.err.println(e);
-
-        return false;
-      }
-
-      return true;
+    if (toBeDeleted == null) {
+      return false;
     }
 
-    return false;
+    try {
+      storage.delete(toBeDeleted);
+    } catch (DatastoreException e) {
+      e.printStackTrace();
+      return false;
+    }
+    return true;
   }
 
   /**
    * {@inheritDoc}
    */
+  @Override
   public List<BuildInfo> getLastRevisionEntries(int number, int offset)
-                                                         throws IllegalArgumentException {
+    throws IllegalArgumentException {
     if (number < 0 || offset < 0) {
       throw new IllegalArgumentException("Both number and offset must be >= 0");
     }
 
     Query<Entity> query = Query.newEntityQueryBuilder()
-                               .setKind("revision")
-                               .setOrderBy(OrderBy.desc("timestamp"))
-                               .setOffset(offset)
-                               .setLimit(number)
-                               .build();
+      .setKind("revision")
+      .setOrderBy(OrderBy.desc("timestamp"))
+      .setOffset(offset)
+      .setLimit(number)
+      .build();
 
-    Iterable<BuildInfo> results = storage.query(query, BuildInfo.class).getIterable();
-
-    List<BuildInfo> toBeReturned = new ArrayList<BuildInfo>();
-
-    for (BuildInfo entity : results) {
-      toBeReturned.add(entity);
-    }
-
+    List<BuildInfo> toBeReturned = new ArrayList<>();
+    storage.query(query, BuildInfo.class).getIterable().forEach(toBeReturned::add);
     return toBeReturned;
   }
 
   /**
    * {@inheritDoc}
    */
-  public BuildInfo getRevisionEntry(String commitHash) throws IllegalArgumentException {
-    if (commitHash == null) {
-      throw new IllegalArgumentException("commitHash cannot be null");
-    }
-
+  @Override
+  public BuildInfo getRevisionEntry(@NonNull String commitHash) throws IllegalArgumentException {
     return storage.findById(commitHash, BuildInfo.class);
   }
 }
