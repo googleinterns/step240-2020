@@ -16,10 +16,9 @@ package com.google.graphgeckos.dashboard.storage;
 
 import com.google.cloud.datastore.testing.LocalDatastoreHelper;
 import com.google.cloud.Timestamp;
-import com.google.graphgeckos.dashboard.datatypes.BuildBotInfo;
 import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
 import com.google.graphgeckos.dashboard.datatypes.BuilderStatus;
-import com.google.graphgeckos.dashboard.datatypes.ParsedBuildbotData;
+import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
 import com.google.graphgeckos.dashboard.datatypes.GitHubData;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,8 +42,8 @@ public class DatastoreRepositoryTests {
     return new GitHubData(commitHash, Timestamp.now(), "test");
   }
 
-  private ParsedBuildbotData getDummyUpdate(String commitHash) {
-    return new ParsedBuildbotData(commitHash, "tester", new ArrayList<>(), BuilderStatus.PASSED);
+  private BuildBotData getDummyUpdate(String commitHash) {
+    return new BuildBotData(commitHash, "tester", new ArrayList<>(), BuilderStatus.PASSED);
   }
 
   @Before
