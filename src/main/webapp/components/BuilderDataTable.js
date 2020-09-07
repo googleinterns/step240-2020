@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {BuilderRow} from './BuilderRow';
 
 const HEADERS = ['no', 'text', 'log'];
 
