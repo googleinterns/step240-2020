@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.graphgeckos.dashboard.storage;
+package com.google.graphgeckos.dashboard.datatypes;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -62,7 +62,7 @@ public class ParsedBuildbotData {
    *
    * @return the commitHash.
    */
-  String getCommitHash() {
+  public String getCommitHash() {
     return commitHash;
   }
 
@@ -71,7 +71,7 @@ public class ParsedBuildbotData {
    *
    * @return the builderName.
    */
-  String getBuilderName() {
+  public String getBuilderName() {
     return builderName;
   }
 
@@ -80,7 +80,7 @@ public class ParsedBuildbotData {
    *
    * @return the logs.
    */
-  List<Log> getLogs() {
+  public List<Log> getLogs() {
     return logs;
   }
 
@@ -89,7 +89,7 @@ public class ParsedBuildbotData {
    *
    * @return the status.
    */
-  BuilderStatus getStatus() {
+  public BuilderStatus getStatus() {
     return status;
   }
 }

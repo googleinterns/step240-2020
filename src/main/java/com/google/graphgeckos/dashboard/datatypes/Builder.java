@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.graphgeckos.dashboard.storage;
+package com.google.graphgeckos.dashboard.datatypes;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 
 /**
@@ -39,7 +40,7 @@ public class Builder {
    *
    * @throws IllegalArgumentException if {@code botData} is null
    */
-  Builder(ParsedBuildbotData botData) throws IllegalArgumentException {
+  public Builder(ParsedBuildbotData botData) throws IllegalArgumentException {
     if (botData == null) {
       throw new IllegalArgumentException("botData cannot be null in Builder constructor");
     }

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.graphgeckos.dashboard.storage;
+package com.google.graphgeckos.dashboard.datatypes;
 
 import com.google.cloud.Timestamp;
 
@@ -56,7 +56,7 @@ public class ParsedGitData {
    *
    * @return the commitHash.
    */
-  String getCommitHash() {
+  public String getCommitHash() {
     return commitHash;
   }
 
@@ -65,7 +65,7 @@ public class ParsedGitData {
    *
    * @return the timestamp.
    */
-  Timestamp getTimestamp() {
+  public Timestamp getTimestamp() {
     return timestamp;
   }
 
@@ -74,7 +74,7 @@ public class ParsedGitData {
    *
    * @return the branch.
    */
-  String getBranch() {
+  public String getBranch() {
     return branch;
   }
 }

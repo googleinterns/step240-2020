@@ -14,6 +14,10 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
+import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
+import com.google.graphgeckos.dashboard.datatypes.ParsedBuildbotData;
+import com.google.graphgeckos.dashboard.datatypes.ParsedGitData;
+
 import java.util.List;
 
 /**

@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.graphgeckos.dashboard.storage;
+package com.google.graphgeckos.dashboard.datatypes;
 
 import com.google.cloud.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Field;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Unindexed;
@@ -59,7 +60,7 @@ public class BuildInfo {
    * This is used for adding entries to the Google Cloud Datastore, from the Git commit
    * information received, and leaving the {@code builders} field empty, for later updates.
    */
-  BuildInfo(ParsedGitData creationData) {
+  public BuildInfo(ParsedGitData creationData) {
     this.commitHash = creationData.getCommitHash();
     this.timestamp = creationData.getTimestamp();
     this.branch = creationData.getBranch();
