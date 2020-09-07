@@ -50,7 +50,7 @@ const Header = (props) => {
     <div className='header' onClick={() => props.onClick(!props.isOpen)}>
       <span className='header-hash'>{props.data.commitHash}</span>
       <span className='header-description'>{props.data.description}</span>
-      <FailureGroup group={'Group'}/>
+      <span className='failure-group'>Group</span>
       <span className='header-status'>{props.data.status}</span>
     </div>
   );
