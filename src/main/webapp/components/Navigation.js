@@ -8,7 +8,11 @@ import * as React from 'react';
  * @param {string} props.innerText rendered text content of node.
  */
 const NavigationItem = (props) => {
-  <li><a href = {props.href}>{props.innerText}</a></li>
+  return (
+    <li>
+      <a href = {props.href}>{props.innerText}</a>
+    </li>
+  )
 }
 
 /**
