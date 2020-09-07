@@ -19,9 +19,9 @@ export const BuildSnapshot = (props) => {
   const trayData = getFields(props.buildData, trayFields, '');
 
   return (
-    <div className = 'build-snapshot'>
-      <Header isOpen = {isOpen} onClick = {setIsOpen} data = {headerData}/>
-      <Tray isOpen = {isOpen} data = {trayData}/>
+    <div className='build-snapshot'>
+      <Header isOpen={isOpen} onClick={setIsOpen} data={headerData}/>
+      <Tray isOpen={isOpen} data={trayData}/>
     </div>
   );
 }
@@ -35,11 +35,11 @@ export const BuildSnapshot = (props) => {
  */
 const Header = (props) => {
   return (
-    <div className = 'header' onClick = {() => props.onClick(!props.isOpen)}>
-      <span className = 'header-hash'>{props.data.commitHash}</span>
-      <span className = 'header-description'>{props.data.description}</span>
-      <FailureGroup group = {'Group'}/>
-      <span className = 'header-status'>{props.data.status}</span>
+    <div className='header' onClick={() => props.onClick(!props.isOpen)}>
+      <span className='header-hash'>{props.data.commitHash}</span>
+      <span className='header-description'>{props.data.description}</span>
+      <FailureGroup group={'Group'}/>
+      <span className='header-status'>{props.data.status}</span>
     </div>
   );
 }
@@ -60,13 +60,13 @@ const Tray = (props) => {
 
   if (props.isOpen !== true) { return null };
   return (
-    <div className = 'tray'>
-      <span className = 'tray-timespan'>{props.data.timestamp}</span>
-      <div className = 'tray-currentbot'>
-        <span className = 'bot-display'>{builder.name}</span>
+    <div className='tray'>
+      <span className='tray-timespan'>{props.data.timestamp}</span>
+      <div className='tray-currentbot'>
+        <span className='bot-display'>{builder.name}</span>
       </div>
-      <BuilderGrid onClick = {selectBuilder} data = {props.data.builders}/>
-      <BuilderDataTable builder = {builder}/>
+      <BuilderGrid onClick={selectBuilder} data={props.data.builders}/>
+      <BuilderDataTable builder={builder}/>
     </div>
   );
 }
