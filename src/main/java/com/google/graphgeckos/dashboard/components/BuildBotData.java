@@ -64,10 +64,10 @@ public class BuildBotData {
 
   /**
    * Defines builder status based on a phrase provided in parsed json.
-   * If something failed, then the buidbot is considered as failed {@code FAILED}.
-   * If something lost, then the buildbot is considered lost {@code LOST}.
+   * If something failed, then the buildbot is considered failed {@code FAILED}.
+   * If something is lost, then the buildbot is considered lost {@code LOST}.
    * Otherwise the buildbot is considered passed {@code PASSED}.
-   * @param words Words of the "text" json field.
+   * @param words Words of the "text" JSON field.
    */
   @JsonProperty("text")
   private void extractStatus(List<String> words) {
