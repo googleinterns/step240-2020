@@ -55,7 +55,7 @@ const Tray = (props) => {
   // State variable indicating the builder whose data
   // should be rendered to the BuilderDataTable.
   // Represents the index of the builder in props.data.builders
-  const [selectedBuilder,selectBuilder] = React.useState(0);
+  const [selectedBuilder, selectBuilder] = React.useState(0);
   const builder = props.data.builders[selectedBuilder];
 
   if (props.isOpen !== true) { return null };
