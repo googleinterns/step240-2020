@@ -44,7 +44,7 @@ public class BuildInfo {
   private final String commitHash;
 
   @Field(name = "timestamp")
-  private Timestamp timestamp;
+  private final Timestamp timestamp;
 
   @Field(name = "branch")
   @Unindexed
