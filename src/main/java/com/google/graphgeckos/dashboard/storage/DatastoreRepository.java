@@ -132,7 +132,7 @@ public class DatastoreRepository implements DataRepository {
    * {@inheritDoc}
    */
   @Override
-  public BuildInfo getRevisionEntry(@NonNull String commitHash) throws IllegalArgumentException {
+  public BuildInfo getRevisionEntry(@NonNull String commitHash) {
     return storage.findById(commitHash, BuildInfo.class);
   }
 }
