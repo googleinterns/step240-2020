@@ -3,11 +3,9 @@ package com.google.graphgeckos.dashboard.api;
 import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
 import com.google.graphgeckos.dashboard.storage.DatastoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class DashboardController {
@@ -17,6 +15,16 @@ public class DashboardController {
    */
   @Autowired
   private DatastoreRepository DATA_REPOSITORY;
+
+  /**
+   * Sets response status to Https.BAD_REQUEST (400) if the IllegalArgumentException is thrown
+   * inside the getBuildInfo method.
+   * @param e Exception thrown by {@code DATA_REPOSITORY}.
+   *          {@link DatastoreRepository::getBuildInfo} to learn what causes it.
+   */
+  @ExceptionHandler
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  void onIllegalArgumentException(IllegalArgumentException e) {}
 
   /**
    * Handles GET requests from the frontend part of the application.
