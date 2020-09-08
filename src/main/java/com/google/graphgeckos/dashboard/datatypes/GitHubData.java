@@ -46,9 +46,7 @@ public class GitHubData {
     branch = refComponents[refComponents.length - 1];
   }
 
-  public GitHubData() {
-    this.branch = "braaanch";
-  }
+  public GitHubData() {}
 
   public GitHubData(String commitHash, Timestamp timestamp, String branch) {
     this.commitHash = commitHash;
