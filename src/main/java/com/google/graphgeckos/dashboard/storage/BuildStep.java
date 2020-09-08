@@ -61,41 +61,41 @@ public class BuildStep {
    * Returns the name of the build step. Can be null.
    */
   public String getName() {
-    return name;
+    return this.name;
   }
 
   /**
    * Returns output text related to the build status. Can be null.
    */
   public String getText() {
-    return text;
+    return this.text;
   }
 
   /**
    * Returns the order of the step. Value always >= 0.
    */
   public int getStepNumber() {
-    return stepNumber;
+    return this.stepNumber;
   }
 
   /**
    * Returns a boolean indicating if the step has been started.
    */
   public int isStarted() {
-    return isStarted;
+    return this.isStarted;
   }
 
   /**
    * Returns a boolean indicating if the step has been completed.
    */
   public int isFinished() {
-    return isFinished;
+    return this.isFinished;
   }
 
   /**
    * Returns an array of the logs associated with this step. Can be null.
    */
   public Log[] getLogs() {
-    return logs;
+    return this.logs;
   }
 }
