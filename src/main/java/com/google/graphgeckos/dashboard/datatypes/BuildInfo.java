@@ -15,8 +15,8 @@
 package com.google.graphgeckos.dashboard.datatypes;
 
 import com.google.cloud.Timestamp;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Field;
@@ -45,7 +45,7 @@ public class BuildInfo {
   private final String commitHash;
 
   @Field(name = "timestamp")
-  private final Timestamp timestamp;
+  private Timestamp timestamp;
 
   @Field(name = "branch")
   @Unindexed
@@ -62,9 +62,9 @@ public class BuildInfo {
    */
   public BuildInfo(GitHubData creationData) {
     this.commitHash = creationData.getCommitHash();
-    this.timestamp = Timestamp.of(new Date(creationData.getTimestamp()));
     this.branch = creationData.getBranch();
     this.builders = new ArrayList<>();
+    this.timestamp = Timestamp.parseTimestamp(creationData.getTimestamp());
   }
 
   /**

@@ -6,11 +6,12 @@ import com.google.graphgeckos.dashboard.storage.DatastoreRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,13 +22,21 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = DashboardController.class)
 @AutoConfigureMockMvc
-public class DashboardContollerTest {
+public class DashboardControllerTest {
+
+  @Mock
+  private DatastoreRepository datastoreRepository;
+
+  @InjectMocks
+  private DashboardController controller = new DashboardController();
 
   @Autowired
   private MockMvc mvc;
@@ -59,30 +68,28 @@ public class DashboardContollerTest {
   private final int TWO_REVISIONS = 2;
   private final int OFFSET_ZERO = 0;
 
-  @MockBean
-  private DatastoreRepository datastoreRepository;
-
+  @Before
+  public void init() {
+    MockitoAnnotations.initMocks(this);
+  }
 
   @Before
   public void setUpRepository() {
+
     BUILD_INFO_A.addBuilder(BUILDER_A);
     BUILD_INFO_B.addBuilder(BUILDER_B);
 
-    Mockito.when(
-      datastoreRepository.getLastRevisionEntries(ONE_REVISION, OFFSET_ZERO))
+    when(
+      datastoreRepository.getLastRevisionEntries(1, 0))
         .thenReturn(Collections.singletonList(BUILD_INFO_A));
-
-    Mockito.when(
-      datastoreRepository.getLastRevisionEntries(TWO_REVISIONS, OFFSET_ZERO))
-      .thenReturn(Arrays.asList(BUILD_INFO_A, BUILD_INFO_B));
   }
 
   @Test
   public void whenGivenOneRevisionOffsetZeroReturnsOneBuildInfo() throws Exception {
     ResultActions result = mvc.perform(
-        MockMvcRequestBuilders.get("/builders/number={number}/offset={offset}",
-          ONE_REVISION, OFFSET_ZERO)
+        MockMvcRequestBuilders.get("/builders/number=1/offset=0")
        .contentType("application/json")
+       .characterEncoding("utf-8")
        .accept(MediaType.APPLICATION_JSON));
     result.andExpect(content().contentType(MediaType.APPLICATION_JSON))
           .andExpect(jsonPath("[0].commitHash").value(COMMIT_HASH_A));
