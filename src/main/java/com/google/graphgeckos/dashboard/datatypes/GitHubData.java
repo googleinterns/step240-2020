@@ -3,7 +3,6 @@ package com.google.graphgeckos.dashboard.datatypes;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.cloud.Timestamp;
-import java.util.Date;
 import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -13,7 +12,7 @@ public class GitHubData {
 
   private String commitHash;
 
-  private Timestamp timestamp;
+  private String timestamp;
 
   private String repositoryLink;
 
@@ -25,7 +24,7 @@ public class GitHubData {
   @JsonProperty("head_commit")
   private void unpackHeadCommit(Map<String, Object> headCommit) {
     commitHash = headCommit.get("id").toString();
-    timestamp = Timestamp.of(new Date(headCommit.get("timestamp").toString()));
+    timestamp = headCommit.get("timestamp").toString();
   }
 
   /**
@@ -47,9 +46,18 @@ public class GitHubData {
     branch = refComponents[refComponents.length - 1];
   }
 
+  public GitHubData() {
+    this.branch = "braaanch";
+  }
+
   public GitHubData(String commitHash, Timestamp timestamp, String branch) {
     this.commitHash = commitHash;
-    this.timestamp = timestamp;
+    this.timestamp = timestamp.toString();
+    this.branch = branch;
+  }
+
+  public GitHubData(String commitHash, String branch) {
+    this.commitHash = commitHash;
     this.branch = branch;
   }
 
@@ -70,7 +78,7 @@ public class GitHubData {
   /**
    * Returns time of when the commit was pushed.
    */
-  public Timestamp getTimestamp() {
+  public String getTimestamp() {
     return timestamp;
   }
 
