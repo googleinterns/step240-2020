@@ -148,6 +148,10 @@
               </configuration>
           </execution>
         </executions>
+        <configuration>
+          <nodeVersion>v10.14.2</nodeVersion>
+          <workingDirectory>src/myreactapp</workingDirectory>
+        </configuration>
       </plugin>
     </plugins>
   </build>
