@@ -112,23 +112,23 @@ public class BuildInfo {
     return builders;
   }
 
-  public void setCommitHash(String commitHash) {
+  void setCommitHash(String commitHash) {
     this.commitHash = commitHash;
   }
 
-  public void setTimestamp(Timestamp timestamp) {
+  void setTimestamp(Timestamp timestamp) {
     this.timestamp = timestamp;
   }
 
-  public void setBranch(String branch) {
+  void setBranch(String branch) {
     this.branch = branch;
   }
 
-  public void setBuilders(List<Builder> builders) {
+  void setBuilders(List<Builder> builders) {
     this.builders = new ArrayList<>(builders);
   }
 
-  public void addBuilder(Builder update) {
+  void addBuilder(Builder update) {
     builders.add(update);
   }
 

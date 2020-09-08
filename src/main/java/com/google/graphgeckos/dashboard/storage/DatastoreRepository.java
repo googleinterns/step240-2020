@@ -23,20 +23,12 @@ import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
 import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
 import com.google.graphgeckos.dashboard.datatypes.GitHubData;
 import java.util.ArrayList;
-<<<<<<< HEAD
-=======
-import java.util.Calendar;
-import java.util.Date;
 import java.util.function.Supplier;
->>>>>>> initial commit
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
 import org.springframework.cloud.gcp.data.datastore.core.convert.DatastoreServiceObjectToKeyFactory;
 import org.springframework.cloud.gcp.data.datastore.core.convert.DefaultDatastoreEntityConverter;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.DatastoreMappingContext;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -54,19 +46,12 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class DatastoreRepository implements DataRepository {
-  private ApplicationContext context;
   private DatastoreTemplate storage;
 
   DatastoreRepository(Datastore underlyingStorage) {
-    // context = new ClassPathXmlApplicationContext("ApplicationContext.xml");
-    // if (context == null) {
-    //   throw new RuntimeException("NULL CONTEXT");
-    // }
-
     Supplier<Datastore> supplier = () -> { return underlyingStorage; };
 
     DatastoreMappingContext mappingContext = new DatastoreMappingContext();
-    //mappingContext.setApplicationContext(context);
 
     DatastoreServiceObjectToKeyFactory objectToKeyFactory =
         new DatastoreServiceObjectToKeyFactory(supplier);

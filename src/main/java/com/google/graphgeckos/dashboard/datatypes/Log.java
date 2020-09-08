@@ -15,6 +15,7 @@
 package com.google.graphgeckos.dashboard.datatypes;
 
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
+import org.springframework.cloud.gcp.data.datastore.core.mapping.Field;
 
 /**
  * Contains the log information from a single compilation stage from a given build bot.
@@ -23,9 +24,11 @@ import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 public class Log {
 
   // Log type (e.g "stdio")
+  @Field(name = "type")
   private final String type;
 
   // Log link (e.g "http://lab.llvm.org:8011/builders/mlir-nvidia/builds/6403/logs/stdio")
+  @Field(name = "link")
   private final String link;
 
   /**

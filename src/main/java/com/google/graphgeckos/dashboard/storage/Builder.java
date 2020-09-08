@@ -86,15 +86,15 @@ public class Builder {
     return status;
   }
 
-  public void setName(String name) {
+  void setName(String name) {
     this.name = name;
   }
 
-  public void setLogs(List<Log> logs) {
+  void setLogs(List<Log> logs) {
     this.logs = new ArrayList<>(logs);
   }
 
-  public void setStatus(BuilderStatus status) {
+  void setStatus(BuilderStatus status) {
     this.status = status;
   }
 
