@@ -115,6 +115,8 @@ public class BuildBotData {
     this.status = status;
   }
 
+  public BuildBotData() {}
+
   /**
    * Returns the name of the builder bot. Cannot be null.
    */
