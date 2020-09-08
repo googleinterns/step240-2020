@@ -111,36 +111,36 @@ public class BuildBotData {
     return timestamp;
   }
 
-    /**
-   * Sets the name of the builder bot. May not be null.
+  /**
+   * Sets the name of the builder bot. Should not be null.
    */
   public void setName(@NonNull String name) {
     this.name = name;
   }
 
   /**
-   * Sets the list of logs for each compilation stage. May not be null.
+   * Sets the list of logs for each compilation stage. Should not be null.
    */
   public void setLogs(@NonNull List<Log> logs) {
     this.logs = new ArrayList<>(logs);
   }
 
   /**
-   * Sets the compilation status of the builder. May not be null.
+   * Sets the compilation status of the builder. Should not be null.
    */
   public void setStatus(@NonNull BuilderStatus status) {
     this.status = status;
   }
 
   /**
-   * Sets the commit hash of the commit tested by the current buildbot. May not be null.
+   * Sets the commit hash of the commit tested by the current buildbot. Should not be null.
    */
   public void setCommitHash(@NonNull String commitHash) {
     this.commitHash = commitHash;
   }
 
   /**
-   * Sets the timestamp of the build. May not be null.
+   * Sets the timestamp of the build. Should not be null.
    */
   public void setTimestamp(@NonNull Timestamp timestamp) {
     this.timestamp = timestamp;
