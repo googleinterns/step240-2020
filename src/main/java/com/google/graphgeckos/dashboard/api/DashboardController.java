@@ -1,8 +1,9 @@
 package com.google.graphgeckos.dashboard.api;
 
 import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
-import com.google.graphgeckos.dashboard.storage.DataRepository;
 import com.google.graphgeckos.dashboard.storage.DatastoreRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,7 +15,8 @@ public class DashboardController {
   /**
    * Provides access to information in the storage.
    */
-  private final DataRepository DATA_REPOSITORY = new DatastoreRepository();
+  @Autowired
+  private DatastoreRepository DATA_REPOSITORY;
 
   /**
    * Handles GET requests from the frontend part of the application.
@@ -27,7 +29,7 @@ public class DashboardController {
    * and {@code number}, returns all available entries from that range.
    */
   @RequestMapping(value = "/builders/number={number}/offset={offset}",
-    method = RequestMethod.GET, headers = {"content-type=application/json"})
+    method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
   public Iterable<BuildInfo> getBuildInfo(@PathVariable int number, @PathVariable int offset) {
     return DATA_REPOSITORY.getLastRevisionEntries(number, offset);
   }
