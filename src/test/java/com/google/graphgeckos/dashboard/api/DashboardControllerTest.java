@@ -4,7 +4,6 @@ import com.google.cloud.Timestamp;
 import com.google.graphgeckos.dashboard.datatypes.*;
 import com.google.graphgeckos.dashboard.storage.DatastoreRepository;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -33,38 +32,32 @@ public class DashboardContollerTest {
   @Autowired
   private MockMvc mvc;
 
-  private static final String COMMIT_HASH_A = "1234";
-  private static final String COMMIT_HASH_B = "abcd";
+  private final String COMMIT_HASH_A = "1234";
+  private final String COMMIT_HASH_B = "abcd";
 
-  private static final Timestamp TIMESTAMP = Timestamp.now();
+  private final Timestamp TIMESTAMP = Timestamp.now();
 
-  private static final String BRANCH_A = "branch a";
-  private static final String BRANCH_B = "branch b";
+  private final String BRANCH_A = "branch a";
+  private final String BRANCH_B = "branch b";
 
-  private static final List<Log> LOGS_A = Arrays.asList(new Log("type 1", "link1"),
+  private final List<Log> LOGS_A = Arrays.asList(new Log("type 1", "link1"),
                                                new Log("type 2", "link2"));
-  private static final List<Log> LOGS_B = Collections.singletonList(new Log("type 3", "link3"));
+  private final List<Log> LOGS_B = Collections.singletonList(new Log("type 3", "link3"));
 
-  private static final GitHubData INITIAL_GITHUB_DATA_A = new GitHubData(COMMIT_HASH_A, TIMESTAMP, BRANCH_A);
-  private static final GitHubData INITIAL_GITHUB_DATA_B = new GitHubData(COMMIT_HASH_B, TIMESTAMP, BRANCH_B);
+  private final GitHubData INITIAL_GITHUB_DATA_A = new GitHubData(COMMIT_HASH_A, TIMESTAMP, BRANCH_A);
+  private final GitHubData INITIAL_GITHUB_DATA_B = new GitHubData(COMMIT_HASH_B, TIMESTAMP, BRANCH_B);
 
-  private static final BuildInfo BUILD_INFO_A = new BuildInfo(INITIAL_GITHUB_DATA_A);
-  private static final BuildInfo BUILD_INFO_B = new BuildInfo(INITIAL_GITHUB_DATA_B);
+  private final BuildInfo BUILD_INFO_A = new BuildInfo(INITIAL_GITHUB_DATA_A);
+  private final BuildInfo BUILD_INFO_B = new BuildInfo(INITIAL_GITHUB_DATA_B);
 
-  private static final BuildBotData BUILDER_A = new BuildBotData(
+  private final BuildBotData BUILDER_A = new BuildBotData(
                                         COMMIT_HASH_A, "Builder A", LOGS_A, BuilderStatus.PASSED);
-  private static final BuildBotData BUILDER_B = new BuildBotData(
+  private final BuildBotData BUILDER_B = new BuildBotData(
                                          COMMIT_HASH_B, "Builder B", LOGS_B, BuilderStatus.FAILED);
 
   private final int ONE_REVISION = 1;
   private final int TWO_REVISIONS = 2;
   private final int OFFSET_ZERO = 0;
-
-  @BeforeClass
-  public static void createBuildInfos() {
-    BUILD_INFO_A.addBuilder(BUILDER_A);
-    BUILD_INFO_B.addBuilder(BUILDER_B);
-  }
 
   @MockBean
   private DatastoreRepository datastoreRepository;
@@ -72,6 +65,9 @@ public class DashboardContollerTest {
 
   @Before
   public void setUpRepository() {
+    BUILD_INFO_A.addBuilder(BUILDER_A);
+    BUILD_INFO_B.addBuilder(BUILDER_B);
+
     Mockito.when(
       datastoreRepository.getLastRevisionEntries(ONE_REVISION, OFFSET_ZERO))
         .thenReturn(Collections.singletonList(BUILD_INFO_A));
