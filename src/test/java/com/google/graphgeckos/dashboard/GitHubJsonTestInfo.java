@@ -23,7 +23,7 @@ public class GitHubJsonTestInfo {
   // Test input (json).
   private String content;
 
-  // Expected output fields. See com.google.graphgeckos.dashboard.fetchers.github.GitHubData class to learn more.
+  // Expected output fields. See com.google.graphgeckos.dashboard.GitHubData class to learn more.
   private String branch;
   private String commitHash;
   private String timestamp;

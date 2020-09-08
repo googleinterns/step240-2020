@@ -33,7 +33,7 @@ public class GitHubControllerTests {
       .content(JSON_WITHOUT_UNKNOWN_FIELDS.getContent())
       .accept(MediaType.APPLICATION_JSON));
 
-      result.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+    result.andExpect(content().contentType(MediaType.APPLICATION_JSON))
       .andExpect(jsonPath("branch").value(JSON_WITHOUT_UNKNOWN_FIELDS.getBranch()))
       .andExpect(jsonPath("commitHash").value(JSON_WITHOUT_UNKNOWN_FIELDS.getCommitHash()))
       .andExpect(jsonPath("timestamp").value(JSON_WITHOUT_UNKNOWN_FIELDS.getTimestamp()))
@@ -43,15 +43,15 @@ public class GitHubControllerTests {
   @Test
   public void realJsonIsParsedCorrectly() throws Exception {
     ResultActions result = mvc.perform(MockMvcRequestBuilders.post("/github-info")
-          .contentType("application/json")
-          .content(REAL_JSON.getContent())
-          .accept(MediaType.APPLICATION_JSON));
+      .contentType("application/json")
+      .content(REAL_JSON.getContent())
+      .accept(MediaType.APPLICATION_JSON));
 
     result.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-          .andExpect(jsonPath("branch").value(REAL_JSON.getBranch()))
-          .andExpect(jsonPath("commitHash").value(REAL_JSON.getCommitHash()))
-          .andExpect(jsonPath("timestamp").value(REAL_JSON.getTimestamp()))
-          .andExpect(jsonPath("repositoryLink").value(REAL_JSON.getRepositoryLink()));
+      .andExpect(jsonPath("branch").value(REAL_JSON.getBranch()))
+      .andExpect(jsonPath("commitHash").value(REAL_JSON.getCommitHash()))
+      .andExpect(jsonPath("timestamp").value(REAL_JSON.getTimestamp()))
+      .andExpect(jsonPath("repositoryLink").value(REAL_JSON.getRepositoryLink()));
   }
 
 }
