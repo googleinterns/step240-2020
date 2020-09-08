@@ -64,14 +64,18 @@ public class Log {
   }
 
   /**
-   * Sets the log type. Should not be null.
+   * Sets the log type. 
+   *
+   * @param type the new value for {@code type}. Should not be null.
    */
   public void setType(String type) {
     this.type = type;
   }
 
   /**
-   * Sets the link to the full log. Should not be null.
+   * Sets the link to the full log.
+   *
+   * @param link the new value for {@code link}. Should not be null.
    */
   public void setLink(String link) {
     this.link = link;
