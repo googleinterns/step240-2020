@@ -80,7 +80,7 @@ public class DatastoreRepository implements DataRepository {
     BuildInfo associatedEntity = getRevisionEntry(updateData.getCommitHash());
 
     if (associatedEntity != null) {
-      associatedEntity.addBuilder(new BuildBotData(updateData));
+      associatedEntity.addBuilder(updateData);
 
       try {
         storage.save(associatedEntity);
