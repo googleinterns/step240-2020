@@ -101,28 +101,36 @@ public class BuildInfo {
   }
 
   /**
-   * Sets the Git commit hash of the revision. Should not be null.
+   * Sets the Git commit hash of the revision.
+   *
+   * @param commitHash the new value of the {@code commitHash} field. Should not be null.
    */
   public void setCommitHash(@NonNull String commitHash) {
     this.commitHash = commitHash;
   }
 
   /**
-   * Sets the timestamp of the build. Should not be null.
+   * Sets the timestamp of the build.
+   *
+   * @param timestamp the new value of the {@code timestamp} field. Should not be null.
    */ 
   public void setTimestamp(@NonNull Timestamp timestamp) {
     this.timestamp = timestamp;
   }
 
   /**
-   * Sets the branch where the revision was pushed. Should not be null.
+   * Sets the branch where the revision was pushed.
+   *
+   * @param commitHash the new value of the {@code commitHash} field. Should not be null.
    */
   public void setBranch(@NonNull String branch) {
     this.branch = branch;
   }
 
   /**
-   * Sets the list of builders which attempted compilation of the revision. Should not be null.
+   * Sets the list of builders which attempted compilation of the revision.
+   *
+   * @param builders the new value of the {@code builders} field. Should not be null.
    */
   public void setBuilders(@NonNull List<BuildBotData> builders) {
     this.builders = new ArrayList<>(builders);
@@ -130,7 +138,8 @@ public class BuildInfo {
 
   /**
    * Adds a BuildBotData to the list of builders which attempted compilation of the revision.
-   * Should not be null.
+   *
+   * @param update the new value of the {@code update} field. Should not be null.
    */
   public void addBuilder(@NonNull BuildBotData update) {
     builders.add(update);
