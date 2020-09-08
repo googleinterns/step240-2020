@@ -168,7 +168,7 @@
               <outputDirectory>target/classes/static</outputDirectory>
               <resources>
                 <resource>
-                  <directory>src/myreactapp/build</directory>
+                  <directory>src/webapp/dist</directory>
                   <filtering>true</filtering>
                 </resource>
               </resources>
