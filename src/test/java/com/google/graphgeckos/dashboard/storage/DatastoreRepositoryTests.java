@@ -26,8 +26,8 @@ import org.junit.Test;
 
 public class DatastoreRepositoryTests {
   private LocalDatastoreHelper emulator = LocalDatastoreHelper.newBuilder().setConsistency(1.0)
-                                                              .setStoreOnDisk(false)
-                                                              .build();
+                                                                           .setStoreOnDisk(false)
+                                                                           .build();
 
   public DatastoreRepositoryTests() throws IOException, InterruptedException {
     emulator.start();
