@@ -68,12 +68,12 @@ public class DashboardControllerTest {
   private final BuildInfo BUILD_INFO = new BuildInfo(INITIAL_GITHUB_DATA);
 
 
-  /* Illegal revision value. Revision must be >= 0. */
-  private final int MINUS_ONE_REVISION = -1;
+  /* Illegal number of entries value. Revision must be >= 0. */
+  private final int MINUS_ONE_ENTRIES = -1;
 
-  /* Valid revision and offset values. */
-  private final int ZERO_REVISIONS = 0;
-  private final int ONE_REVISION = 1;
+  /* Valid number of entries and offset values. */
+  private final int ZERO_ENTRIES = 0;
+  private final int ONE_ENTRIES = 1;
   private final int OFFSET_ZERO = 0;
 
   /** Enables Mockito.*/
@@ -89,18 +89,18 @@ public class DashboardControllerTest {
   }
 
   /**
-   * Given: number of the revision to return = 0, any offset >= 0
+   * Given: number of the entries to return = 0, any offset >= 0
    * Expected behaviour: empty JSON list, Response Status 200 (OK).
    */
   @Test
   public void whenGivenZeroRevisionsOffsetZeroReturnsEmptyJSONArray() throws Exception {
 
-    given(datastoreRepository.getLastRevisionEntries(ZERO_REVISIONS, OFFSET_ZERO))
+    given(datastoreRepository.getLastRevisionEntries(ZERO_ENTRIES, OFFSET_ZERO))
       .willReturn(Collections.emptyList());
 
     ResultActions result = mvc.perform(
       MockMvcRequestBuilders.get("/builders/number={number}/offset={offset}",
-        ZERO_REVISIONS, OFFSET_ZERO)
+        ZERO_ENTRIES, OFFSET_ZERO)
         .accept(MediaType.APPLICATION_JSON));
 
     String emptyJsonList = "[]";
@@ -123,12 +123,12 @@ public class DashboardControllerTest {
   @Test
   public void whenGivenOneRevisionOffsetZeroReturnsOneBuildInfoJson() throws Exception {
 
-    given(datastoreRepository.getLastRevisionEntries(ONE_REVISION, OFFSET_ZERO))
+    given(datastoreRepository.getLastRevisionEntries(ONE_ENTRIES, OFFSET_ZERO))
       .willReturn(Collections.singletonList(BUILD_INFO));
 
     ResultActions result = mvc.perform(
         MockMvcRequestBuilders.get("/builders/number={number}/offset={offset}",
-          ONE_REVISION, OFFSET_ZERO)
+          ONE_ENTRIES, OFFSET_ZERO)
        .accept(MediaType.APPLICATION_JSON));
 
     result.andExpect(status().isOk())
@@ -142,7 +142,7 @@ public class DashboardControllerTest {
   }
 
   /**
-   * Number and offset should be greater or equal to zero, otherwise the IllegalArgumentException is
+   * Number of entries and offset should be greater or equal to zero, otherwise the IllegalArgumentException is
    * thrown inside the tested request method. If the described situation occurs, the request method
    * should set the response status to "Bad request".
    *
@@ -152,12 +152,12 @@ public class DashboardControllerTest {
   @Test
   public void setsRequestTypeToBadRequestWhenIllegalArgumentExceptionIsThrownByDatastoreRepository() throws Exception {
 
-    given(datastoreRepository.getLastRevisionEntries(MINUS_ONE_REVISION, OFFSET_ZERO))
+    given(datastoreRepository.getLastRevisionEntries(MINUS_ONE_ENTRIES, OFFSET_ZERO))
       .willThrow(new IllegalArgumentException());
 
     mvc.perform(
       MockMvcRequestBuilders.get("/builders/number={number}/offset={offset}",
-        MINUS_ONE_REVISION, OFFSET_ZERO)
+        MINUS_ONE_ENTRIES, OFFSET_ZERO)
         .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isBadRequest());
   }
