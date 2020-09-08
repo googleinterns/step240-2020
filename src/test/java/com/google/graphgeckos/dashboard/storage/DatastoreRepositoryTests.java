@@ -51,11 +51,6 @@ public class DatastoreRepositoryTests {
     localDatastore = emulator.getOptions().getService();
   }
 
-  @After
-  public void tearDown() throws IOException, InterruptedException, TimeoutException  {
-    //emulator.stop();
-  }
-
   @Test
   public void testValidAddition() throws IOException, InterruptedException{
     DatastoreRepository storage = new DatastoreRepository(localDatastore);
