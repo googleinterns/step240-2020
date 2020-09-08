@@ -150,7 +150,7 @@
         </executions>
         <configuration>
           <nodeVersion>v10.14.2</nodeVersion>
-          <workingDirectory>src/webapp</workingDirectory>
+          <workingDirectory>src/main/webapp</workingDirectory>
         </configuration>
       </plugin>
 
