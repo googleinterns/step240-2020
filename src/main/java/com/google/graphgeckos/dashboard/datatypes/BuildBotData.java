@@ -20,6 +20,7 @@ import java.util.List;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Field;
 import org.springframework.data.annotation.Transient;
+import org.springframework.lang.NonNull;
 
 /**
  * Contains the information retrieved from a single build bot. It is used as a member
@@ -64,15 +65,9 @@ public class BuildBotData {
   private BuilderStatus status;
 
   /**
-   * Sets all fields to null. Only to be used by Spring GCP.
+   * Only used by Spring GCP.
    */
-  public BuildBotData() {
-    this.commitHash = null;
-    this.timestamp = null;
-    this.name = null;
-    this.logs = null;
-    this.status = null;
-  }
+  public BuildBotData() { }
 
   public BuildBotData(String commitHash, String name, List<Log> logs, BuilderStatus status) {
     this.commitHash = commitHash;
@@ -117,37 +112,37 @@ public class BuildBotData {
   }
 
     /**
-   * Returns the name of the builder bot. Cannot be null.
+   * Sets the name of the builder bot. May not be null.
    */
-  public void setName(String name) {
+  public void setName(@NonNull String name) {
     this.name = name;
   }
 
   /**
-   * Returns the list of logs for each compilation stage. Cannot be null.
+   * Sets the list of logs for each compilation stage. May not be null.
    */
-  public void getLogs(List<Log> logs) {
+  public void setLogs(@NonNull List<Log> logs) {
     this.logs = new ArrayList<>(logs);
   }
 
   /**
-   * Returns the compilation status of the builder. Cannot be null.
+   * Sets the compilation status of the builder. May not be null.
    */
-  public void getStatus(BuilderStatus status) {
+  public void setStatus(@NonNull BuilderStatus status) {
     this.status = status;
   }
 
   /**
-   * Returns the commit hash of the commit tested by the current buildbot.
+   * Sets the commit hash of the commit tested by the current buildbot. May not be null.
    */
-  public void getCommitHash(String commitHash) {
+  public void setCommitHash(@NonNull String commitHash) {
     this.commitHash = commitHash;
   }
 
   /**
-   * Returns the timestamp of the build.
+   * Sets the timestamp of the build. May not be null.
    */
-  public void getTimestamp(Timestamp timestamp) {
+  public void setTimestamp(@NonNull Timestamp timestamp) {
     this.timestamp = timestamp;
   }
 
