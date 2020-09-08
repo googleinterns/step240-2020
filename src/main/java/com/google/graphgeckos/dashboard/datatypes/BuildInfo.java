@@ -42,18 +42,20 @@ public class BuildInfo {
 
   @Id
   @Field(name = "commitHash")
-  private final String commitHash;
+  private String commitHash;
 
   @Field(name = "timestamp")
-  private final Timestamp timestamp;
+  private Timestamp timestamp;
 
+  @Unindexed
   @Field(name = "branch")
-  @Unindexed
-  private final String branch;
+  private String branch;
 
-  @Field(name = "builders")
   @Unindexed
-  private final List<BuildBotData> builders;
+  @Field(name = "builders")
+  private List<BuildBotData> builders;
+
+  public BuildInfo() { }
 
   /**
    * Converts a {@link GitHubData} object to a BuildInfo object.
@@ -95,6 +97,22 @@ public class BuildInfo {
    */
   public List<BuildBotData> getBuilders() {
     return builders;
+  }
+
+  public void setCommitHash(String commitHash) {
+    this.commitHash = commitHash;
+  }
+
+  public void setTimestamp(Timestamp timestamp) {
+    this.timestamp = timestamp;
+  }
+
+  public void setBranch(String branch) {
+    this.branch = branch;
+  }
+
+  public void setBuilders(List<BuildBotData> builders) {
+    this.builders = new ArrayList<>(builders);
   }
 
   public void addBuilder(BuildBotData update) {
