@@ -63,10 +63,16 @@ public class Log {
     return link;
   }
 
+  /**
+   * Sets the log type. Should not be null.
+   */
   public void setType(String type) {
     this.type = type;
   }
 
+  /**
+   * Sets the link to the full log. Should not be null.
+   */
   public void setLink(String link) {
     this.link = link;
   }
