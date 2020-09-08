@@ -22,7 +22,8 @@ import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 @Entity(name = "buildStatus")
 public enum BuilderStatus {
   FAILED("failed"),
-  PASSED("passed");
+  PASSED("passed"),
+  LOST("lost");
 
   private final String status;
 

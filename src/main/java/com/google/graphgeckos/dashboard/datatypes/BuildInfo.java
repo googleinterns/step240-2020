@@ -16,6 +16,7 @@ package com.google.graphgeckos.dashboard.datatypes;
 
 import com.google.cloud.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Field;
@@ -52,16 +53,16 @@ public class BuildInfo {
 
   @Field(name = "builders")
   @Unindexed
-  private final List<Builder> builders;
+  private final List<BuildBotData> builders;
 
   /**
-   * Converts a {@link #ParsedGitData ParsedGitData} object to a BuildInfo object.
+   * Converts a {@link GitHubData} object to a BuildInfo object.
    * This is used for adding entries to the Google Cloud Datastore, from the Git commit
    * information received, and leaving the {@code builders} field empty, for later updates.
    */
-  public BuildInfo(ParsedGitData creationData) {
+  public BuildInfo(GitHubData creationData) {
     this.commitHash = creationData.getCommitHash();
-    this.timestamp = creationData.getTimestamp();
+    this.timestamp = Timestamp.of(new Date(creationData.getTimestamp()));
     this.branch = creationData.getBranch();
     this.builders = new ArrayList<>();
   }
@@ -92,11 +93,11 @@ public class BuildInfo {
    * Returns builders which attempted the compilation of the revision. Cannot be null, and
    * neither it's elements.
    */
-  public List<Builder> getBuilders() {
+  public List<BuildBotData> getBuilders() {
     return builders;
   }
 
-  public void addBuilder(Builder update) {
+  public void addBuilder(BuildBotData update) {
     builders.add(update);
   }
 
