@@ -46,7 +46,7 @@ public class BuildBotData {
   private Timestamp timestamp;
 
   /* Name of the buildbot. */
-  private final String name;
+  private String name;
 
   /**
    * The logs of each compilation stage, stored as described by {@link Log}.
