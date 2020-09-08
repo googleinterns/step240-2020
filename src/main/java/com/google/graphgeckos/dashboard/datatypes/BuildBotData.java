@@ -112,35 +112,45 @@ public class BuildBotData {
   }
 
   /**
-   * Sets the name of the builder bot. Should not be null.
+   * Sets the name of the builder bot.
+   *
+   * @param name the new value for the {@code name} field. Should not be null.
    */
   public void setName(@NonNull String name) {
     this.name = name;
   }
 
   /**
-   * Sets the list of logs for each compilation stage. Should not be null.
+   * Sets the list of logs for each compilation stage.
+   *
+   * @param logs the new value for the {@code logs} field. Should not be null.
    */
   public void setLogs(@NonNull List<Log> logs) {
     this.logs = new ArrayList<>(logs);
   }
 
   /**
-   * Sets the compilation status of the builder. Should not be null.
+   * Sets the compilation status of the builder.
+   *
+   * @param status the new value for the {@code status} field. Should not be null.
    */
   public void setStatus(@NonNull BuilderStatus status) {
     this.status = status;
   }
 
   /**
-   * Sets the commit hash of the commit tested by the current buildbot. Should not be null.
+   * Sets the commit hash of the commit tested by the current buildbot.
+   *
+   * @param commitHash the new value for the {@code commitHash} field. Should not be null.
    */
   public void setCommitHash(@NonNull String commitHash) {
     this.commitHash = commitHash;
   }
 
   /**
-   * Sets the timestamp of the build. Should not be null.
+   * Sets the timestamp of the build.
+   *
+   * @param timestamp the new value for the {@code timestamp} field. Should not be null.
    */
   public void setTimestamp(@NonNull Timestamp timestamp) {
     this.timestamp = timestamp;
