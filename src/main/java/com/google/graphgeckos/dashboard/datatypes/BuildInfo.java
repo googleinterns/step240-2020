@@ -22,6 +22,7 @@ import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Field;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Unindexed;
 import org.springframework.data.annotation.Id;
+import org.springframework.lang.NonNull;
 
 /**
  * This class encapsulates all the information gathered about a specific revision.
@@ -99,23 +100,39 @@ public class BuildInfo {
     return builders;
   }
 
-  public void setCommitHash(String commitHash) {
+  /**
+   * Sets the Git commit hash of the revision. Should not be null.
+   */
+  public void setCommitHash(@NonNull String commitHash) {
     this.commitHash = commitHash;
   }
 
-  public void setTimestamp(Timestamp timestamp) {
+  /**
+   * Sets the timestamp of the build. Should not be null.
+   */ 
+  public void setTimestamp(@NonNull Timestamp timestamp) {
     this.timestamp = timestamp;
   }
 
-  public void setBranch(String branch) {
+  /**
+   * Sets the branch where the revision was pushed. Should not be null.
+   */
+  public void setBranch(@NonNull String branch) {
     this.branch = branch;
   }
 
-  public void setBuilders(List<BuildBotData> builders) {
+  /**
+   * Sets the list of builders which attempted compilation of the revision. Should not be null.
+   */
+  public void setBuilders(@NonNull List<BuildBotData> builders) {
     this.builders = new ArrayList<>(builders);
   }
 
-  public void addBuilder(BuildBotData update) {
+  /**
+   * Adds a BuildBotData to the list of builders which attempted compilation of the revision.
+   * Should not be null.
+   */
+  public void addBuilder(@NonNull BuildBotData update) {
     builders.add(update);
   }
 
