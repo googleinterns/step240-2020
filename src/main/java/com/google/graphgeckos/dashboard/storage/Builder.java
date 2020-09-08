@@ -17,6 +17,7 @@ package com.google.graphgeckos.dashboard.storage;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
+import org.springframework.cloud.gcp.data.datastore.core.mapping.Field;
 
 /**
  * Contains the information retrieved from a single build bot. It is used as a member of BuildInfo...
@@ -26,13 +27,22 @@ import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 @Entity(name = "builder")
 public class Builder {
 
-  private final String name;
+  @Field(name = "name")
+  private String name;
 
   // The logs of each compilation stage, stored as described by {@link #Log Log}.
-  private final List<Log> logs;
+  @Field(name = "logs")
+  private List<Log> logs;
 
   // Builder compilation status, as described by {@link #BuilderStatus BuilderStatus}.
-  private final BuilderStatus status;
+  @Field(name = "status")
+  private BuilderStatus status;
+
+  Builder() {
+    this.name = null;
+    this.logs = null;
+    this.status = null;
+  }
 
   /**
    * Converts a {@link #ParsedBuildbotData ParsedBuildbotData} object to a Builder object.
@@ -47,6 +57,12 @@ public class Builder {
     this.name = botData.getBuilderName();
     this.logs = new ArrayList<>(botData.getLogs());
     this.status = botData.getStatus();
+  }
+
+  Builder(String name, List<Log> logs, BuilderStatus status) {
+    this.name = name;
+    this.logs = new ArrayList<>(logs);
+    this.status = status;
   }
 
   /**
@@ -68,6 +84,33 @@ public class Builder {
    */
   public BuilderStatus getStatus() {
     return status;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public void setLogs(List<Log> logs) {
+    this.logs = new ArrayList<>(logs);
+  }
+
+  public void setStatus(BuilderStatus status) {
+    this.status = status;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == this) {
+      return true;
+    }
+  
+    if (!(o instanceof Builder)) {
+      return false;
+    }
+    
+    Builder other = (Builder) o;
+    return this.name.equals(other.name) && this.logs.equals(other.logs) &&
+           this.status.equals(other.status);
   }
 
 }

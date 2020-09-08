@@ -41,18 +41,25 @@ public class BuildInfo {
 
   @Id
   @Field(name = "commitHash")
-  private final String commitHash;
+  private String commitHash;
 
   @Field(name = "timestamp")
-  private final Timestamp timestamp;
+  private Timestamp timestamp;
 
   @Field(name = "branch")
   @Unindexed
-  private final String branch;
+  private String branch;
 
   @Field(name = "builders")
   @Unindexed
-  private final List<Builder> builders;
+  private List<Builder> builders;
+
+  BuildInfo() {
+    commitHash = null;
+    timestamp = null;
+    branch = null;
+    builders = null;
+  }
 
   /**
    * Converts a {@link #ParsedGitData ParsedGitData} object to a BuildInfo object.
@@ -64,6 +71,13 @@ public class BuildInfo {
     this.timestamp = creationData.getTimestamp();
     this.branch = creationData.getBranch();
     this.builders = new ArrayList<>();
+  }
+
+  BuildInfo(String commitHash, Timestamp timestamp, String branch, List<Builder> builders) {
+    this.commitHash = commitHash;
+    this.timestamp = timestamp;
+    this.branch = branch;
+    this.builders = new ArrayList<>(builders);
   }
 
   /**
@@ -96,13 +110,39 @@ public class BuildInfo {
     return builders;
   }
 
+  public void setCommitHash(String commitHash) {
+    this.commitHash = commitHash;
+  }
+
+  public void setTimestamp(Timestamp timestamp) {
+    this.timestamp = timestamp;
+  }
+
+  public void setBranch(String branch) {
+    this.branch = branch;
+  }
+
+  public void setBuilders(List<Builder> builders) {
+    this.builders = new ArrayList<>(builders);
+  }
+
   public void addBuilder(Builder update) {
     builders.add(update);
   }
 
-  public boolean equals(BuildInfo other) {
-    return this.commitHash == other.commitHash && this.timestamp.equals(other.timestamp) &&
-           this.branch == other.branch && this.builders.equals(other.builders);
+  @Override
+  public boolean equals(Object o) {
+    if (o == this) {
+      return true;
+    }
+  
+    if (!(o instanceof BuildInfo)) {
+      return false;
+    }
+    
+    BuildInfo other = (BuildInfo) o;
+    return this.commitHash.equals(other.commitHash) && this.timestamp.equals(other.timestamp) &&
+           this.branch.equals(other.branch) && this.builders.equals(other.builders);
   }
 
 }

@@ -14,6 +14,7 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
+import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreException;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Query;
@@ -24,10 +25,16 @@ import com.google.cloud.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.function.Supplier;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
+import org.springframework.cloud.gcp.data.datastore.core.convert.DatastoreServiceObjectToKeyFactory;
+import org.springframework.cloud.gcp.data.datastore.core.convert.DefaultDatastoreEntityConverter;
+import org.springframework.cloud.gcp.data.datastore.core.mapping.DatastoreMappingContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -45,8 +52,28 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class DatastoreRepository implements DataRepository {
-  @Autowired
+  private ApplicationContext context;
   private DatastoreTemplate storage;
+
+  DatastoreRepository(Datastore underlyingStorage) {
+    // context = new ClassPathXmlApplicationContext("ApplicationContext.xml");
+    // if (context == null) {
+    //   throw new RuntimeException("NULL CONTEXT");
+    // }
+
+    Supplier<Datastore> supplier = () -> { return underlyingStorage; };
+
+    DatastoreMappingContext mappingContext = new DatastoreMappingContext();
+    //mappingContext.setApplicationContext(context);
+
+    DatastoreServiceObjectToKeyFactory objectToKeyFactory =
+        new DatastoreServiceObjectToKeyFactory(supplier);
+        
+    DefaultDatastoreEntityConverter entityConverter =
+        new DefaultDatastoreEntityConverter(mappingContext, objectToKeyFactory);
+
+    storage = new DatastoreTemplate(supplier, entityConverter, mappingContext, objectToKeyFactory);
+  }
 
   /**
    * {@inheritDoc}
@@ -119,11 +146,9 @@ public class DatastoreRepository implements DataRepository {
 
         return false;
       }
-
-      return true;
     }
 
-    return false;
+    return true;
   }
 
   /**
