@@ -42,7 +42,12 @@ public class BuildStep {
   private final <List>Log logs;
 
   /**
-   * Constructs an instance of BuildStep. name, text and logs can be null.
+   * Name, text and logs can be null.
+   * @param name - name of the build step.
+   * @param text - output text related to step's build status.
+   * @param isFinished - indicates if the step has been completed.
+   * @param isStarted - indicates if the step has been initiated.
+   * @param logs - the logs associated with the build step.
    */
   BuildStep(String name, String[] text, boolean isFinished, boolean isStarted, Log[] logs) {
     this.name = name;
@@ -53,14 +58,14 @@ public class BuildStep {
   }
 
   /**
-   * Returns the name of the log as a String. Can be null.
+   * Returns the name of the build step. Can be null.
    */
   public String getName() {
     return name;
   }
 
   /**
-   * Returns a text to the full version of the log. Can be null.
+   * Returns output text related to the build status. Can be null.
    */
   public String getText() {
     return text;
