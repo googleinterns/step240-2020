@@ -11,12 +11,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DashboardController {
 
-  private static DataRepository dataRepository = new DatastoreRepository();
+  /**
+   * Provides access to information in the storage.
+   */
+  private final DataRepository DATA_REPOSITORY = new DatastoreRepository();
 
+  /**
+   * Handles GET requests from the frontend part of the application.
+   * Gets information from the database via {@code DATA_REPOSITORY}.
+   * @param number the number of database entries to retrieve.
+   * @param offset the offset from the latest database entry, for which to consider
+   *               the requested number of entries.
+   * @return list of a list containing at most {@code number} entries starting from the latest
+   * entry - {@code offset}. If the database has not enough entries for the requested {@code offset}
+   * and {@code number}, returns all available entries from that range.
+   */
   @RequestMapping(value = "/builders/number={number}/offset={offset}",
     method = RequestMethod.GET, headers = {"content-type=application/json"})
   public Iterable<BuildInfo> getBuildInfo(@PathVariable int number, @PathVariable int offset) {
-    return dataRepository.getLastRevisionEntries(number, offset);
+    return DATA_REPOSITORY.getLastRevisionEntries(number, offset);
   }
 
 }
