@@ -16,6 +16,7 @@ package com.google.graphgeckos.dashboard.datatypes;
 
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Field;
+import org.springframework.cloud.gcp.data.datastore.core.mapping.Unindexed;
 import org.springframework.data.annotation.Id;
 
 /**
@@ -30,6 +31,7 @@ public class BuilderIndex {
   @Field(name = "builderName")
   private String name;
 
+  @Unindexed
   @Field(name = "timestamp")
   private int index;
 
