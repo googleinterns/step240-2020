@@ -82,7 +82,7 @@ public class DashboardControllerTest {
   private final int ONE_ENTRIES = 1;
   private final int OFFSET_ZERO = 0;
 
-  /** Enables Mockito.*/
+  /** Enables Mockito. */
   @Before
   public void init() {
     MockitoAnnotations.initMocks(this);
