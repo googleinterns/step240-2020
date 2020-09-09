@@ -39,8 +39,8 @@ public class DashboardController {
    * @param offset the offset from the latest database entry, for which to consider
    *               the requested number of entries.
    * @return list of a list containing at most {@code number} entries starting from the latest
-   * entry - {@code offset}. If the database has not enough entries for the requested {@code offset}
-   * and {@code number}, returns all available entries from that range.
+   *         entry - {@code offset}. If the database has not enough entries for the requested {@code offset}
+   *         and {@code number}, returns all available entries from that range.
    */
   @RequestMapping(value = "/builders/number={number}/offset={offset}",
     method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
