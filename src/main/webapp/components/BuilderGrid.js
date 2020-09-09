@@ -5,7 +5,7 @@ import {getField} from "./utils/getField";
  * Component used as an indicator for build status.
  * Statuses are differentiated by alternative
  * styling rules.
- * @param props.status the build status. Partially determines
+ * @param {string} props.status the build status. Partially determines
  * the styling of the rules.
  */
 const StatusIndicator = (props) => {
@@ -17,8 +17,8 @@ const StatusIndicator = (props) => {
 
 /**
  * Component used to display information for a builder.
- * @param props.status the build status of the bot.
- * @param props.name the name of the bot.
+ * @param {string} props.status the build status of the bot.
+ * @param {string} props.name the name of the bot.
  */
 const Builder = (props) => {
   return (
@@ -32,9 +32,9 @@ const Builder = (props) => {
 /**
  * Component used to display the list of builders that built a commit.
  *
- * @param props.builders 
- * @param props.builders[].builder.status 
- * @param props.builders[].builder.name 
+ * @param {Object[]} props.builders the builders resp
+ * @param {string} props.builders[].builder.status 
+ * @param {string} props.builders[].builder.name 
  */
 export const BuilderGrid = (props) => {
   const builders = getField(props, 'builders', []);
