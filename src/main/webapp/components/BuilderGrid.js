@@ -17,6 +17,7 @@ const StatusIndicator = (props) => {
 
 /**
  * Component used to display information for a builder.
+ *
  * @param {string} props.status the build status of the bot.
  * @param {string} props.name the name of the bot.
  */
