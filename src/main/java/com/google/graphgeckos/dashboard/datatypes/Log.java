@@ -34,7 +34,7 @@ public class Log {
   /**
    * Used only by Spring GCP.
    */
-  public Log() { }
+  public Log() {}
 
   /**
    * Constructs an instance of Log. Both type and link can be null.
