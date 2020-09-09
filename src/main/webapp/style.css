@@ -25,6 +25,6 @@ a {
   margin-left:auto;
 }
 
-.navigation > * {
+.navigation > li {
   padding: 0 2rem;
 }
