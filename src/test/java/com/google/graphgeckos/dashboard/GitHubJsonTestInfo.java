@@ -1,27 +1,17 @@
 package com.google.graphgeckos.dashboard;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.stream.Collectors;
-
 /**
  * Represents input and expected output for a test. Used in {@see GitHubControllerTest}.
  */
-public class GitHubJsonTestInfo {
+public class GitHubJsonTestInfo extends AbstractJsonTestInfo {
 
-  // Path to the folder with the files (inputs and expected outputs) for testing.
-  private static final String PATH = "src/test/resources/jsons/";
-
-  // The file names for one test differ only in prefixes. E.g input_real_json.txt and output_real_json.txt.
-  private static final String INPUT_PREFIX = "input_";
-  private static final String EXPECTED_PREFIX = "output_";
-
-  // Inputs and expected outputs are stored as txt files.
-  private static final String FILE_FORMAT = ".txt";
-
-  // Test input (json).
-  private String content;
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected String getPath() {
+    return "src/test/resources/jsons/";
+  }
 
   // Expected output fields. See com.google.graphgeckos.dashboard.GitHubData class to learn more.
   private String branch;
@@ -29,16 +19,14 @@ public class GitHubJsonTestInfo {
   private String timestamp;
   private String repositoryLink;
 
-  private String readFile(String filePath) throws IOException {
-    return Files.lines(Paths.get(filePath)).collect(Collectors.joining("\n"));
-  }
-
   /**
-   * The expected output of each test is stored as a txt file with four lines. Values come in the following order:
-   * branch, commit hash, timestamp, repository link.
+   * {@inheritDoc}
+   * Values come in the following order: branch, commit hash, timestamp, repository link.
+   *
    * @param expected Lines of the expected output file for the test.
    */
-  private void assignExpectedValues(String[] expected) {
+  @Override
+  protected void assignExpectedValues(String[] expected) {
     if (expected.length < 4) {
       throw new IllegalArgumentException(
         String.format("Wrong file format, expected four lines, found %d", expected.length));
@@ -54,17 +42,7 @@ public class GitHubJsonTestInfo {
    *                to have input_real_json.txt file with input json and output_real_json.txt with expected output.
    */
   public GitHubJsonTestInfo(String testName) {
-    try {
-      content = readFile(PATH + INPUT_PREFIX + testName + FILE_FORMAT);
-    } catch (IOException e) {
-      System.out.println("File not found:" + e.getMessage());
-    }
-    try {
-      String[] expected = readFile(PATH + EXPECTED_PREFIX + testName + FILE_FORMAT).split("\n");
-      assignExpectedValues(expected);
-    } catch (IOException e) {
-      System.out.println("File not found:" + e.getMessage());
-    }
+    super(testName);
   }
 
   /**
