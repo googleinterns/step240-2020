@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.graphgeckos.dashboard.storage;
+package com.google.graphgeckos.dashboard.datatypes;
 
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 
@@ -22,7 +22,8 @@ import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 @Entity(name = "buildStatus")
 public enum BuilderStatus {
   FAILED("failed"),
-  PASSED("passed");
+  PASSED("passed"),
+  LOST("lost");
 
   private final String status;
 

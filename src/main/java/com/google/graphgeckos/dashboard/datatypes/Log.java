@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.graphgeckos.dashboard.storage;
+package com.google.graphgeckos.dashboard.datatypes;
 
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 
@@ -31,9 +31,14 @@ public class Log {
   /**
    * Constructs an instance of Log. Both type and link can be null.
    */
-  Log(String type, String link) {
+  public Log(String type, String link) {
     this.type = type;
     this.link = link;
+  }
+
+  public Log(String[] logComponents) {
+    this.type = logComponents[0];
+    this.link = logComponents[1];
   }
 
   /**

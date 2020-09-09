@@ -16,6 +16,10 @@ package com.google.graphgeckos.dashboard.storage;
 
 import com.google.cloud.datastore.testing.LocalDatastoreHelper;
 import com.google.cloud.Timestamp;
+import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
+import com.google.graphgeckos.dashboard.datatypes.BuilderStatus;
+import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
+import com.google.graphgeckos.dashboard.datatypes.GitHubData;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
@@ -34,12 +38,12 @@ public class DatastoreRepositoryTests {
     return new BuildInfo(getDummyGitData(commitHash));
   }
 
-  private ParsedGitData getDummyGitData(String commitHash) {
-    return new ParsedGitData(commitHash, Timestamp.now(), "test");
+  private GitHubData getDummyGitData(String commitHash) {
+    return new GitHubData(commitHash, Timestamp.now(), "test");
   }
 
-  private ParsedBuildbotData getDummyUpdate(String commitHash) {
-    return new ParsedBuildbotData(commitHash, "tester", new ArrayList<>(), BuilderStatus.PASSED);
+  private BuildBotData getDummyUpdate(String commitHash) {
+    return new BuildBotData(commitHash, "tester", new ArrayList<>(), BuilderStatus.PASSED);
   }
 
   @Before
@@ -55,7 +59,7 @@ public class DatastoreRepositoryTests {
   @Test
   public void testValidAddition() throws IOException, InterruptedException{
     DatastoreRepository storage = new DatastoreRepository();
-    
+
     Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1")));
     Assert.assertEquals(getDummyEntity("1"), storage.getRevisionEntry("1"));
   }
@@ -67,7 +71,7 @@ public class DatastoreRepositoryTests {
     Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1")));
     Assert.assertTrue(storage.updateRevisionEntry(getDummyUpdate("1")));
     BuildInfo dummy = getDummyEntity("1");
-    dummy.addBuilder(new Builder(getDummyUpdate("1")));
+    dummy.addBuilder(new BuildBotInfo(getDummyUpdate("1")));
     Assert.assertEquals(dummy, storage.getRevisionEntry("1"));
   }
 
@@ -95,12 +99,12 @@ public class DatastoreRepositoryTests {
       storage.getRevisionEntry(null);
     });
 
-    Assert.assertThrows(IllegalArgumentException.class, () -> { 
-      storage.updateRevisionEntry(null); 
+    Assert.assertThrows(IllegalArgumentException.class, () -> {
+      storage.updateRevisionEntry(null);
     });
 
-    Assert.assertThrows(IllegalArgumentException.class, () -> { 
-      storage.deleteRevisionEntry(null); 
+    Assert.assertThrows(IllegalArgumentException.class, () -> {
+      storage.deleteRevisionEntry(null);
     });
   }
 
@@ -199,7 +203,7 @@ public class DatastoreRepositoryTests {
     Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("5")));
 
     Assert.assertTrue(storage.deleteRevisionEntry("3"));
-  
+
     List<BuildInfo> results = storage.getLastRevisionEntries(2, 2);
     Assert.assertEquals(results.size(), 2);
     Assert.assertEquals(results.get(0), dummy2);

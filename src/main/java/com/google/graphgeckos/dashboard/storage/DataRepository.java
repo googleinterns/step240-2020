@@ -14,6 +14,9 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
+import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
+import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
+import com.google.graphgeckos.dashboard.datatypes.GitHubData;
 import java.util.List;
 
 /**
@@ -29,18 +32,18 @@ public interface DataRepository {
    * @return true only if the operation completed successfully.
    * @throws IllegalArgumentException if entryData is null
    */
-  boolean createRevisionEntry(ParsedGitData entryData) throws IllegalArgumentException;
+  boolean createRevisionEntry(GitHubData entryData) throws IllegalArgumentException;
 
   /**
    * Updates an existing revision's database entry, with the individual information from
    * a particular buildbot. If there is no entry associated with the provided commit hash,
    * ignores the request.
    *
-   * @param updateData a ParsedBuildbotData instance, must have a non-null "commitHash" field
+   * @param updateData a BuildBotData instance, must have a non-null "commitHash" field
    * @return true only if the operation completed successfully.
    * @throws IllegalArgumentException if updateData is null.
    */
-  boolean updateRevisionEntry(ParsedBuildbotData updateData) throws IllegalArgumentException;
+  boolean updateRevisionEntry(BuildBotData updateData) throws IllegalArgumentException;
 
   /**
    * Deletes a revision's database entry, based on it's commit hash. Has no effect if there
