@@ -22,7 +22,7 @@ const StatusIndicator = (props) => {
  */
 const Builder = (props) => {
   return (
-    <button className='builder'>
+    <button className='builder' onClick={props.onClick}>
       <StatusIndicator status={props.status}/>
       {props.name}
     </button>
