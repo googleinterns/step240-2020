@@ -20,7 +20,9 @@ import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
 import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
 import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
+import com.google.graphgeckos.dashboard.datatypes.BuilderIndex;
 import com.google.graphgeckos.dashboard.datatypes.GitHubData;
+import java.rmi.NotBoundException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,5 +161,39 @@ public class DatastoreRepository implements DataRepository {
     }
 
     return storage.findById(commitHash, BuildInfo.class);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  int getBuildbotIndex(String buildbotName) throws IllegalArgumentException, NotBoundException {
+    if (buildbotName == null) {
+      throw new IllegalArgumentException("buildbotName cannot be null");
+    }
+
+    BuilderIndex associatedEntity = storage.findById(buildbotName, BuilderIndex.class);
+
+    if (associatedEntity == null) {
+      throw new NotBoundException("buildbotName not bound to any index");
+    }
+
+    return associatedEntity.getIndex();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  void setBuildbotIndex(String buildbotName, int newValue) throws IllegalArgumentException,
+                                                                  IndexOutOfBoundsException {
+    if (buildbotName == null) {
+      throw new IllegalArgumentException("buildbotName cannot be null");
+    }
+
+    if (newValue <= getBuildbotIndex(buildbotName)) {
+      throw new IndexOutOfBoundsException("newValue cannot be lower than the previous index");
+    }
+
+    BuilderIndex newEntry = new BuilderIndex(buildbotName, newValue);
+    storage.save(newEntry);
   }
 }

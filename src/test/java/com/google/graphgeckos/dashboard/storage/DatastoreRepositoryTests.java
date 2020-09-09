@@ -21,6 +21,7 @@ import com.google.graphgeckos.dashboard.datatypes.BuilderStatus;
 import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
 import com.google.graphgeckos.dashboard.datatypes.GitHubData;
 import java.io.IOException;
+import java.rmi.NotBoundException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
 import java.util.List;
@@ -105,6 +106,14 @@ public class DatastoreRepositoryTests {
 
     Assert.assertThrows(IllegalArgumentException.class, () -> {
       storage.deleteRevisionEntry(null);
+    });
+
+    Assert.assertThrows(IllegalArgumentException.class, () -> {
+      storage.getBuildbotIndex(null);
+    });
+
+    Assert.assertThrows(IllegalArgumentException.class, () -> {
+      storage.setBuildbotIndex(null, 0);
     });
   }
 
@@ -208,5 +217,34 @@ public class DatastoreRepositoryTests {
     Assert.assertEquals(results.size(), 2);
     Assert.assertEquals(results.get(0), dummy2);
     Assert.assertEquals(results.get(1), dummy1);
+  }
+
+  @Test
+  public void testValidGetAndSetIndexRequests() throws IOException, InterruptedException {
+    DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
+
+    storage.setBuildbotIndex("tester", 1000);
+    
+    Assert.assertEquals(1000, storage.getBuildbotIndex("tester"));
+  }
+
+  @Test
+  public void testInvalidGetIndexRequest() throws IOException, InterruptedException {
+    DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
+
+    Assert.assertThrows(NotBoundException.class, () -> {
+      storage.getBuildbotIndex("tester");
+    });
+  }
+
+  @Test
+  public void testInvalidSetIndexRequest() throws IOException, InterruptedException {
+    DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
+
+    storage.setBuildbotIndex("tester", 1000);
+
+    Assert.assertThrows(IndexOutOfBoundsException.class, () -> {
+      storage.setBuildbotIndex("tester", 1);
+    });
   }
 }
