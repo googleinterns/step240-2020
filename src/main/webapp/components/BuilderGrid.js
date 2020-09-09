@@ -1,5 +1,5 @@
 import * as React from "react";
-
+import {getField} from "./utils/getField";
 /**
  * Component used as an indicator for build status.
  * Statuses are differentiated by alternative
@@ -36,9 +36,11 @@ const Builder = (props) => {
  * @param props.builders[].builder.name 
  */
 export const BuilderGrid = (props) => {
+  const builders = getField(props, 'builders', []);
+  
   return (
     <div className='builder-grid'>
-      {props.builders.map((b, idx) => <Builder key={idx} status={b.status} name={b.name} onClick={props.onClick.bind(this, idx)}/>)}
+      {builders.map((b, idx) => <Builder key={idx} status={b.status} name={b.name} onClick={props.onClick.bind(this, idx)}/>)}
     </div>
   );
 }
