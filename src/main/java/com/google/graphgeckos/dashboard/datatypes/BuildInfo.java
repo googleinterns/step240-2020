@@ -56,7 +56,7 @@ public class BuildInfo {
   @Field(name = "builders")
   private List<BuildBotData> builders;
 
-  public BuildInfo() { }
+  public BuildInfo() {}
 
   /**
    * Converts a {@link GitHubData} object to a BuildInfo object.
