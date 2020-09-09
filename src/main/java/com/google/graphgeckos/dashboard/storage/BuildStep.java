@@ -58,8 +58,9 @@ public class BuildStep {
   }
 
   /**
-   * Returns the name of the build step. Can be null.
+   * Returns the name of the build step. Cannot be null.
    */
+  @NonNull
   public String getName() {
     return this.name;
   }
