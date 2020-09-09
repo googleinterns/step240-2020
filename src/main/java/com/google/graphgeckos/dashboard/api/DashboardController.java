@@ -14,7 +14,7 @@ public class DashboardController {
    * Provides access to information in the storage.
    */
   @Autowired
-  private DatastoreRepository DATA_REPOSITORY;
+  private DatastoreRepository datastoreRepository;
 
   /**
    * Sets response status to Https.BAD_REQUEST (400) if the IllegalArgumentException is thrown
@@ -39,7 +39,7 @@ public class DashboardController {
   @RequestMapping(value = "/builders/number={number}/offset={offset}",
     method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
   public Iterable<BuildInfo> getBuildInfo(@PathVariable int number, @PathVariable int offset) {
-    return DATA_REPOSITORY.getLastRevisionEntries(number, offset);
+    return datastoreRepository.getLastRevisionEntries(number, offset);
   }
 
 }
