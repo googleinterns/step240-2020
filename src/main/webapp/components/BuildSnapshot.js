@@ -62,7 +62,7 @@ const Header = (props) => {
  *
  * @param {boolean} props.isOpen - Indicates if the Tray should be open.
  * @param {Object[]} props.data.builders - Bots that built this commit.
- * @param {string} props.data.builders[].name - The name of the given Build Bot.
+ * @param {string} props.data.builders[].name - The name of the given build bot.
  * @param {string} props.data.timestamp - The timestamp of the given build bot.
  */
 const Tray = (props) => {
