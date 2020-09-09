@@ -80,4 +80,25 @@ public interface DataRepository {
    * @throws IllegalArgumentException if commitHash is null
    */
   BuildInfo getRevisionEntry(String commitHash) throws IllegalArgumentException;
+
+  /**
+   * Queries the database for the last known index for a specific buildbot. Used by the fetchers.
+   *
+   * @param buildbotName the name of the buildbot to search for
+   * @return the last known revision index for which there is information in the database.
+   * @throws IllegalArgumentException if {@code buildbotName} is null
+   */
+  int getBuildbotIndex(String buildbotName) throws IllegalArgumentException;
+
+  /**
+   * Updates the database with a new value for the internal buildbot revision index. Used by the
+   * fetchers.
+   *
+   * @param buildbotName the name of the buildbot to update
+   * @param newValue the new index value
+   * @throws IllegalArgumentException if {@code buildbotName} is null
+   * @throws IndexOutOfBoundsException if newValue is lower than the previous recorded value
+   */
+  void setBuildbotIndex(String buildbotName, int newValue) throws IllegalArgumentException,
+                                                                  IndexOutOfBoundsException;
 }
