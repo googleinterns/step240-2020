@@ -90,7 +90,7 @@ public class BuildBotData {
   @JsonProperty("sourceStamp")
   public void unpackSourceStamp(Map<String, Object> sourceStamp) {
     commitHash = sourceStamp.get("revision").toString();
-    timestamp = Timestamp.ofTimeMicroseconds(Integer.parseInt(sourceStamp.get("when").toString()));
+    timestamp = Timestamp.ofTimeMicroseconds(Long.parseLong(sourceStamp.get("when").toString()));
   }
 
   /**
