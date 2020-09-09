@@ -189,11 +189,13 @@ public class DatastoreRepository implements DataRepository {
       throw new IllegalArgumentException("buildbotName cannot be null");
     }
 
-    if (newValue <= getBuildbotIndex(buildbotName)) {
+    BuilderIndex associatedEntity = storage.findById(buildbotName, BuilderIndex.class);
+
+    if (associatedEntity == null || newValue <= associatedEntity.getIndex()) {
       throw new IndexOutOfBoundsException("newValue cannot be lower than the previous index");
     }
 
-    BuilderIndex newEntry = new BuilderIndex(buildbotName, newValue);
-    storage.save(newEntry);
+    associatedEntity.setIndex(newValue);
+    storage.save(associatedEntity);
   }
 }
