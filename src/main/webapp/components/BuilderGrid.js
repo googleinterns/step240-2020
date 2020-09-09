@@ -7,6 +7,9 @@ const StatusIndicator = (props) => {
   );
 }
 
+/**
+ *
+ */
 const Builder = (props) => {
   return (
     <button className='builder'>
@@ -23,7 +26,7 @@ const Builder = (props) => {
  */
 export const BuilderGrid = (props) => {
   return (
-    <div className='builderGrid'>
+    <div className='builder-grid'>
       {props.builders.map(b => <Builder status={b.status} name={b.name}/>)}
     </div>
   );
