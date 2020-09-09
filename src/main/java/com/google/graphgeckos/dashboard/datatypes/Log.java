@@ -50,32 +50,28 @@ public class Log {
   }
 
   /**
-   * Returns the type of the log as a String. Can be null.
+   * @return the type of the log as a String. Can be null.
    */
   public String getType() {
     return type;
   }
 
   /**
-   * Returns a link to the full version of the log. Can be null.
+   * @return a String with a link to the full version of the log. Can be null.
    */
   public String getLink() {
     return link;
   }
 
   /**
-   * Sets the log type. 
-   *
-   * @param type the new value for {@code type}. Should not be null.
+   * @param type the new value for {@code type}
    */
   public void setType(String type) {
     this.type = type;
   }
 
   /**
-   * Sets the link to the full log.
-   *
-   * @param link the new value for {@code link}. Should not be null.
+   * @param link the new value for {@code link}
    */
   public void setLink(String link) {
     this.link = link;
