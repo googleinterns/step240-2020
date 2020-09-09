@@ -1,6 +1,14 @@
 import * as React from "react";
 
 
+const Builder = (props) => {
+  return (
+    <div className='builder'>
+      Builder name
+    <div>
+  );
+}
+
 /**
  * Component Description
  *
@@ -9,7 +17,7 @@ import * as React from "react";
 export const BuilderGrid = (props) => {
   return (
     <div className='builderGrid'>
-      {props.builders}
+      {props.builders.map(b => <Builder status={b.status} name={b.name}/>)}
     </div>
   );
 }
