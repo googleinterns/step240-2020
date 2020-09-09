@@ -101,9 +101,20 @@ public class BuildInfo {
     builders.add(update);
   }
 
-  public boolean equals(BuildInfo other) {
-    return this.commitHash == other.commitHash && this.timestamp.equals(other.timestamp) &&
-           this.branch == other.branch && this.builders.equals(other.builders);
+  @Override
+  public boolean equals(Object o) {
+    if (o == this) {
+      return true;
+    }
+    if (o == null) {
+      return false;
+    }
+    if (!(o instanceof BuildInfo)) {
+      return false;
+    }
+    BuildInfo other = (BuildInfo) o;
+    return commitHash.equals(other.commitHash) && timestamp.equals(other.timestamp) &&
+           branch.equals(other.branch) && builders.equals(other.builders);
   }
 
 }
