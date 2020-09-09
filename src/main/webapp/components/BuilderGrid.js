@@ -41,7 +41,11 @@ export const BuilderGrid = (props) => {
 
   return (
     <div className='builder-grid'>
-      {builders.map((b, idx) => <Builder key={idx} status={b.status} name={b.name} onClick={props.onClick.bind(this, idx)}/>)}
+      {
+        builders.map((b, idx) =>
+            <Builder key={idx} status={b.status} name={b.name}
+            onClick={props.onClick.bind(this, idx)}/>)
+      }
     </div>
   );
 }
