@@ -71,38 +71,40 @@ public class BuildInfo {
   }
 
   /**
-   * Getter for the Git commit hash of the associated revision. Cannot be null.
+   * @return the Git commit hash of the associated revision. Cannot be null.
    */
+  @NonNull
   public String getCommitHash() {
     return commitHash;
   }
 
   /**
-   * Returns time of when the commit was pushed as a {@link com.google.cloud#Timestamp
+   * @return the time of when the commit was pushed as a {@link com.google.cloud#Timestamp
    * Timestamp} value. Cannot be null.
    */
+  @NonNull
   public Timestamp getTimestamp() {
     return timestamp;
   }
 
   /**
-   * Returns name of the Git branch where the revision was pushed. Cannot be null.
+   * @return the name of the Git branch where the revision was pushed. Cannot be null.
    */
+  @NonNull
   public String getBranch() {
     return branch;
   }
 
   /**
-   * Returns builders which attempted the compilation of the revision. Cannot be null, and
-   * neither it's elements.
+   * @return the list of builders which attempted the compilation of the revision.
+   * Cannot be null, and neither it's elements.
    */
+  @NonNull
   public List<BuildBotData> getBuilders() {
     return builders;
   }
 
   /**
-   * Sets the Git commit hash of the revision.
-   *
    * @param commitHash the new value of the {@code commitHash} field. Should not be null.
    */
   public void setCommitHash(@NonNull String commitHash) {
@@ -110,8 +112,6 @@ public class BuildInfo {
   }
 
   /**
-   * Sets the timestamp of the build.
-   *
    * @param timestamp the new value of the {@code timestamp} field. Should not be null.
    */ 
   public void setTimestamp(@NonNull Timestamp timestamp) {
@@ -119,8 +119,6 @@ public class BuildInfo {
   }
 
   /**
-   * Sets the branch where the revision was pushed.
-   *
    * @param commitHash the new value of the {@code commitHash} field. Should not be null.
    */
   public void setBranch(@NonNull String branch) {
@@ -128,8 +126,6 @@ public class BuildInfo {
   }
 
   /**
-   * Sets the list of builders which attempted compilation of the revision.
-   *
    * @param builders the new value of the {@code builders} field. Should not be null.
    */
   public void setBuilders(@NonNull List<BuildBotData> builders) {
@@ -137,8 +133,6 @@ public class BuildInfo {
   }
 
   /**
-   * Adds a BuildBotData to the list of builders which attempted compilation of the revision.
-   *
    * @param update the new value of the {@code update} field. Should not be null.
    */
   public void addBuilder(@NonNull BuildBotData update) {
