@@ -48,6 +48,7 @@ public class DatastoreRepository implements DataRepository {
   /**
    * {@inheritDoc}
    */
+  @Override
   public boolean createRevisionEntry(GitHubData entryData) throws IllegalArgumentException {
     if (entryData == null) {
       throw new IllegalArgumentException("entryData cannot be null");
@@ -72,6 +73,7 @@ public class DatastoreRepository implements DataRepository {
   /**
    * {@inheritDoc}
    */
+  @Override
   public boolean updateRevisionEntry(BuildBotData updateData) throws IllegalArgumentException {
     if (updateData == null) {
       throw new IllegalArgumentException("entryData cannot be null");
@@ -100,6 +102,7 @@ public class DatastoreRepository implements DataRepository {
   /**
    * {@inheritDoc}
    */
+  @Override
   public boolean deleteRevisionEntry(String commitHash) throws IllegalArgumentException {
     if (commitHash == null) {
       throw new IllegalArgumentException("commitHash cannot be null");
@@ -126,6 +129,7 @@ public class DatastoreRepository implements DataRepository {
   /**
    * {@inheritDoc}
    */
+  @Override
   public List<BuildInfo> getLastRevisionEntries(int number, int offset)
                                                          throws IllegalArgumentException {
     if (number < 0 || offset < 0) {
@@ -153,6 +157,7 @@ public class DatastoreRepository implements DataRepository {
   /**
    * {@inheritDoc}
    */
+  @Override
   public BuildInfo getRevisionEntry(String commitHash) throws IllegalArgumentException {
     if (commitHash == null) {
       throw new IllegalArgumentException("commitHash cannot be null");
