@@ -59,7 +59,7 @@ public class DashboardControllerTest {
 
   /** Builders logs. */
   private final List<Log> LOGS_A = Arrays.asList(new Log(LOG_TYPE_1, LOG_LINK_1),
-                                               new Log(LOG_TYPE_2, LOG_LINK_2));
+                                                 new Log(LOG_TYPE_2, LOG_LINK_2));
   private final List<Log> LOGS_B = Collections.singletonList(new Log(LOG_TYPE_3, LOG_LINK_3));
 
   private final BuildBotData BUILDER_A = new BuildBotData(
