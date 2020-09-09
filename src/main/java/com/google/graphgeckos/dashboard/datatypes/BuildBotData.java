@@ -17,6 +17,7 @@ package com.google.graphgeckos.dashboard.datatypes;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.cloud.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
@@ -90,7 +91,11 @@ public class BuildBotData {
   @JsonProperty("sourceStamp")
   public void unpackSourceStamp(Map<String, Object> sourceStamp) {
     commitHash = sourceStamp.get("revision").toString();
+<<<<<<< HEAD
     timestamp = Timestamp.ofTimeMicroseconds(Long.parseLong(sourceStamp.get("when").toString()));
+=======
+    timestamp = Timestamp.of(new Date(sourceStamp.get("when").toString()));
+>>>>>>> a2ff288 (add BuildBotData)
   }
 
   /**
