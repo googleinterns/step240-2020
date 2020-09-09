@@ -37,9 +37,9 @@ public class GitHubJsonTestInfo extends AbstractJsonTestInfo {
     repositoryLink = expected[3];
   }
 
+
   /**
-   * @param testName Common part of the input and output file names. E.g the test name "real_json" is expected
-   *                to have input_real_json.txt file with input json and output_real_json.txt with expected output.
+   * {@inheritDoc}
    */
   public GitHubJsonTestInfo(String testName) {
     super(testName);

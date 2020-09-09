@@ -34,6 +34,10 @@ public abstract class AbstractJsonTestInfo {
    */
   protected abstract void assignExpectedValues(String[] expected);
 
+  /**
+   * @param testName Common part of the input and output file names. E.g the test name "real_json" is expected
+   *                to have input_real_json.txt file with input json and output_real_json.txt with expected output.
+   */
   public AbstractJsonTestInfo(String testName) {
     try {
       content = readFile(getPath() + INPUT_PREFIX + testName + FILE_FORMAT);
