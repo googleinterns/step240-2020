@@ -63,7 +63,7 @@ public class DashboardControllerTest {
   private final List<Log> LOGS_B = Collections.singletonList(new Log(LOG_TYPE_3, LOG_LINK_3));
 
   private final BuildBotData BUILDER_A = new BuildBotData(
-                                        COMMIT_HASH, NAME_A, LOGS_A, BuilderStatus.valueOf(STATUS_A));
+                                         COMMIT_HASH, NAME_A, LOGS_A, BuilderStatus.valueOf(STATUS_A));
   private final BuildBotData BUILDER_B = new BuildBotData(
                                          COMMIT_HASH, NAME_B, LOGS_B, BuilderStatus.valueOf(STATUS_B));
 
