@@ -77,43 +77,46 @@ public class BuildBotData {
   }
 
   /**
-   * Returns the name of the builder bot. Cannot be null.
+   * @return the name of the builder. Cannot be null.
    */
+  @NonNull
   public String getName() {
     return name;
   }
 
   /**
-   * Returns the list of logs for each compilation stage. Cannot be null.
+   * @return the list of logs for each compilation stage. Cannot be null.
    */
+  @NonNull
   public List<Log> getLogs() {
     return logs;
   }
 
   /**
-   * Returns the compilation status of the builder. Cannot be null.
+   * @return the compilation status of the builder. Cannot be null.
    */
+  @NonNull
   public BuilderStatus getStatus() {
     return status;
   }
 
   /**
-   * Returns the commit hash of the commit tested by the current buildbot.
+   * @return the commit hash of the commit tested by the current buildbot. Cannot be null.
    */
+  @NonNull
   public String getCommitHash() {
     return commitHash;
   }
 
   /**
-   * Returns the timestamp of the build.
+   * @return the timestamp of the build.
    */
+  @NonNull
   public Timestamp getTimestamp() {
     return timestamp;
   }
 
   /**
-   * Sets the name of the builder bot.
-   *
    * @param name the new value for the {@code name} field. Should not be null.
    */
   public void setName(@NonNull String name) {
@@ -121,8 +124,6 @@ public class BuildBotData {
   }
 
   /**
-   * Sets the list of logs for each compilation stage.
-   *
    * @param logs the new value for the {@code logs} field. Should not be null.
    */
   public void setLogs(@NonNull List<Log> logs) {
@@ -130,8 +131,6 @@ public class BuildBotData {
   }
 
   /**
-   * Sets the compilation status of the builder.
-   *
    * @param status the new value for the {@code status} field. Should not be null.
    */
   public void setStatus(@NonNull BuilderStatus status) {
@@ -139,8 +138,6 @@ public class BuildBotData {
   }
 
   /**
-   * Sets the commit hash of the commit tested by the current buildbot.
-   *
    * @param commitHash the new value for the {@code commitHash} field. Should not be null.
    */
   public void setCommitHash(@NonNull String commitHash) {
@@ -148,8 +145,6 @@ public class BuildBotData {
   }
 
   /**
-   * Sets the timestamp of the build.
-   *
    * @param timestamp the new value for the {@code timestamp} field. Should not be null.
    */
   public void setTimestamp(@NonNull Timestamp timestamp) {
