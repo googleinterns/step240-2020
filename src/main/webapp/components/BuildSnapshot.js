@@ -43,7 +43,7 @@ export const BuildSnapshot = (props) => {
  * @param {string} props.data[].description - The commit message.
  * @param {string} props.data[].commitHash - The commit hash.
  * @param {string} props.data[].repository - URL to the GitHub repository.
- * @param {string} props.buildData[].status - The status of the build.
+ * @param {string} props.data[].status - The status of the build.
  */
 const Header = (props) => {
   return (
