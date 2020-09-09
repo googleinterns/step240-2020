@@ -35,17 +35,17 @@ public class DashboardController {
    * Handles GET requests from the frontend part of the application.
    * Gets information from the database via {@code datastoreRepository}.
    *
-   * @param entriesNumber the number of database entries to retrieve.
+   * @param entries the number of database entries to retrieve.
    * @param offset the offset from the latest database entry, for which to consider
    *               the requested number of entries.
-   * @return list of a list containing at most {@code entriesNumber} entries starting from the latest
+   * @return list of a list containing at most {@code entries} entries starting from the latest
    *         entry - {@code offset}. If the database has not enough entries for the requested {@code offset}
-   *         and {@code entriesNumber}, returns all available entries from that range.
+   *         and {@code entries}, returns all available entries from that range.
    */
-  @RequestMapping(value = "/builders/entries={entriesNumber}/offset={offset}",
+  @RequestMapping(value = "/builders/entries={entries}/offset={offset}",
     method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-  public Iterable<BuildInfo> getBuildInfo(@PathVariable int entriesNumber, @PathVariable int offset) {
-    return datastoreRepository.getLastRevisionEntries(entriesNumber, offset);
+  public Iterable<BuildInfo> getBuildInfo(@PathVariable int entries, @PathVariable int offset) {
+    return datastoreRepository.getLastRevisionEntries(entries, offset);
   }
 
 }
