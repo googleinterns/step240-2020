@@ -1,0 +1,14 @@
+{
+	"builderName": "cool-builder",
+	"text": ["build", "successful"],
+	"sourceStamp": {
+		"revisions": "commitHash",
+		"when": 1235648
+	},
+	"logs": [
+		[
+			"logType",
+			"logLink"
+		]
+	]
+}
