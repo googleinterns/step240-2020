@@ -56,7 +56,6 @@ public class DatastoreRepositoryTests {
     emulator.stop();
   }
 
-  /*
   @Test
   public void testValidAddition() throws IOException, InterruptedException{
     DatastoreRepository storage = new DatastoreRepository();
@@ -75,7 +74,6 @@ public class DatastoreRepositoryTests {
     dummy.addBuilder(new BuildBotInfo(getDummyUpdate("1")));
     Assert.assertEquals(dummy, storage.getRevisionEntry("1"));
   }
-  
 
   @Test
   public void testValidDeletion() throws IOException, InterruptedException {
@@ -85,13 +83,10 @@ public class DatastoreRepositoryTests {
     Assert.assertTrue(storage.deleteRevisionEntry("1"));
     Assert.assertNull(storage.getRevisionEntry("1"));
   }
-  */
-  
+
   /**
    * Tests the behaviour of add/update/get/delete requests on null data.
    */
-  
-  /*
   @Test
   public void testRequestsNullData() throws IOException, InterruptedException {
     DatastoreRepository storage = new DatastoreRepository();
@@ -141,12 +136,10 @@ public class DatastoreRepositoryTests {
 
     Assert.assertTrue(storage.deleteRevisionEntry("2"));
   }
-  */
 
   /**
    * Test possible cases of the getLastRevisions query.
    */
-  /*
   @Test
   public void testGetLastRevisionsRegularQuery() throws IOException, InterruptedException {
     DatastoreRepository storage = new DatastoreRepository();
@@ -216,5 +209,4 @@ public class DatastoreRepositoryTests {
     Assert.assertEquals(results.get(0), dummy2);
     Assert.assertEquals(results.get(1), dummy1);
   }
-  */
 }
