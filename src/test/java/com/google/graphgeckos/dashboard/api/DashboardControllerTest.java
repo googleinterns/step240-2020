@@ -6,7 +6,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.google.cloud.Timestamp;
-import com.google.graphgeckos.dashboard.datatypes.*;
+import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
+import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
+import com.google.graphgeckos.dashboard.datatypes.BuilderStatus;
+import com.google.graphgeckos.dashboard.datatypes.GitHubData;
+import com.google.graphgeckos.dashboard.datatypes.Log;
 import com.google.graphgeckos.dashboard.storage.DatastoreRepository;
 import org.junit.Before;
 import org.junit.Test;
