@@ -1,11 +1,18 @@
 import * as React from "react";
 
+const StatusIndicator = (props) => {
+  const className = 'indicator #'.replace('#', props.status);
+  return (
+    <div className={className}></div>
+  );
+}
 
 const Builder = (props) => {
   return (
-    <div className='builder'>
-      Builder name
-    <div>
+    <button className='builder'>
+      <StatusIndicator status={props.status}/>
+      {props.name}
+    </button>
   );
 }
 
