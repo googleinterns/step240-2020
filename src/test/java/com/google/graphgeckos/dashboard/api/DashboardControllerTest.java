@@ -37,7 +37,7 @@ public class DashboardControllerTest {
   private MockMvc mvc;
 
   private final String COMMIT_HASH = "1234";
-  private final Timestamp TIMESTAMP = Timestamp.now();
+  private final Timestamp TIMESTAMP = Timestamp.ofTimeMicroseconds(12345679);
   private final String BRANCH = "branch a";
   private final GitHubData INITIAL_GITHUB_DATA = new GitHubData(COMMIT_HASH, TIMESTAMP, BRANCH);
 
@@ -152,7 +152,7 @@ public class DashboardControllerTest {
    * Expected behaviour: response status 400(Bad request).
    */
   @Test
-  public void setsRequestTypeToBadRequestWhenIllegalArgumentExceptionIsThrownByDatastoreRepository() throws Exception {
+  public void BadRequestWhenIllegalArgumentExceptionIsThrownByDatastoreRepository() throws Exception {
 
     given(datastoreRepository.getLastRevisionEntries(MINUS_ONE_ENTRIES, OFFSET_ZERO))
       .willThrow(new IllegalArgumentException());
