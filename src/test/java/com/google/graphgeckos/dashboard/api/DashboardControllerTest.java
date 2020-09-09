@@ -1,5 +1,10 @@
 package com.google.graphgeckos.dashboard.api;
 
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.google.cloud.Timestamp;
 import com.google.graphgeckos.dashboard.datatypes.*;
 import com.google.graphgeckos.dashboard.storage.DatastoreRepository;
@@ -19,9 +24,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = DashboardController.class)

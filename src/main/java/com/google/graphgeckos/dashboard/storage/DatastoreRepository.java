@@ -81,7 +81,7 @@ public class DatastoreRepository implements DataRepository {
 
     if (associatedEntity != null) {
       associatedEntity.addBuilder(updateData);
-      
+
       try {
         storage.save(associatedEntity);
       } catch (DatastoreException e) {
