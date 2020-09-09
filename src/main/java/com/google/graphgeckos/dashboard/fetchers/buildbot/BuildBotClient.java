@@ -21,6 +21,8 @@ public class BuildBotClient {
 
   private static final int REQUEST_FREQUENCY = 10;
 
+  private BuildBotClient() {}
+
   public static void setBaseUrl(@NonNull String newBaseUrl) {
     baseUrl = newBaseUrl;
   }
