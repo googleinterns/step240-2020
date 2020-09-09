@@ -24,7 +24,7 @@ public class DashboardController {
    * Sets response status to Https.BAD_REQUEST (400) if the IllegalArgumentException is thrown
    * inside the getBuildInfo method.
    *
-   * @param e Exception thrown by {@code DATA_REPOSITORY}.
+   * @param e Exception thrown by {@code datastoreRepository}.
    *          {@link DatastoreRepository::getBuildInfo} to learn what causes it.
    */
   @ExceptionHandler
@@ -33,7 +33,7 @@ public class DashboardController {
 
   /**
    * Handles GET requests from the frontend part of the application.
-   * Gets information from the database via {@code DATA_REPOSITORY}.
+   * Gets information from the database via {@code datastoreRepository}.
    *
    * @param number the number of database entries to retrieve.
    * @param offset the offset from the latest database entry, for which to consider
