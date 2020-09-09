@@ -3,6 +3,7 @@
 .idea
 src/main/webapp/.cache
 src/main/webapp/dist
+src/main/webapp/node
 src/main/webapp/node_modules
 step240-2020.iml
 target/
