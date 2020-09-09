@@ -2,8 +2,8 @@ import * as React from "react";
 
 /**
  * Component used as an indicator for build status.
- * Different statuses are differentiated by alternative
- * style rules.
+ * Statuses are differentiated by alternative
+ * styling rules.
  * @param props.status the build status. Partially determines
  * the styling of the rules.
  */
@@ -16,9 +16,8 @@ const StatusIndicator = (props) => {
 
 /**
  * Component used to display information for a builder.
- *
- * @param props.status
- * @param props.name 
+ * @param props.status the build status of the bot.
+ * @param props.name the name of the bot.
  */
 const Builder = (props) => {
   return (
