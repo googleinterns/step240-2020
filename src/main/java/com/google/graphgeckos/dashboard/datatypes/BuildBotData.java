@@ -67,7 +67,7 @@ public class BuildBotData {
   /**
    * Only used by Spring GCP.
    */
-  public BuildBotData() { }
+  public BuildBotData() {}
 
   public BuildBotData(String commitHash, String name, List<Log> logs, BuilderStatus status) {
     this.commitHash = commitHash;
