@@ -3,11 +3,9 @@ import {BuildSnapshotContainer} from "./components/BuildSnapshotContainer";
 import {Header} from "./components/Header";
 
 /**
- * Main App that is Rendered to the Page.
- * 
- * @param {*} props arbituary input properties for our application to use.
+ * Main App reponsible for rendering content to the page.
  */
-export const App = (props) => {
+export const App = _ => {
   return (
     <div>
       <Header/>
