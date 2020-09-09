@@ -61,9 +61,9 @@ public class BuildInfo {
    */
   public BuildInfo(GitHubData creationData) {
     this.commitHash = creationData.getCommitHash();
+    this.timestamp = Timestamp.parseTimestamp(creationData.getTimestamp());
     this.branch = creationData.getBranch();
     this.builders = new ArrayList<>();
-    this.timestamp = Timestamp.parseTimestamp(creationData.getTimestamp());
   }
 
   /**

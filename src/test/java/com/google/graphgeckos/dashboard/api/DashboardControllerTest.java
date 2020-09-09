@@ -39,15 +39,15 @@ public class DashboardControllerTest {
   private final String BRANCH = "branch a";
   private final GitHubData INITIAL_GITHUB_DATA = new GitHubData(COMMIT_HASH, TIMESTAMP, BRANCH);
 
-  /* Builders names. */
+  /** Builders names. */
   private final String NAME_A = "Builder A";
   private final String NAME_B = "Builder B";
 
-  /* Builders statuses. */
+  /** Builders statuses. */
   private final String STATUS_A = "PASSED";
   private final String STATUS_B = "FAILED";
 
-  /* Builders logs components. */
+  /** Builders logs components. */
   private final String LOG_TYPE_1 = "type 1";
   private final String LOG_TYPE_2 = "type 2";
   private final String LOG_TYPE_3 = "type 3";
@@ -55,7 +55,7 @@ public class DashboardControllerTest {
   private final String LOG_LINK_2 = "link 2";
   private final String LOG_LINK_3 = "link 3";
 
-  /* Builders logs. */
+  /** Builders logs. */
   private final List<Log> LOGS_A = Arrays.asList(new Log(LOG_TYPE_1, LOG_LINK_1),
                                                new Log(LOG_TYPE_2, LOG_LINK_2));
   private final List<Log> LOGS_B = Collections.singletonList(new Log(LOG_TYPE_3, LOG_LINK_3));
@@ -68,10 +68,10 @@ public class DashboardControllerTest {
   private final BuildInfo BUILD_INFO = new BuildInfo(INITIAL_GITHUB_DATA);
 
 
-  /* Illegal number of entries value. Revision must be >= 0. */
+  /** Illegal number of entries value. Revision must be >= 0. */
   private final int MINUS_ONE_ENTRIES = -1;
 
-  /* Valid number of entries and offset values. */
+  /** Valid number of entries and offset values. */
   private final int ZERO_ENTRIES = 0;
   private final int ONE_ENTRIES = 1;
   private final int OFFSET_ZERO = 0;

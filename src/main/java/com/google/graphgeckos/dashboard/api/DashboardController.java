@@ -16,15 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DashboardController {
 
-  /**
-   * Provides access to information in the storage.
-   */
+  /** Provides access to information in the storage. */
   @Autowired
   private DatastoreRepository datastoreRepository;
 
   /**
    * Sets response status to Https.BAD_REQUEST (400) if the IllegalArgumentException is thrown
    * inside the getBuildInfo method.
+   *
    * @param e Exception thrown by {@code DATA_REPOSITORY}.
    *          {@link DatastoreRepository::getBuildInfo} to learn what causes it.
    */
@@ -35,6 +34,7 @@ public class DashboardController {
   /**
    * Handles GET requests from the frontend part of the application.
    * Gets information from the database via {@code DATA_REPOSITORY}.
+   *
    * @param number the number of database entries to retrieve.
    * @param offset the offset from the latest database entry, for which to consider
    *               the requested number of entries.
