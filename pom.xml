@@ -172,7 +172,7 @@
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
           <execution>
-            <id>Copy my react app into my Spring Boot target static folder</id>
+            <id>Copy React app into Spring Boot target static folder</id>
             <phase>process-resources</phase>
             <goals>
               <goal>copy-resources</goal>
