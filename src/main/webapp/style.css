@@ -1,0 +1,30 @@
+ul {
+  display: flex;
+  margin: 0;
+  list-style-type: none;
+}
+
+a {
+  color:inherit;
+  text-decoration: none;
+}
+
+.header {
+  border-bottom: 1px var(--primary) solid;
+  display: flex;
+  max-width: 100%;
+  min-width: 100%;
+  padding: 1rem 0;
+}
+
+.header .title {
+  font-weight: bold;
+}
+
+.navigation {
+  margin-left:auto;
+}
+
+.navigation > * {
+  padding: 0 2rem;
+}
