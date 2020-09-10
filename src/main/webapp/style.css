@@ -17,3 +17,8 @@
 .failed {
   background-color: var(--failed);
 }
+
+.header-toggle {
+  width: 1.5rem;
+  height: 1.5rem;
+}
