@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {getField} from "./utils/getField";
 
 /**
  * Main List Element to be displayed on the Navigation.
@@ -26,7 +27,7 @@ const NavigationItem = (props) => {
   */
 export const Navigation = (props) => {
   const options = getField(props, 'options', []);
-  
+
   return (
     <ul className="navigation">
       {props.options.map (option => 
