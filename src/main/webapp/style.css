@@ -21,11 +21,11 @@ ul {
 }
 
 .navigation {
-  margin-left:auto;
+  margin-left: auto;
 }
 
 .navigation > li {
-  padding: 0 2rem;
   font-style: italic;
+  padding: 0 2rem;
   text-decoration: underline;
 }
