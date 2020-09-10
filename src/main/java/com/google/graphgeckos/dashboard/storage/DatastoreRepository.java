@@ -14,6 +14,7 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
+import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreException;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Query;
@@ -23,9 +24,11 @@ import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
 import com.google.graphgeckos.dashboard.datatypes.GitHubData;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.function.Supplier;
 import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
-import org.springframework.lang.NonNull;
+import org.springframework.cloud.gcp.data.datastore.core.convert.DatastoreServiceObjectToKeyFactory;
+import org.springframework.cloud.gcp.data.datastore.core.convert.DefaultDatastoreEntityConverter;
+import org.springframework.cloud.gcp.data.datastore.core.mapping.DatastoreMappingContext;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -43,8 +46,22 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class DatastoreRepository implements DataRepository {
-  @Autowired
   private DatastoreTemplate storage;
+
+  public DatastoreRepository(@NonNull Datastore underlyingStorage) {
+    Supplier<Datastore> supplier = () -> { return underlyingStorage; };
+
+    DatastoreMappingContext mappingContext = new DatastoreMappingContext();
+
+    DatastoreServiceObjectToKeyFactory objectToKeyFactory =
+        new DatastoreServiceObjectToKeyFactory(supplier);
+
+    DefaultDatastoreEntityConverter entityConverter =
+        new DefaultDatastoreEntityConverter(mappingContext, objectToKeyFactory);
+
+    storage = new DatastoreTemplate(supplier, entityConverter, mappingContext, objectToKeyFactory);
+  }
+
 
   /**
    * {@inheritDoc}
