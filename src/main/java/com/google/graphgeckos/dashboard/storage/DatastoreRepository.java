@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -47,12 +48,11 @@ public class DatastoreRepository implements DataRepository {
 
   /**
    * {@inheritDoc}
+   *
+   * @throws NullPointerException if the {@code entryData} is null.
    */
   @Override
-  public boolean createRevisionEntry(GitHubData entryData) throws IllegalArgumentException {
-    if (entryData == null) {
-      throw new IllegalArgumentException("entryData cannot be null");
-    }
+  public boolean createRevisionEntry(@NonNull GitHubData entryData) {
 
     if (getRevisionEntry(entryData.getCommitHash()) == null) {
       try {
@@ -72,12 +72,11 @@ public class DatastoreRepository implements DataRepository {
 
   /**
    * {@inheritDoc}
+   *
+   * @throws NullPointerException if the {@code updateData} is null.
    */
   @Override
-  public boolean updateRevisionEntry(BuildBotData updateData) throws IllegalArgumentException {
-    if (updateData == null) {
-      throw new IllegalArgumentException("entryData cannot be null");
-    }
+  public boolean updateRevisionEntry(@NonNull BuildBotData updateData) {
 
     BuildInfo associatedEntity = getRevisionEntry(updateData.getCommitHash());
 
@@ -101,13 +100,11 @@ public class DatastoreRepository implements DataRepository {
 
   /**
    * {@inheritDoc}
+   *
+   * @throws NullPointerException if the {@code commitHash} is null.
    */
   @Override
-  public boolean deleteRevisionEntry(String commitHash) throws IllegalArgumentException {
-    if (commitHash == null) {
-      throw new IllegalArgumentException("commitHash cannot be null");
-    }
-
+  public boolean deleteRevisionEntry(@NonNull String commitHash) {
     BuildInfo toBeDeleted = getRevisionEntry(commitHash);
 
     if (toBeDeleted != null) {
@@ -156,13 +153,11 @@ public class DatastoreRepository implements DataRepository {
 
   /**
    * {@inheritDoc}
+   *
+   * @throws NullPointerException if the {@code commitHash} is null.
    */
   @Override
-  public BuildInfo getRevisionEntry(String commitHash) throws IllegalArgumentException {
-    if (commitHash == null) {
-      throw new IllegalArgumentException("commitHash cannot be null");
-    }
-
+  public BuildInfo getRevisionEntry(@NonNull String commitHash) {
     return storage.findById(commitHash, BuildInfo.class);
   }
 }
