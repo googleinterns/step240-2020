@@ -20,13 +20,13 @@ public class BuildBotClient {
   private static String baseUrl = "http://lab.llvm.org:8011/json/builders/";
 
   private static final int REQUEST_FREQUENCY = 10;
-  
+
   private BuildBotClient() {}
 
   public static void setBaseUrl(@NonNull String newBaseUrl) {
     baseUrl = newBaseUrl;
   }
-
+  
   public static void run(@NonNull String buildBot, int initialBuildId) {
     AtomicInteger buildId = new AtomicInteger(initialBuildId);
 
