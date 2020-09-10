@@ -121,6 +121,9 @@ public class BuildBotData {
     this.timestamp = timestamp;
   }
 
+  /**
+   * Checks if all non-transient fields are equal between BuildBotData instances.
+   */
   @Override
   public boolean equals(Object o) {
     if (o == null || !(o instanceof BuildBotData)) {
@@ -128,8 +131,8 @@ public class BuildBotData {
     }
 
     BuildBotData other = (BuildBotData) o;
-    return commitHash.equals(other.commitHash) && timestamp.equals(other.timestamp) &&
-           name.equals(other.name) && logs.equals(other.logs) && status.equals(other.status);
+    return timestamp.equals(other.timestamp) && name.equals(other.name) &&
+           logs.equals(other.logs) && status.equals(other.status);
   }
 
 }
