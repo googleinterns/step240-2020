@@ -32,6 +32,7 @@ public abstract class AbstractJsonTestInfo {
     } catch (IOException e) {
       System.out.println("File not found:" + e.getMessage());
     }
+    
     try {
       String[] expected = readFile(getPath() + EXPECTED_PREFIX + testName + FILE_FORMAT).split("\n");
       assignExpectedValues(expected);
