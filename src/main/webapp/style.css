@@ -1,0 +1,17 @@
+:root {
+  --passed: #4fdc7f;
+  --failed: #DC4F4F;
+}
+
+.build-snapshot {
+  border-radius: 1rem;
+  flex: 1;
+}
+
+.passed {
+  background-color: var(--passed);
+}
+
+.failed {
+  background-color: var(--failed);
+}
