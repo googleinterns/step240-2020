@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {getFields} from './utils/getFields.js';
 
 // The target fields to be extracted from each build step
 // and displayed on each row.
@@ -18,6 +19,8 @@ const HEADERS = ['no.', 'text', 'log'];
  * @param {string} props.buildSteps[].logs - A URL pointing to the log file.
  */
 export const BuilderDataTable = props => {
+  const buildSteps = getField(props, 'buildSteps', []);
+
   return (
     <table className='data-table'>
       <thead>
