@@ -71,7 +71,7 @@ public class DatastoreRepositoryTests {
     Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1")));
     Assert.assertTrue(storage.updateRevisionEntry(getDummyUpdate("1")));
     BuildInfo dummy = getDummyEntity("1");
-    dummy.addBuilder(new BuildBotInfo(getDummyUpdate("1")));
+    dummy.addBuilder(getDummyUpdate("1"));
     Assert.assertEquals(dummy, storage.getRevisionEntry("1"));
   }
 
@@ -91,19 +91,19 @@ public class DatastoreRepositoryTests {
   public void testRequestsNullData() throws IOException, InterruptedException {
     DatastoreRepository storage = new DatastoreRepository();
 
-    Assert.assertThrows(IllegalArgumentException.class, () -> {
+    Assert.assertThrows(NullPointerException.class, () -> {
       storage.createRevisionEntry(null);
     });
 
-    Assert.assertThrows(IllegalArgumentException.class, () -> {
+    Assert.assertThrows(NullPointerException.class, () -> {
       storage.getRevisionEntry(null);
     });
 
-    Assert.assertThrows(IllegalArgumentException.class, () -> {
+    Assert.assertThrows(NullPointerException.class, () -> {
       storage.updateRevisionEntry(null);
     });
 
-    Assert.assertThrows(IllegalArgumentException.class, () -> {
+    Assert.assertThrows(NullPointerException.class, () -> {
       storage.deleteRevisionEntry(null);
     });
   }
