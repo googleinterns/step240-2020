@@ -121,4 +121,15 @@ public class BuildBotData {
     this.timestamp = timestamp;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || !(o instanceof BuildBotData)) {
+      return false;
+    }
+
+    BuildBotData other = (BuildBotData) o;
+    return commitHash.equals(other.commitHash) && timestamp.equals(other.timestamp) &&
+           name.equals(other.name) && logs.equals(other.logs) && status.equals(other.status);
+  }
+
 }
