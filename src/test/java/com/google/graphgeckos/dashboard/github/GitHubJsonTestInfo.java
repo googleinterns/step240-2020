@@ -1,4 +1,4 @@
-package com.google.graphgeckos.dashboard;
+package com.google.graphgeckos.dashboard.github;
 
 import java.io.IOException;
 import java.nio.file.Files;

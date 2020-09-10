@@ -1,4 +1,4 @@
-package com.google.graphgeckos.dashboard;
+package com.google.graphgeckos.dashboard.github;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
