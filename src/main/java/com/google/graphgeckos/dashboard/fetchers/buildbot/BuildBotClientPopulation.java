@@ -4,7 +4,9 @@ import org.springframework.lang.NonNull;
 
 import java.util.Arrays;
 
-public abstract class BuildBotClientPopulation {
+public class BuildBotClientPopulation {
+
+  private BuildBotClientPopulation() {}
 
   public static class BuildBotClientInitializer {
     public final String name;
@@ -21,7 +23,7 @@ public abstract class BuildBotClientPopulation {
     if (buildBots.length == 0) {
       throw new IllegalArgumentException("Expected one or more BuildBots, found zero");
     }
-    Arrays.stream(buildBots).forEach(x -> new BuildBotClient(x.name, x.initialBuildId));
+    Arrays.stream(buildBots).forEach(x -> BuildBotClient.run(x.name, x.initialBuildId));
   }
 
 }
