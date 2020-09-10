@@ -49,7 +49,7 @@ public class DatastoreRepository implements DataRepository {
   /**
    * {@inheritDoc}
    *
-   * Throws NullPointerException if the {@code entryData} is null.
+   * @throws NullPointerException if the {@code entryData} is null.
    */
   @Override
   public boolean createRevisionEntry(@NonNull GitHubData entryData) {
@@ -73,7 +73,7 @@ public class DatastoreRepository implements DataRepository {
   /**
    * {@inheritDoc}
    *
-   * Throws NullPointerException if the {@code updateData} is null.
+   * @throws NullPointerException if the {@code updateData} is null.
    */
   @Override
   public boolean updateRevisionEntry(@NonNull BuildBotData updateData) {
@@ -101,7 +101,7 @@ public class DatastoreRepository implements DataRepository {
   /**
    * {@inheritDoc}
    *
-   * Throws NullPointerException if the {@code commitHash} is null.
+   * @throws NullPointerException if the {@code commitHash} is null.
    */
   @Override
   public boolean deleteRevisionEntry(@NonNull String commitHash) {
@@ -154,7 +154,7 @@ public class DatastoreRepository implements DataRepository {
   /**
    * {@inheritDoc}
    *
-   * Throws NullPointerException if the {@code commitHash} is null.
+   * @throws NullPointerException if the {@code commitHash} is null.
    */
   @Override
   public BuildInfo getRevisionEntry(@NonNull String commitHash) {
