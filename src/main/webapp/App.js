@@ -7,9 +7,9 @@ import {Header} from "./components/Header";
  */
 export const App = _ => {
   return (
-    <div>
+    <React.Fragment>
       <Header/>
       <BuildSnapshotContainer/>
-    </div>
+    </React.Fragment>
   );
 }
