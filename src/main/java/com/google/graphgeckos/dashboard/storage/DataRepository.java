@@ -32,7 +32,7 @@ public interface DataRepository {
    * @return true only if the operation completed successfully.
    * @throws IllegalArgumentException if entryData is null
    */
-  boolean createRevisionEntry(GitHubData entryData) throws IllegalArgumentException;
+  boolean createRevisionEntry(GitHubData entryData);
 
   /**
    * Updates an existing revision's database entry, with the individual information from
@@ -43,7 +43,7 @@ public interface DataRepository {
    * @return true only if the operation completed successfully.
    * @throws IllegalArgumentException if updateData is null.
    */
-  boolean updateRevisionEntry(BuildBotData updateData) throws IllegalArgumentException;
+  boolean updateRevisionEntry(BuildBotData updateData);
 
   /**
    * Deletes a revision's database entry, based on it's commit hash. Has no effect if there
@@ -54,7 +54,7 @@ public interface DataRepository {
    * @return true only if the operation completed successfully.
    * @throws IllegalArgumentException if commitHash is null
    */
-  boolean deleteRevisionEntry(String commitHash) throws IllegalArgumentException;
+  boolean deleteRevisionEntry(String commitHash);
 
   /**
    * Queries the database for a specified amount of entries of type "revision", going down
@@ -79,5 +79,5 @@ public interface DataRepository {
    *     associated to that commitHash.
    * @throws IllegalArgumentException if commitHash is null
    */
-  BuildInfo getRevisionEntry(String commitHash) throws IllegalArgumentException;
+  BuildInfo getRevisionEntry(String commitHash);
 }
