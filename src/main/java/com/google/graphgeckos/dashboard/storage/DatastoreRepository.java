@@ -134,9 +134,11 @@ public class DatastoreRepository implements DataRepository {
 
         return false;
       }
+
+      return true;
     }
 
-    return true;
+    return false;
   }
 
   /**
