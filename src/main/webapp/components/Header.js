@@ -4,7 +4,7 @@ import { Navigation } from "./Navigation";
 const OPTIONS = [
   {
     text: 'Docs',
-    link:  'https://github.com/googleinterns/step240-2020'
+    link: 'https://github.com/googleinterns/step240-2020'
   },
   {
     text: 'Buildbot',
