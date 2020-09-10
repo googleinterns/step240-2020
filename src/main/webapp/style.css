@@ -4,6 +4,7 @@
 }
 
 .build-snapshot {
+  color: var(--primary);
   border-radius: 1rem;
   flex: 1;
 }
