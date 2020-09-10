@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.io.IOException;
 
@@ -17,7 +18,7 @@ public class BuildBotClientTest {
   public static MockWebServer webServer;
 
   @BeforeAll
-  public static void setUp() {
+  static void setUp() {
     webServer = new MockWebServer();
   }
 
@@ -26,13 +27,17 @@ public class BuildBotClientTest {
     webServer.shutdown();
   }
 
+  private final BuildBotTestInfo JSON_WITHOUT_UNKNOWN_FIELDS =
+    new BuildBotTestInfo("no_unknown_fields_json");
+
   @Test
-  public void testtest() {
+  public void jsonWithoutUnknownFieldsIsParsedCorrectly() {
     String baseUrl = String.format("http://localhost:%s", webServer.getPort());
     BuildBotClient.setBaseUrl(baseUrl);
 
     webServer.enqueue(new MockResponse()
-      .setBody());
+      .setBody(JSON_WITHOUT_UNKNOWN_FIELDS.getContent())
+      .setHeader("Content-Type", "application/json"));
   }
 
 
