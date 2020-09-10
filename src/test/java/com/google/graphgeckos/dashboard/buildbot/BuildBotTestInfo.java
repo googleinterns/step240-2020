@@ -2,7 +2,6 @@ package com.google.graphgeckos.dashboard.buildbot;
 
 import com.google.graphgeckos.dashboard.AbstractJsonTestInfo;
 import com.google.graphgeckos.dashboard.datatypes.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
