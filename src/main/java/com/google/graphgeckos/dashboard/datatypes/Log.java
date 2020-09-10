@@ -36,9 +36,6 @@ public class Log {
    */
   public Log() {}
 
-  /**
-   * Constructs an instance of Log. Both type and link can be null.
-   */
   public Log(String type, String link) {
     this.type = type;
     this.link = link;
@@ -49,30 +46,18 @@ public class Log {
     this.link = logComponents[1];
   }
 
-  /**
-   * @return the type of the log as a String. Can be null.
-   */
   public String getType() {
     return type;
   }
 
-  /**
-   * @return a String with a link to the full version of the log. Can be null.
-   */
   public String getLink() {
     return link;
   }
 
-  /**
-   * @param type the new value for {@code type}
-   */
   public void setType(String type) {
     this.type = type;
   }
 
-  /**
-   * @param link the new value for {@code link}
-   */
   public void setLink(String link) {
     this.link = link;
   }
