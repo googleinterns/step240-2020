@@ -27,7 +27,7 @@ export const BuilderDataTable = props => {
         <tr>{HEADERS.map(header => <th>{header}</th>)}</tr>
       </thead>
       <tbody>
-        {props.buildSteps.map(datapoint => 
+        {buildSteps.map(datapoint => 
           <tr>
             {BUILD_STEP_FIELDS.map(field => <td>{datapoint[field]}</td>)}
           </tr>
