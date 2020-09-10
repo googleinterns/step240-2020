@@ -22,18 +22,6 @@ public abstract class AbstractJsonTestInfo {
   /** Test input (json). */
   protected String content;
 
-  protected String readFile(String filePath) throws IOException {
-    return Files.lines(Paths.get(filePath)).collect(Collectors.joining("\n"));
-  }
-
-  /**
-   * The expected output for each test is stored as a txt file. One line for each field.
-   * The order of the values is described in inherited classes.
-   *
-   * @param expected Lines of the expected output file for the test.
-   */
-  protected abstract void assignExpectedValues(String[] expected);
-
   /**
    * @param testName Common part of the input and output file names. E.g the test name "real_json" is expected
    *                to have input_real_json.txt file with input json and output_real_json.txt with expected output.
@@ -51,5 +39,17 @@ public abstract class AbstractJsonTestInfo {
       System.out.println("File not found:" + e.getMessage());
     }
   }
+
+  protected String readFile(String filePath) throws IOException {
+    return Files.lines(Paths.get(filePath)).collect(Collectors.joining("\n"));
+  }
+
+  /**
+   * The expected output for each test is stored as a txt file. One line for each field.
+   * The order of the values is described in inherited classes.
+   *
+   * @param expected Lines of the expected output file for the test.
+   */
+  protected abstract void assignExpectedValues(String[] expected);
 
 }

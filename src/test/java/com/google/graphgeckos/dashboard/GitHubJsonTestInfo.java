@@ -5,6 +5,19 @@ package com.google.graphgeckos.dashboard;
  */
 public class GitHubJsonTestInfo extends AbstractJsonTestInfo {
 
+  // Expected output fields. See com.google.graphgeckos.dashboard.GitHubData class to learn more.
+  private String branch;
+  private String commitHash;
+  private String timestamp;
+  private String repositoryLink;
+
+  /**
+   * {@inheritDoc}
+   */
+  public GitHubJsonTestInfo(String testName) {
+    super(testName);
+  }
+
   /**
    * {@inheritDoc}
    */
@@ -12,12 +25,6 @@ public class GitHubJsonTestInfo extends AbstractJsonTestInfo {
   protected String getPath() {
     return "src/test/resources/jsons/";
   }
-
-  // Expected output fields. See com.google.graphgeckos.dashboard.GitHubData class to learn more.
-  private String branch;
-  private String commitHash;
-  private String timestamp;
-  private String repositoryLink;
 
   /**
    * {@inheritDoc}
@@ -35,14 +42,6 @@ public class GitHubJsonTestInfo extends AbstractJsonTestInfo {
     commitHash = expected[1];
     timestamp = expected[2];
     repositoryLink = expected[3];
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  public GitHubJsonTestInfo(String testName) {
-    super(testName);
   }
 
   /**
