@@ -20,7 +20,6 @@
 
 .snapshot-header {
   align-items: center;
-  background-color: var(--failed);
   border: 0.25rem var(--primary) solid;
   border-radius: 0.5rem;
   color: var(--primary);
