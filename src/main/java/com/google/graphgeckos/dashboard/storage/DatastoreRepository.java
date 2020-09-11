@@ -150,11 +150,11 @@ public class DatastoreRepository implements DataRepository {
     }
 
     Query<Entity> query = Query.newEntityQueryBuilder()
-      .setKind("revision")
-      .setOrderBy(OrderBy.desc("timestamp"))
-      .setOffset(offset)
-      .setLimit(number)
-      .build();
+                               .setKind("revision")
+                               .setOrderBy(OrderBy.desc("timestamp"))
+                               .setOffset(offset)
+                               .setLimit(number)
+                               .build();
 
     List<BuildInfo> toBeReturned = new ArrayList<>();
     storage.query(query, BuildInfo.class).getIterable().forEach(toBeReturned::add);
