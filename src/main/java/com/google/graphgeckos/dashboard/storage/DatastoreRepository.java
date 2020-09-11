@@ -30,7 +30,6 @@ import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
 import org.springframework.cloud.gcp.data.datastore.core.convert.DatastoreServiceObjectToKeyFactory;
 import org.springframework.cloud.gcp.data.datastore.core.convert.DefaultDatastoreEntityConverter;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.DatastoreMappingContext;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
 /**
