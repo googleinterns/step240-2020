@@ -39,7 +39,7 @@ import org.springframework.stereotype.Repository;
  * The relevant fields for the database are:
  * - Kind: "revision"
  * - Key: commit hash
- * 
+ *
  * Useful links:
  * - https://googleapis.dev/java/google-cloud-datastore/latest/index.html
  * - https://googleapis.dev/java/spring-cloud-gcp/1.2.2.RELEASE/index.html
@@ -144,7 +144,7 @@ public class DatastoreRepository implements DataRepository {
    */
   @Override
   public List<BuildInfo> getLastRevisionEntries(int number, int offset)
-    throws IllegalArgumentException {
+                                                          throws IllegalArgumentException {
     if (number < 0 || offset < 0) {
       throw new IllegalArgumentException("Both number and offset must be >= 0");
     }
