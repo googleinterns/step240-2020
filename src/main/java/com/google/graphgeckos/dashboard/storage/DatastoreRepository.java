@@ -24,6 +24,7 @@ import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
 import com.google.graphgeckos.dashboard.datatypes.GitHubData;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
 import org.springframework.cloud.gcp.data.datastore.core.convert.DatastoreServiceObjectToKeyFactory;
@@ -49,7 +50,8 @@ import org.springframework.stereotype.Repository;
 public class DatastoreRepository implements DataRepository {
   private DatastoreTemplate storage;
 
-  public DatastoreRepository(@NonNull Datastore underlyingStorage) {
+  public DatastoreRepository(Datastore underlyingStorage) {
+    Objects.requireNonNull(underlyingStorage);
     Supplier<Datastore> supplier = () -> { return underlyingStorage; };
 
     DatastoreMappingContext mappingContext = new DatastoreMappingContext();
@@ -70,8 +72,8 @@ public class DatastoreRepository implements DataRepository {
    * @throws NullPointerException if the {@code entryData} is null.
    */
   @Override
-  public boolean createRevisionEntry(@NonNull GitHubData entryData) {
-
+  public boolean createRevisionEntry(GitHubData entryData) {
+    Objects.requireNonNull(entryData);
     if (getRevisionEntry(entryData.getCommitHash()) == null) {
       try {
         storage.save(new BuildInfo(entryData));
@@ -94,8 +96,8 @@ public class DatastoreRepository implements DataRepository {
    * @throws NullPointerException if the {@code updateData} is null.
    */
   @Override
-  public boolean updateRevisionEntry(@NonNull BuildBotData updateData) {
-
+  public boolean updateRevisionEntry(BuildBotData updateData) {
+    Objects.requireNonNull(updateData);
     BuildInfo associatedEntity = getRevisionEntry(updateData.getCommitHash());
 
     if (associatedEntity != null) {
@@ -122,7 +124,8 @@ public class DatastoreRepository implements DataRepository {
    * @throws NullPointerException if the {@code commitHash} is null.
    */
   @Override
-  public boolean deleteRevisionEntry(@NonNull String commitHash) {
+  public boolean deleteRevisionEntry(String commitHash) {
+    Objects.requireNonNull(commitHash);
     BuildInfo toBeDeleted = getRevisionEntry(commitHash);
 
     if (toBeDeleted != null) {
@@ -175,7 +178,8 @@ public class DatastoreRepository implements DataRepository {
    * @throws NullPointerException if the {@code commitHash} is null.
    */
   @Override
-  public BuildInfo getRevisionEntry(@NonNull String commitHash) {
+  public BuildInfo getRevisionEntry(String commitHash) {
+    Objects.requireNonNull(commitHash);
     return storage.findById(commitHash, BuildInfo.class);
   }
 }
