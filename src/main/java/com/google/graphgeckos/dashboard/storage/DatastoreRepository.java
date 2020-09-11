@@ -144,7 +144,7 @@ public class DatastoreRepository implements DataRepository {
    */
   @Override
   public List<BuildInfo> getLastRevisionEntries(int number, int offset)
-                                                          throws IllegalArgumentException {
+                                                         throws IllegalArgumentException {
     if (number < 0 || offset < 0) {
       throw new IllegalArgumentException("Both number and offset must be >= 0");
     }
