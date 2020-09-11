@@ -171,7 +171,7 @@ public class DatastoreRepository implements DataRepository {
   @Override
   public BuildInfo getRevisionEntry(@NonNull String commitHash) {
     Objects.requireNonNull(commitHash);
-    
+
     return storage.findById(commitHash, BuildInfo.class);
   }
 }
