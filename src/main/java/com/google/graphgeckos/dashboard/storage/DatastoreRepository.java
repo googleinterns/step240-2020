@@ -39,7 +39,7 @@ import org.springframework.stereotype.Repository;
  * The relevant fields for the database are:
  * - Kind: "revision"
  * - Key: commit hash
- * <p>
+ * 
  * Useful links:
  * - https://googleapis.dev/java/google-cloud-datastore/latest/index.html
  * - https://googleapis.dev/java/spring-cloud-gcp/1.2.2.RELEASE/index.html
