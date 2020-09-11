@@ -1,6 +1,6 @@
 :root {
-  --passed: #4fdc7f;
   --failed: #DC4F4F;
+  --passed: #4fdc7f;
 }
 
 .build-snapshot {
@@ -47,6 +47,7 @@
 
 .header-description {
   font-style: italic;
+  text-align: left;
 }
 
 .header-status {
