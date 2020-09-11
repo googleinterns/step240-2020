@@ -10,7 +10,7 @@ body {
   background-color: var(--background);
   color: var(--primary);
   display: flex;
-  font-family: 'Roboto', sans-serif;
+  font: 1rem normal 'Roboto' sans-serif;
   flex-direction: column;
   margin: 0.5rem 3rem;
   overflow: hidden scroll;
