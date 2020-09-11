@@ -41,12 +41,12 @@ public class DatastoreRepositoryTests {
     return new BuildInfo(getDummyGitData(commitHash, time));
   }
 
-  private ParsedGitData getDummyGitData(String commitHash, Timestamp time) {
-    return new ParsedGitData(commitHash, time, "test");
+  private GitHubData getDummyGitData(String commitHash, Timestamp time) {
+    return new GitHubData(commitHash, time, "test");
   }
 
-  private ParsedBuildbotData getDummyUpdate(String commitHash) {
-    return new ParsedBuildbotData(commitHash, "tester", new ArrayList<>(), BuilderStatus.PASSED);
+  private BuildBotData getDummyUpdate(String commitHash) {
+    return new BuildBotData(commitHash, "tester", new ArrayList<>(), BuilderStatus.PASSED);
   }
 
   @After
@@ -72,7 +72,7 @@ public class DatastoreRepositoryTests {
     Assert.assertTrue(storage.updateRevisionEntry(getDummyUpdate("1")));
 
     BuildInfo dummy = getDummyEntity("1", time);
-    dummy.addBuilder(new Builder(getDummyUpdate("1")));
+    dummy.addBuilder(getDummyUpdate("1"));
     Assert.assertEquals(dummy, storage.getRevisionEntry("1"));
   }
 
