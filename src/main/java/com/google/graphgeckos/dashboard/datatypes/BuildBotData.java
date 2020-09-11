@@ -56,7 +56,7 @@ public class BuildBotData {
    * The logs of each compilation stage, stored as described by {@link Log}.
    */
   @Field(name = "logs")
-  private List<Log> logs = new ArrayList<>();
+  private final List<Log> logs = new ArrayList<>();
 
   /**
    * Builder compilation status, as described by {@link BuilderStatus}.

@@ -24,6 +24,7 @@ import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
 import com.google.graphgeckos.dashboard.datatypes.GitHubData;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
 import org.springframework.cloud.gcp.data.datastore.core.convert.DatastoreServiceObjectToKeyFactory;
@@ -50,6 +51,7 @@ public class DatastoreRepository implements DataRepository {
   private DatastoreTemplate storage;
 
   public DatastoreRepository(@NonNull Datastore underlyingStorage) {
+    Objects.requireNonNull(underlyingStorage);
     Supplier<Datastore> supplier = () -> { return underlyingStorage; };
 
     DatastoreMappingContext mappingContext = new DatastoreMappingContext();
@@ -71,7 +73,7 @@ public class DatastoreRepository implements DataRepository {
    */
   @Override
   public boolean createRevisionEntry(@NonNull GitHubData entryData) {
-
+    Objects.requireNonNull(entryData);
     if (getRevisionEntry(entryData.getCommitHash()) == null) {
       try {
         storage.save(new BuildInfo(entryData));
@@ -95,7 +97,7 @@ public class DatastoreRepository implements DataRepository {
    */
   @Override
   public boolean updateRevisionEntry(@NonNull BuildBotData updateData) {
-
+    Objects.requireNonNull(updateData);
     BuildInfo associatedEntity = getRevisionEntry(updateData.getCommitHash());
 
     if (associatedEntity != null) {
@@ -123,6 +125,7 @@ public class DatastoreRepository implements DataRepository {
    */
   @Override
   public boolean deleteRevisionEntry(@NonNull String commitHash) {
+    Objects.requireNonNull(commitHash);
     BuildInfo toBeDeleted = getRevisionEntry(commitHash);
 
     if (toBeDeleted != null) {
@@ -176,6 +179,7 @@ public class DatastoreRepository implements DataRepository {
    */
   @Override
   public BuildInfo getRevisionEntry(@NonNull String commitHash) {
+    Objects.requireNonNull(commitHash);
     return storage.findById(commitHash, BuildInfo.class);
   }
 }
