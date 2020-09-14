@@ -1,3 +1,8 @@
+:root {
+  --failed: #dc4f4f;
+  --passed: #4fdc7f;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -28,4 +33,55 @@ ul {
   font-style: italic;
   padding: 0 2rem;
   text-decoration: underline;
+}
+.build-snapshot {
+  color: var(--primary);
+  border-radius: 1rem;
+  flex: 1;
+  font-size: 1rem;
+}
+
+.passed {
+  background-color: var(--passed);
+}
+
+.failed {
+  background-color: var(--failed);
+}
+
+.snapshot-header {
+  align-items: center;
+  border: 0.25rem var(--primary) solid;
+  box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.25);
+  border-radius: 0.5rem;
+  color: var(--primary);
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  padding: 0.75rem 2rem;
+}
+
+.header-wrap {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+}
+
+.header-toggle {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.header-hash {
+  font-weight: bold;
+}
+
+.header-description {
+  font-style: italic;
+  text-align: left;
+}
+
+.header-status {
+  font-style: italic;
+  text-transform: uppercase;
 }
