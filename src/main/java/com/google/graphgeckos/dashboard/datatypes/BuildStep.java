@@ -15,6 +15,9 @@
 package com.google.graphgeckos.dashboard.datatypes;
 
 import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 
 /**
@@ -25,27 +28,27 @@ public class BuildStep {
 
   // Order of the step
   @Field(name="steps")
-  private final int stepNumber;
+  private int stepNumber;
 
   // BuildStep name (e.g "clean-src-dir")
   @Field(name="name")
-  private final String name;
+  private String name;
 
   // BuildStep text (e.g "clean-src-dir skipped")
   @Field(name="text")
-  private final String text;
+  private String text;
 
   // Indicator of whether or not the step is complete
   @Field(name="isFinished")
-  private final boolean isFinished;
+  private boolean isFinished;
 
   // Indicator of whether or not the step has started
   @Field(name="isStarted")
-  private final boolean isStarted;
+  private boolean isStarted;
 
   // All the logs associated with this step
   @Field(name="logs")
-  private final List<Log> logs = new ArrayList<>();
+  private List<Log> logs = new ArrayList<>();
 
   /**
    * Name, text and logs can be null.
@@ -122,7 +125,15 @@ public class BuildStep {
     this.isFinished = isFinished;
   }
 
-  public void setIsStarted(@NonNull boolean isFinished) {
-    this.isFinished = isFinished;
+  public void setIsStarted(@NonNull boolean isStarted) {
+    this.isStarted = isStarted;
+  }
+
+  public void setLogs(@NonNull List<Log> logs) {
+    this.logs = logs;
+  }
+
+  public void addLog(@NonNull Log log) {
+    this.logs.add(log);
   }
 }
