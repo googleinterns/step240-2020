@@ -15,7 +15,7 @@
 package com.google.graphgeckos.dashboard.datatypes;
 
 /**
- * Represents buildbot statuses.
+ * Represents BuildBot statuses.
  */
 public enum BuilderStatus {
   FAILED,
