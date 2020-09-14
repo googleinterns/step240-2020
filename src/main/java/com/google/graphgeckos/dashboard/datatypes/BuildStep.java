@@ -33,7 +33,7 @@ public class BuildStep {
 
   // BuildStep text (e.g "clean-src-dir skipped")
   @Field(name="text")
-  private final String[] text;
+  private final String text;
 
   // Indicator of whether or not the step is complete
   @Field(name="isFinished")
@@ -45,7 +45,7 @@ public class BuildStep {
 
   // All the logs associated with this step
   @Field(name="logs")
-  private final List<Log> logs;
+  private final List<Log> logs = new ArrayList<>();
 
   /**
    * Name, text and logs can be null.
@@ -60,7 +60,7 @@ public class BuildStep {
     this.text = Arrays.toString(text);
     this.isFinished = isFinished;
     this.isStarted = isStarted;
-    this.logs = Arrays.asList(logs);
+    this.logs.addAll(logs);
   }
 
   /**
