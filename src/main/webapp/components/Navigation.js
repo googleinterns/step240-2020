@@ -30,8 +30,8 @@ export const Navigation = (props) => {
 
   return (
     <ul className="navigation">
-      {options.map (option => 
-          <NavigationItem href={option.link} innerText={option.text}/>
+      {options.map ((option, idx) => 
+          <NavigationItem key={idx} href={option.link} innerText={option.text}/>
       )}
     </ul>
   );

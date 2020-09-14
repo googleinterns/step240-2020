@@ -14,6 +14,7 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
+import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.testing.LocalDatastoreHelper;
 import com.google.cloud.Timestamp;
 import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
@@ -22,64 +23,65 @@ import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
 import com.google.graphgeckos.dashboard.datatypes.GitHubData;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.TimeoutException;
 import java.util.List;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 public class DatastoreRepositoryTests {
-  LocalDatastoreHelper emulator = LocalDatastoreHelper.newBuilder().setConsistency(1.0)
-                                                                   .setStoreOnDisk(false)
-                                                                   .build();
+  private LocalDatastoreHelper emulator = LocalDatastoreHelper.newBuilder().setConsistency(1.0)
+                                                                           .setStoreOnDisk(false)
+                                                                           .build();
 
-  private BuildInfo getDummyEntity(String commitHash) {
-    return new BuildInfo(getDummyGitData(commitHash));
-  }
-
-  private GitHubData getDummyGitData(String commitHash) {
-    return new GitHubData(commitHash, Timestamp.now(), "test");
-  }
-
-  private BuildBotData getDummyUpdate(String commitHash) {
-    return new BuildBotData(commitHash, "tester", new ArrayList<>(), BuilderStatus.PASSED);
-  }
-
-  @Before
-  public void setUp() throws IOException, InterruptedException {
+  public DatastoreRepositoryTests() throws IOException, InterruptedException {
     emulator.start();
   }
 
+  private BuildInfo getDummyEntity(String commitHash, Timestamp time) {
+    return new BuildInfo(getDummyGitData(commitHash, time));
+  }
+
+  private ParsedGitData getDummyGitData(String commitHash, Timestamp time) {
+    return new ParsedGitData(commitHash, time, "test");
+  }
+
+  private ParsedBuildbotData getDummyUpdate(String commitHash) {
+    return new ParsedBuildbotData(commitHash, "tester", new ArrayList<>(), BuilderStatus.PASSED);
+  }
+
   @After
-  public void tearDown() throws IOException, InterruptedException, TimeoutException  {
-    emulator.stop();
+  public void reset() throws IOException {
+    emulator.reset();
   }
 
   @Test
   public void testValidAddition() throws IOException, InterruptedException{
-    DatastoreRepository storage = new DatastoreRepository();
-
-    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1")));
-    Assert.assertEquals(getDummyEntity("1"), storage.getRevisionEntry("1"));
+    DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
+    Timestamp time = Timestamp.ofTimeMicroseconds(0);
+    
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1", time)));
+    Assert.assertEquals(getDummyEntity("1", time), (storage.getRevisionEntry("1")));
   }
 
   @Test
   public void testValidUpdate() throws IOException, InterruptedException {
-    DatastoreRepository storage = new DatastoreRepository();
+    DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
+    Timestamp time = Timestamp.ofTimeMicroseconds(0);
 
-    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1")));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1", time)));
     Assert.assertTrue(storage.updateRevisionEntry(getDummyUpdate("1")));
-    BuildInfo dummy = getDummyEntity("1");
-    dummy.addBuilder(new BuildBotInfo(getDummyUpdate("1")));
+
+    BuildInfo dummy = getDummyEntity("1", time);
+    dummy.addBuilder(new Builder(getDummyUpdate("1")));
     Assert.assertEquals(dummy, storage.getRevisionEntry("1"));
   }
 
   @Test
   public void testValidDeletion() throws IOException, InterruptedException {
-    DatastoreRepository storage = new DatastoreRepository();
+    DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
+    Timestamp time = Timestamp.ofTimeMicroseconds(0);
 
-    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1")));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1", time)));
     Assert.assertTrue(storage.deleteRevisionEntry("1"));
     Assert.assertNull(storage.getRevisionEntry("1"));
   }
@@ -89,52 +91,53 @@ public class DatastoreRepositoryTests {
    */
   @Test
   public void testRequestsNullData() throws IOException, InterruptedException {
-    DatastoreRepository storage = new DatastoreRepository();
+    DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
 
-    Assert.assertThrows(IllegalArgumentException.class, () -> {
+    Assert.assertThrows(NullPointerException.class, () -> {
       storage.createRevisionEntry(null);
     });
 
-    Assert.assertThrows(IllegalArgumentException.class, () -> {
+    Assert.assertThrows(NullPointerException.class, () -> {
       storage.getRevisionEntry(null);
     });
 
-    Assert.assertThrows(IllegalArgumentException.class, () -> {
+    Assert.assertThrows(NullPointerException.class, () -> {
       storage.updateRevisionEntry(null);
     });
 
-    Assert.assertThrows(IllegalArgumentException.class, () -> {
+    Assert.assertThrows(NullPointerException.class, () -> {
       storage.deleteRevisionEntry(null);
     });
   }
 
   @Test
   public void testAddingSameEntry() throws IOException, InterruptedException {
-    DatastoreRepository storage = new DatastoreRepository();
+    DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
+    Timestamp time = Timestamp.ofTimeMicroseconds(0);
 
-    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1")));
-    Assert.assertFalse(storage.createRevisionEntry(getDummyGitData("1")));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1", time)));
+    Assert.assertFalse(storage.createRevisionEntry(getDummyGitData("1", time)));
   }
 
   @Test
   public void testUpdatingInexistentEntry() throws IOException, InterruptedException {
-    DatastoreRepository storage = new DatastoreRepository();
+    DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
 
-    Assert.assertFalse(storage.updateRevisionEntry(getDummyUpdate("2")));
+    Assert.assertFalse(storage.updateRevisionEntry(getDummyUpdate("1")));
   }
 
   @Test
   public void testGettingInexistentEntry() throws IOException, InterruptedException {
-    DatastoreRepository storage = new DatastoreRepository();
+    DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
 
-    Assert.assertNull(storage.getRevisionEntry("2"));
+    Assert.assertNull(storage.getRevisionEntry("1"));
   }
 
   @Test
   public void testDeletingInexistentEntry() throws IOException, InterruptedException {
-    DatastoreRepository storage = new DatastoreRepository();
+    DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
 
-    Assert.assertTrue(storage.deleteRevisionEntry("2"));
+    Assert.assertTrue(storage.deleteRevisionEntry("1"));
   }
 
   /**
@@ -142,71 +145,69 @@ public class DatastoreRepositoryTests {
    */
   @Test
   public void testGetLastRevisionsRegularQuery() throws IOException, InterruptedException {
-    DatastoreRepository storage = new DatastoreRepository();
+    DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
+    Timestamp time1 = Timestamp.ofTimeMicroseconds(1);
+    Timestamp time2 = Timestamp.ofTimeMicroseconds(2);
+    Timestamp time3 = Timestamp.ofTimeMicroseconds(3);
+    Timestamp time4 = Timestamp.ofTimeMicroseconds(4);
+    Timestamp time5 = Timestamp.ofTimeMicroseconds(5);
 
-    BuildInfo dummy1 = getDummyEntity("1");
-    BuildInfo dummy2 = getDummyEntity("2");
-    BuildInfo dummy3 = getDummyEntity("3");
-    BuildInfo dummy4 = getDummyEntity("4");
-    BuildInfo dummy5 = getDummyEntity("5");
-
-    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1")));
-    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("2")));
-    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("3")));
-    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("4")));
-    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("5")));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1", time1)));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("2", time2)));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("3", time3)));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("4", time4)));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("5", time5)));
 
     List<BuildInfo> results = storage.getLastRevisionEntries(3, 0);
     Assert.assertEquals(results.size(), 3);
-    Assert.assertEquals(results.get(0), dummy5);
-    Assert.assertEquals(results.get(1), dummy4);
-    Assert.assertEquals(results.get(2), dummy3);
+    Assert.assertEquals(results.get(0), getDummyEntity("5", time5));
+    Assert.assertEquals(results.get(1), getDummyEntity("4", time4));
+    Assert.assertEquals(results.get(2), getDummyEntity("3", time3));
   }
 
   @Test
   public void testGetLastRevisionsQueryOffset() throws IOException, InterruptedException {
-    DatastoreRepository storage = new DatastoreRepository();
+    DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
+    Timestamp time1 = Timestamp.ofTimeMicroseconds(1);
+    Timestamp time2 = Timestamp.ofTimeMicroseconds(2);
+    Timestamp time3 = Timestamp.ofTimeMicroseconds(3);
+    Timestamp time4 = Timestamp.ofTimeMicroseconds(4);
+    Timestamp time5 = Timestamp.ofTimeMicroseconds(5);
 
-    BuildInfo dummy1 = getDummyEntity("1");
-    BuildInfo dummy2 = getDummyEntity("2");
-    BuildInfo dummy3 = getDummyEntity("3");
-    BuildInfo dummy4 = getDummyEntity("4");
-    BuildInfo dummy5 = getDummyEntity("5");
-
-    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1")));
-    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("2")));
-    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("3")));
-    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("4")));
-    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("5")));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1", time1)));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("2", time2)));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("3", time3)));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("4", time4)));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("5", time5)));
 
     List<BuildInfo> results = storage.getLastRevisionEntries(3, 2);
     Assert.assertEquals(results.size(), 3);
-    Assert.assertEquals(results.get(0), dummy3);
-    Assert.assertEquals(results.get(1), dummy2);
-    Assert.assertEquals(results.get(2), dummy1);
+    Assert.assertEquals(results.get(0), getDummyEntity("3", time3));
+    Assert.assertEquals(results.get(1), getDummyEntity("2", time2));
+    Assert.assertEquals(results.get(2), getDummyEntity("1", time1));
   }
 
   @Test
   public void testGetLastRevisionsQueryAfterDeletion() throws IOException, InterruptedException {
-    DatastoreRepository storage = new DatastoreRepository();
+    DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
+    Timestamp time1 = Timestamp.ofTimeMicroseconds(1);
+    Timestamp time2 = Timestamp.ofTimeMicroseconds(2);
+    Timestamp time3 = Timestamp.ofTimeMicroseconds(3);
+    Timestamp time4 = Timestamp.ofTimeMicroseconds(4);
+    Timestamp time5 = Timestamp.ofTimeMicroseconds(5);
 
-    BuildInfo dummy1 = getDummyEntity("1");
-    BuildInfo dummy2 = getDummyEntity("2");
-    BuildInfo dummy3 = getDummyEntity("3");
-    BuildInfo dummy4 = getDummyEntity("4");
-    BuildInfo dummy5 = getDummyEntity("5");
-
-    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1")));
-    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("2")));
-    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("3")));
-    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("4")));
-    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("5")));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1", time1)));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("2", time2)));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("3", time3)));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("4", time4)));
+    Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("5", time5)));
 
     Assert.assertTrue(storage.deleteRevisionEntry("3"));
+  
+    List<BuildInfo> results = storage.getLastRevisionEntries(3, 2);
 
-    List<BuildInfo> results = storage.getLastRevisionEntries(2, 2);
     Assert.assertEquals(results.size(), 2);
-    Assert.assertEquals(results.get(0), dummy2);
-    Assert.assertEquals(results.get(1), dummy1);
+    Assert.assertEquals(results.get(0), getDummyEntity("2", time2));
+    Assert.assertEquals(results.get(1), getDummyEntity("1", time1));
   }
 }

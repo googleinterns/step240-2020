@@ -18,6 +18,9 @@ import com.google.cloud.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
+import org.springframework.cloud.gcp.data.datastore.core.mapping.Field;
+import org.springframework.data.annotation.Transient;
+import org.springframework.lang.NonNull;
 
 /**
  * Contains the information retrieved from a single build bot. It is used as a member
@@ -33,23 +36,38 @@ public class BuildBotData {
    * it in the right {@link BuildInfo} in the storage.
    * Used in {@link com.google.graphgeckos.dashboard.storage.DatastoreRepository}.
    */
+  @Transient
+  @Field(name = "commitHash")
   private String commitHash;
 
-  /* The timestamp of the build. */
+  /** 
+   * The timestamp of the build. 
+   */
+  @Field(name = "timestamp")
   private Timestamp timestamp;
 
-  /* Name of the buildbot. */
+  /**
+   * Name of the buildbot.
+   */
+  @Field(name = "name")
   private String name;
 
   /**
    * The logs of each compilation stage, stored as described by {@link Log}.
    */
-  private final List<Log> logs = new ArrayList<>();
+  @Field(name = "logs")
+  private List<Log> logs = new ArrayList<>();
 
   /**
    * Builder compilation status, as described by {@link BuilderStatus}.
    */
+  @Field(name = "status")
   private BuilderStatus status;
+
+  /**
+   * Only used by Spring GCP.
+   */
+  public BuildBotData() {}
 
   public BuildBotData(String commitHash, String name, List<Log> logs, BuilderStatus status) {
     this.commitHash = commitHash;
@@ -58,41 +76,63 @@ public class BuildBotData {
     this.status = status;
   }
 
-  public BuildBotData() {}
-
-  /**
-   * Returns the name of the builder bot. Cannot be null.
-   */
+  @NonNull
   public String getName() {
     return name;
   }
 
-  /**
-   * Returns the list of logs for each compilation stage. Cannot be null.
-   */
+  @NonNull
   public List<Log> getLogs() {
     return logs;
   }
 
-  /**
-   * Returns the compilation status of the builder. Cannot be null.
-   */
+  @NonNull
   public BuilderStatus getStatus() {
     return status;
   }
 
-  /**
-   * Returns the commit hash of the commit tested by the current buildbot.
-   */
+  @NonNull
   public String getCommitHash() {
     return commitHash;
   }
 
-  /**
-   * Returns the timestamp of the build.
-   */
+  @NonNull
   public Timestamp getTimestamp() {
     return timestamp;
+  }
+
+  public void setName(@NonNull String name) {
+    this.name = name;
+  }
+
+  public void setLogs(@NonNull List<Log> logs) {
+    this.logs = new ArrayList<>(logs);
+  }
+
+  public void setStatus(@NonNull BuilderStatus status) {
+    this.status = status;
+  }
+
+  public void setCommitHash(@NonNull String commitHash) {
+    this.commitHash = commitHash;
+  }
+
+  public void setTimestamp(@NonNull Timestamp timestamp) {
+    this.timestamp = timestamp;
+  }
+
+  /**
+   * Checks if all non-transient fields are equal between BuildBotData instances.
+   */
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || !(o instanceof BuildBotData)) {
+      return false;
+    }
+
+    BuildBotData other = (BuildBotData) o;
+    return timestamp.equals(other.timestamp) && name.equals(other.name) &&
+           logs.equals(other.logs) && status.equals(other.status);
   }
 
 }
