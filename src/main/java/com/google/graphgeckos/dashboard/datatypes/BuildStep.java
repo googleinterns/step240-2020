@@ -24,21 +24,27 @@ import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 public class BuildStep {
 
   // Order of the step
+  @Field(name="steps")
   private final int stepNumber;
 
   // BuildStep name (e.g "clean-src-dir")
+  @Field(name="name")
   private final String name;
 
   // BuildStep text (e.g "clean-src-dir skipped")
-  private final String text;
+  @Field(name="text")
+  private final String[] text;
 
   // Indicator of whether or not the step is complete
+  @Field(name="isFinished")
   private final boolean isFinished;
 
   // Indicator of whether or not the step has started
+  @Field(name="isStarted")
   private final boolean isStarted;
 
   // All the logs associated with this step
+  @Field(name="logs")
   private final List<Log> logs;
 
   /**
