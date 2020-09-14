@@ -7,9 +7,9 @@
  * @param defaultValue the value to be used if obj[field] === undefined.
  */
 export const getField = (obj, field, defaultValue) => {
-  return obj !== undefined ? 
-      obj[field] !== undefined ?
-      obj[field] :
-          (defaultValue !== undefined ? defaultValue : null) :
-          defaultValue;
+  return obj !== undefined
+             ? obj[field] !== undefined
+                   ? obj[field]
+                   : (defaultValue !== undefined ? defaultValue : null)
+             : defaultValue;
 }
