@@ -62,4 +62,14 @@ public class Log {
     this.link = link;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || !(o instanceof Log)) {
+      return false;
+    }
+
+    Log other = (Log) o;
+    return type.equals(other.type) && link.equals(other.link);
+  }
+
 }
