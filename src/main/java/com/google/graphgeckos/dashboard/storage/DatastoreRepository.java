@@ -37,8 +37,8 @@ import org.springframework.stereotype.Repository;
  * A DataRepository implementation backed up by Google Datastore.
  * Each database entry is modeled by the {@link #BuildInfo BuildInfo} class.
  * The relevant fields for the database are:
- * - Kind: "revision"
- * - Key: commit hash
+ *    - Kind: "revision"
+ *    - Key: commit hash
  *
  * Useful links:
  * - https://googleapis.dev/java/google-cloud-datastore/latest/index.html
@@ -58,10 +58,10 @@ public class DatastoreRepository implements DataRepository {
     DatastoreMappingContext mappingContext = new DatastoreMappingContext();
 
     DatastoreServiceObjectToKeyFactory objectToKeyFactory =
-      new DatastoreServiceObjectToKeyFactory(supplier);
+        new DatastoreServiceObjectToKeyFactory(supplier);
 
     DefaultDatastoreEntityConverter entityConverter =
-      new DefaultDatastoreEntityConverter(mappingContext, objectToKeyFactory);
+        new DefaultDatastoreEntityConverter(mappingContext, objectToKeyFactory);
 
     storage = new DatastoreTemplate(supplier, entityConverter, mappingContext, objectToKeyFactory);
   }
