@@ -48,7 +48,7 @@ public class BuildStep {
 
   // All the logs associated with this step
   @Field(name="logs")
-  private List<Log> logs = new ArrayList<>();
+  private List<Log> logs;
 
   /**
    * Name, text and logs can be null.
@@ -63,7 +63,7 @@ public class BuildStep {
     this.text = Arrays.toString(text);
     this.isFinished = isFinished;
     this.isStarted = isStarted;
-    this.logs.addAll(logs);
+    this.logs = Arrays.asList(logs);
   }
 
   /**
