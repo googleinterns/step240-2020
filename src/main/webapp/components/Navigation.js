@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {getField} from "./utils/getField";
 
 /**
  * Main List Element to be displayed on the Navigation.
@@ -25,9 +26,11 @@ const NavigationItem = (props) => {
   * @param {string} props.options[].text the displayed text for the option.
   */
 export const Navigation = (props) => {
+  const options = getField(props, 'options', []);
+
   return (
     <ul className="navigation">
-      {props.options.map((option, idx) => 
+      {options.map ((option, idx) => 
           <NavigationItem key={idx} href={option.link} innerText={option.text}/>
       )}
     </ul>
