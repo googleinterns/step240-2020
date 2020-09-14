@@ -192,7 +192,7 @@ public class DatastoreRepository implements DataRepository {
     BuilderIndex associatedEntity = storage.findById(buildbotName, BuilderIndex.class);
 
     if (associatedEntity == null || newValue <= associatedEntity.getIndex()) {
-      throw new IndexOutOfBoundsException("newValue cannot be lower than the previous index");
+      throw new IndexOutOfBoundsException("newValue cannot be lower than or equal the previous index");
     }
 
     associatedEntity.setIndex(newValue);
