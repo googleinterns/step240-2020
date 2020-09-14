@@ -10,6 +10,6 @@ export const getField = (obj, field, defaultValue) => {
   return obj !== undefined ? 
       obj[field] !== undefined ?
       obj[field] :
-      (defaultValue !== undefined ? defaultValue : null) :
-      defaultValue;
+          (defaultValue !== undefined ? defaultValue : null) :
+          defaultValue;
 }
