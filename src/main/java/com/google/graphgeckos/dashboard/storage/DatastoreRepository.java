@@ -126,7 +126,7 @@ public class DatastoreRepository implements DataRepository {
     BuildInfo toBeDeleted = getRevisionEntry(commitHash);
 
     if (toBeDeleted == null) {
-      return false;
+      return true;
     }
 
     try {
