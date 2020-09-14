@@ -88,14 +88,14 @@ public class BuildStep {
   /**
    * Returns a boolean indicating if the step has been started.
    */
-  public int isStarted() {
+  public boolean isStarted() {
     return this.isStarted;
   }
 
   /**
    * Returns a boolean indicating if the step has been completed.
    */
-  public int isFinished() {
+  public boolean isFinished() {
     return this.isFinished;
   }
 
@@ -104,5 +104,25 @@ public class BuildStep {
    */
   public Log[] getLogs() {
     return this.logs;
+  }
+
+  public void setName(@NonNull String name) {
+    this.name = name;
+  }
+
+  public void setText(@NonNull String text) {
+    this.text = text;
+  }
+  
+  public void setStepNumber(@NonNull int stepNumber) {
+    this.stepNumber = stepNumber;
+  }
+
+  public void setIsFinished(@NonNull boolean isFinished) {
+    this.isFinished = isFinished;
+  }
+
+  public void setIsStarted(@NonNull boolean isFinished) {
+    this.isFinished = isFinished;
   }
 }
