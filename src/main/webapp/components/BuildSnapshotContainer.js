@@ -20,9 +20,9 @@ export const BuildSnapshotContainer = React.memo((props) =>
      */
     React.useEffect(() => {
       fetch(SOURCE)
-      .then(res => res.json())
-      .then(json => setData(json))
-      .catch(setData([]));
+        .then(res => res.json())
+        .then(json => setData(json))
+        .catch(setData([]));
     }, []);
 
     return (
