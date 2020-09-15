@@ -9,7 +9,7 @@ import {BuildSnapshot} from "./BuildSnapshot";
  */
 export const BuildSnapshotContainer = React.memo((props) =>
   {
-    const SOURCE = '/data';
+    const SOURCE = '/builders';
     const [data, setData] = React.useState([]);
 
     /**
@@ -19,7 +19,7 @@ export const BuildSnapshotContainer = React.memo((props) =>
      * @see <a href="www.robinwieruch.de/react-hooks-fetch-data">Fetching</a>
      */
     React.useEffect(() => {
-      fetch(SOURCE).then(res => setData(res.json()));
+      fetch(SOURCE).then(res => setData(res.json())).catch(setData([]));
     }, []);
 
     return (
