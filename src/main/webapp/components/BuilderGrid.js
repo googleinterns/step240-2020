@@ -9,7 +9,7 @@ import {getField} from "./utils/getField";
  * the styling of the rules.
  */
 const StatusIndicator = (props) => {
-  const className = 'indicator #'.replace('#', props.status);
+  const className = 'indicator '.concat(props.status);
   return (
     <div className={className}></div>
   );
