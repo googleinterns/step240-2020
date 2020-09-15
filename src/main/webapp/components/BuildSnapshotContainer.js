@@ -19,7 +19,10 @@ export const BuildSnapshotContainer = React.memo((props) =>
      * @see <a href="www.robinwieruch.de/react-hooks-fetch-data">Fetching</a>
      */
     React.useEffect(() => {
-      fetch(SOURCE).then(res => setData(res.json())).catch(setData([]));
+      fetch(SOURCE)
+        .then(res => res.json())
+        .then(json => setData(json))
+        .catch(setData([]));
     }, []);
 
     return (
