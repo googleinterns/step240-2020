@@ -26,6 +26,7 @@ ul {
 }
 
 .navigation {
+  display: flex;
   margin-left: auto;
 }
 
