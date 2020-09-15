@@ -35,7 +35,7 @@ const Builder = (props) => {
  *
  * @param {Object[]} props.builders the builders for the commit.
  * @param {string} props.builders[].status the build status of builder.
- * @param {string} props.builders[].builder.name the name of the builder.
+ * @param {string} props.builders[].name the name of the builder.
  */
 export const BuilderGrid = (props) => {
   const builders = getField(props, 'builders', []);
