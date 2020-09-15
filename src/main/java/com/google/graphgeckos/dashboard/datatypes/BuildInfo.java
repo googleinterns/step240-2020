@@ -136,8 +136,7 @@ public class BuildInfo {
       return false;
     }
     BuildInfo other = (BuildInfo) o;
-    return commitHash.equals(other.commitHash) && timestamp.equals(other.timestamp) &&
-           branch.equals(other.branch) && builders.equals(other.builders);
+    return commitHash.equals(other.commitHash) && timestamp.equals(other.timestamp);
   }
 
 }
