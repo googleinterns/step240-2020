@@ -27,7 +27,7 @@ ul {
 
 .navigation {
   display: flex;
-  margin-left: auto;
+  margin: 0 0 0 auto;
 }
 
 .navigation > li {
