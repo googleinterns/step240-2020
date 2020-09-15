@@ -34,7 +34,7 @@ const Builder = (props) => {
  * Component used to display the list of builders that built a commit.
  *
  * @param {Object[]} props.builders the builders for the commit.
- * @param {string} props.builders[].builder.status the build status of builder.
+ * @param {string} props.builders[].status the build status of builder.
  * @param {string} props.builders[].builder.name the name of the builder.
  */
 export const BuilderGrid = (props) => {
