@@ -115,6 +115,6 @@ public interface DataRepository {
    * @throws IndexOutOfBoundsException if value is negative when creating a new entry, or if value
    *      is lower or equal than the previous recorded value
    */
-  void registerNewBuildbot(String name, int value) throws IllegalArgumentException,
+  void registerNewBuildbot(String buildbotName, int value) throws IllegalArgumentException,
                                                           IndexOutOfBoundsException;
 }
