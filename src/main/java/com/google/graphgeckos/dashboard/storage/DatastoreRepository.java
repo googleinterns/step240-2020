@@ -14,10 +14,7 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
-import com.google.cloud.datastore.Datastore;
-import com.google.cloud.datastore.DatastoreException;
-import com.google.cloud.datastore.Entity;
-import com.google.cloud.datastore.Query;
+import com.google.cloud.datastore.*;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
 import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
 import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
@@ -49,6 +46,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class DatastoreRepository implements DataRepository {
   private DatastoreTemplate storage;
+
+  public DatastoreRepository() {
+    this(new DatastoreOptions.DefaultDatastoreFactory().create(DatastoreOptions.getDefaultInstance()));
+  }
 
   public DatastoreRepository(@NonNull Datastore underlyingStorage) {
     Objects.requireNonNull(underlyingStorage);

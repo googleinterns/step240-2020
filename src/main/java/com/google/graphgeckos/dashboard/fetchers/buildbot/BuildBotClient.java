@@ -22,14 +22,12 @@ public class BuildBotClient {
 
   private static final int REQUEST_FREQUENCY = 10;
 
-  private BuildBotClient() {}
-
   public static void setBaseUrl(@NonNull String baseUrl) {
     Objects.requireNonNull(baseUrl);
     BuildBotClient.baseUrl = baseUrl;
   }
   
-  public static void run(@NonNull String buildBot, int initialBuildId) {
+  public void run(@NonNull String buildBot, int initialBuildId) {
     Objects.requireNonNull(buildBot);
 
     AtomicInteger buildId = new AtomicInteger(initialBuildId);
@@ -53,6 +51,7 @@ public class BuildBotClient {
 
         try {
           BuildBotData builder = new ObjectMapper().readValue(response, BuildBotData.class);
+          System.out.println(builder.getCommitHash());
           datastoreRepository.updateRevisionEntry(builder);
         } catch (Exception e) {
           System.out.println(e.getMessage());

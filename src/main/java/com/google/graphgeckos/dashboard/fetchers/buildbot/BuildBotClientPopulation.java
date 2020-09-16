@@ -25,11 +25,11 @@ public class BuildBotClientPopulation {
 
   }
 
-  public static void populate(@NonNull BuildBotClientInitializer[] buildBots) {
+  public static void populate(@NonNull BuildBotClientInitializer... buildBots) {
     if (buildBots.length == 0) {
       throw new IllegalArgumentException("Expected one or more BuildBots, found zero");
     }
-    Arrays.stream(buildBots).forEach(x -> BuildBotClient.run(x.name, x.initialBuildId));
+    Arrays.stream(buildBots).forEach(x -> new BuildBotClient().run(x.name, x.initialBuildId));
   }
 
 }
