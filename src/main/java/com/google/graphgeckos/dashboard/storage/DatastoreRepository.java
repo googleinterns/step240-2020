@@ -202,7 +202,7 @@ public class DatastoreRepository implements DataRepository {
   /**
    * {@inheritDoc}
    */
-  public void registerNewBuildbot(String name, int value) {
+  public void registerNewBuildbot(String buildbotName, int value) {
     if (buildbotName == null) {
       throw new IllegalArgumentException("buildbotName cannot be null");
     }
