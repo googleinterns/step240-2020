@@ -14,7 +14,7 @@ export const BuildSnapshotContainer = React.memo((props) =>
 
     // The starting point from which the entries are selected.
     // Relative to the starting index.
-    const OFFSET = 3;
+    const OFFSET = 0;
 
     const SOURCE = `/builders/number=${NUMBER}/offset=${OFFSET}`;
 
