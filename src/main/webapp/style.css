@@ -63,7 +63,7 @@ ul {
 
 .snapshot-tray {
   display: grid;
-  grid: 0.25fr 1fr / repeat(2, 1fr);
+  grid: min-content 1fr / repeat(2, 1fr);
 }
 
 .header-wrap {
