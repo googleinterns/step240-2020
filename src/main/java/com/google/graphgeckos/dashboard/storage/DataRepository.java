@@ -97,10 +97,24 @@ public interface DataRepository {
    *
    * @param buildbotName the name of the buildbot to update
    * @param newValue the new index value
-   * @throws IllegalArgumentException if {@code buildbotName} is null
+   * @throws IllegalArgumentException if {@code buildbotName} is null or there is no "index" entry
+   *      with that key
    * @throws IndexOutOfBoundsException if newValue is lower or equal than the previous
    *      recorded value
    */
   void setBuildbotIndex(String buildbotName, int newValue) throws IllegalArgumentException,
                                                                   IndexOutOfBoundsException;
+
+  /**
+   * Creates a new "index" entry if there is none with the same name in the database. This should
+   * be called once before setting the index for a buildbot that has no previous entry.
+   *
+   * @param name the name of the buildbot to register
+   * @param value the starting index value of the buildbot
+   * @throws IllegalArgumentException if {@code name} is null
+   * @throws IndexOutOfBoundsException if value is negative when creating a new entry, or if value
+   *      is lower or equal than the previous recorded value
+   */
+  void registerNewBuildbot(String name, int value) throws IllegalArgumentException,
+                                                          IndexOutOfBoundsException;
 }
