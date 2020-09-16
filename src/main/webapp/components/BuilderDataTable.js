@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {getFields} from './utils/getFields.js';
+import {getField} from './utils/getField.js';
 
 // The target fields to be extracted from each build step
 // and displayed on each row.
