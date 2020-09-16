@@ -34,6 +34,7 @@ ul {
   padding: 0 2rem;
   text-decoration: underline;
 }
+
 .build-snapshot {
   color: var(--primary);
   border-radius: 1rem;
@@ -52,7 +53,6 @@ ul {
 .snapshot-header {
   align-items: center;
   border: 0.25rem var(--primary) solid;
-  box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.25);
   border-radius: 0.5rem;
   color: var(--primary);
   display: flex;
