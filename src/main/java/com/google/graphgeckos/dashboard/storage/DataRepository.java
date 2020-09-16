@@ -89,7 +89,8 @@ public interface DataRepository {
    * @throws IllegalArgumentException if {@code buildbotName} is null
    * @throws BuildbotNotFound if there is no "index" entry related to the name provided
    */
-  int getBuildbotIndex(String buildbotName) throws IllegalArgumentException, BuildbotNotFound;
+  int getBuildbotIndex(String buildbotName) throws IllegalArgumentException,
+                                                   BuildbotNotFoundException;
 
   /**
    * Updates the database with a new value for the internal buildbot revision index. Used by the
