@@ -80,7 +80,7 @@ public class BuildBotData {
     this.status = status;
   }
 
-  public BuildBotData(@JsonProperty("builderName") String name) {
+  public BuildBotData(String name) {
     this.name = name;
   }
 
