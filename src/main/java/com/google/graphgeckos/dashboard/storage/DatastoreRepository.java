@@ -32,8 +32,6 @@ import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
 import org.springframework.cloud.gcp.data.datastore.core.convert.DatastoreServiceObjectToKeyFactory;
 import org.springframework.cloud.gcp.data.datastore.core.convert.DefaultDatastoreEntityConverter;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.DatastoreMappingContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
@@ -70,6 +68,9 @@ public class DatastoreRepository implements DataRepository {
     storage = new DatastoreTemplate(supplier, entityConverter, mappingContext, objectToKeyFactory);
   }
 
+  public DatastoreRepository() {
+    this(new DefaultDatastoreFactory().create(DatastoreOptions.getDefaultInstance()));
+  }
 
   /**
    * {@inheritDoc}
@@ -175,15 +176,5 @@ public class DatastoreRepository implements DataRepository {
     Objects.requireNonNull(commitHash);
 
     return storage.findById(commitHash, BuildInfo.class);
-  }
-}
-
-@Configuration
-class DatastoreRepositoryConfig {
-  DefaultDatastoreFactory datastoreFactory = new DefaultDatastoreFactory();
-
-  @Bean
-  DatastoreRepository datastoreRepository() {
-    return new DatastoreRepository(datastoreFactory.create(DatastoreOptions.getDefaultInstance()));
   }
 }
