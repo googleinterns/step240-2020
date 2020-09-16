@@ -9,11 +9,15 @@ import {BuildSnapshot} from "./BuildSnapshot";
  */
 export const BuildSnapshotContainer = React.memo((props) =>
   {
+    // Number of entries to be pulled.
     const NUMBER = 2;
+
+    // The starting point from which the entries are selected.
+    // Relative to the starting index.
     const OFFSET = 3;
 
     const SOURCE = `/builders/number=${NUMBER}/offset=${OFFSET}`;
-    
+
     const [data, setData] = React.useState([]);
 
     /**
