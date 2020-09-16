@@ -9,7 +9,17 @@ import {BuildSnapshot} from "./BuildSnapshot";
  */
 export const BuildSnapshotContainer = React.memo((props) =>
   {
-    const SOURCE = '/builders';
+    // Number of entries to be pulled.
+    // TODO: Determine true value for number of entries.
+    const NUMBER = 2;
+
+    // The starting point from which the entries are selected.
+    // Relative to the starting index.
+    // TODO: vary multiplier based on page number.
+    const OFFSET = NUMBER * 0;
+
+    const SOURCE = `/builders/number=${NUMBER}/offset=${OFFSET}`;
+
     const [data, setData] = React.useState([]);
 
     /**
