@@ -49,7 +49,7 @@ ul {
   background-color: var(--failed);
 }
 
-.build-snapshot-container {
+#build-snapshot-container {
   background: transparent;
   display: flex;
   flex-direction: column;
