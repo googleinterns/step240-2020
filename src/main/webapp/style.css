@@ -53,7 +53,6 @@ ul {
 .snapshot-header {
   align-items: center;
   border: 0.25rem var(--primary) solid;
-  border-radius: 0.5rem;
   color: var(--primary);
   display: flex;
   gap: 1rem;
