@@ -246,5 +246,9 @@ public class DatastoreRepositoryTests {
     Assert.assertThrows(IndexOutOfBoundsException.class, () -> {
       storage.setBuildbotIndex("tester", 1);
     });
+
+    Assert.assertThrows(IndexOutOfBoundsException.class, () -> {
+      storage.setBuildbotIndex("tester", 1000);
+    });
   }
 }
