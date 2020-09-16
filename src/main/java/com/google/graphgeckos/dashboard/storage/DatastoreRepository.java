@@ -16,6 +16,8 @@ package com.google.graphgeckos.dashboard.storage;
 
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreException;
+import com.google.cloud.datastore.DatastoreOptions;
+import com.google.cloud.datastore.DatastoreOptions.DefaultDatastoreFactory;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
@@ -30,6 +32,8 @@ import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
 import org.springframework.cloud.gcp.data.datastore.core.convert.DatastoreServiceObjectToKeyFactory;
 import org.springframework.cloud.gcp.data.datastore.core.convert.DefaultDatastoreEntityConverter;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.DatastoreMappingContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
@@ -171,5 +175,15 @@ public class DatastoreRepository implements DataRepository {
     Objects.requireNonNull(commitHash);
 
     return storage.findById(commitHash, BuildInfo.class);
+  }
+}
+
+@Configuration
+class DatastoreRepositoryConfig {
+  DefaultDatastoreFactory datastoreFactory = new DefaultDatastoreFactory();
+
+  @Bean
+  DatastoreRepository datastoreRepository() {
+    return new DatastoreRepository(datastoreFactory.create(DatastoreOptions.getDefaultInstance()));
   }
 }
