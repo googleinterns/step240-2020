@@ -98,7 +98,7 @@ public interface DataRepository {
    * @param buildbotName the name of the buildbot to update
    * @param newValue the new index value
    * @throws IllegalArgumentException if {@code buildbotName} is null
-   * @throws IndexOutOfBoundsException if newValue is negative or <= than the previous
+   * @throws IndexOutOfBoundsException if newValue is lower or equal than the previous
    *      recorded value
    */
   void setBuildbotIndex(String buildbotName, int newValue) throws IllegalArgumentException,
