@@ -9,7 +9,11 @@ import {BuildSnapshot} from "./BuildSnapshot";
  */
 export const BuildSnapshotContainer = React.memo((props) =>
   {
-    const SOURCE = '/builders';
+    const NUMBER = 2;
+    const OFFSET = 3;
+
+    const SOURCE = `/builders/number=${NUMBER}/offset=${OFFSET}`;
+    
     const [data, setData] = React.useState([]);
 
     /**
