@@ -1,3 +1,4 @@
 #!/bin/sh
 gcloud config set project llvm-build-dashboard &&
-mvn package com.google.cloud.tools:appengine-maven-plugin:deploy
+mvn clean package &&
+gcloud app deploy target/step240-2020-1.0.jar
