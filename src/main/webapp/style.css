@@ -49,6 +49,13 @@ ul {
   background-color: var(--failed);
 }
 
+.build-snapshot-container {
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .snapshot-header {
   align-items: center;
   border: 0.25rem var(--primary) solid;
