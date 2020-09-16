@@ -166,7 +166,7 @@ public class DatastoreRepository implements DataRepository {
   /**
    * {@inheritDoc}
    */
-  int getBuildbotIndex(String buildbotName) throws IllegalArgumentException, NotBoundException {
+  public int getBuildbotIndex(String buildbotName) throws IllegalArgumentException, NotBoundException {
     if (buildbotName == null) {
       throw new IllegalArgumentException("buildbotName cannot be null");
     }
@@ -183,7 +183,7 @@ public class DatastoreRepository implements DataRepository {
   /**
    * {@inheritDoc}
    */
-  void setBuildbotIndex(String buildbotName, int newValue) throws IllegalArgumentException,
+  public void setBuildbotIndex(String buildbotName, int newValue) throws IllegalArgumentException,
                                                                   IndexOutOfBoundsException {
     if (buildbotName == null) {
       throw new IllegalArgumentException("buildbotName cannot be null");
@@ -197,5 +197,28 @@ public class DatastoreRepository implements DataRepository {
 
     associatedEntity.setIndex(newValue);
     storage.save(associatedEntity);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void registerNewBuildbot(String name, int value) {
+    if (buildbotName == null) {
+      throw new IllegalArgumentException("buildbotName cannot be null");
+    }
+
+    BuilderIndex associatedEntity = storage.findById(buildbotName, BuilderIndex.class);
+
+    if (associatedEntity == null) {
+      if (value < 0) {
+        throw new IndexOutOfBoundsException("value cannot be negative");
+      }
+
+      BuilderIndex newEntity = new BuilderIndex(name, value);
+
+      storage.save(newEntity);
+    } else if (value <= associatedEntity.getIndex()) {
+      throw new IndexOutOfBoundsException("value cannot be <= than the previous known value");
+    }
   }
 }
