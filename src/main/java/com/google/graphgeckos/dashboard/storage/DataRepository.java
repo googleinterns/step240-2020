@@ -17,7 +17,6 @@ package com.google.graphgeckos.dashboard.storage;
 import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
 import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
 import com.google.graphgeckos.dashboard.datatypes.GitHubData;
-import java.rmi.NotBoundException;
 import java.util.List;
 
 /**
@@ -88,8 +87,9 @@ public interface DataRepository {
    * @param buildbotName the name of the buildbot to search for
    * @return the last known revision index for which there is information in the database.
    * @throws IllegalArgumentException if {@code buildbotName} is null
+   * @throws BuildbotNotFound if there is no "index" entry related to the name provided
    */
-  int getBuildbotIndex(String buildbotName) throws IllegalArgumentException, NotBoundException;
+  int getBuildbotIndex(String buildbotName) throws IllegalArgumentException, BuildbotNotFound;
 
   /**
    * Updates the database with a new value for the internal buildbot revision index. Used by the
