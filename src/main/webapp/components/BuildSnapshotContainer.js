@@ -36,7 +36,7 @@ export const BuildSnapshotContainer = React.memo((props) =>
     }, []);
 
     return (
-      <div className='buildsnapshot-container'>
+      <div className='build-snapshot-container'>
         {data.map(snapshotData => <BuildSnapshot buildData={snapshotData}/>)}
       </div>
     );
