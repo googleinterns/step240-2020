@@ -14,6 +14,7 @@
 
 package com.google.graphgeckos.dashboard.datatypes;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.cloud.Timestamp;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ import org.springframework.lang.NonNull;
  * of {@link BuildInfo}
  */
 @Entity(name = "builder")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BuildBotData {
 
   /**
@@ -171,6 +173,10 @@ public class BuildBotData {
 
   public void setTimestamp(@NonNull Timestamp timestamp) {
     this.timestamp = timestamp;
+  }
+
+  public boolean isValid() {
+    return status != null && name != null && status != null && commitHash != null;
   }
 
   /**

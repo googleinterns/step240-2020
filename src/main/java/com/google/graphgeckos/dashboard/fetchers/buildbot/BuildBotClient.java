@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.lang.NonNull;
 import org.springframework.web.reactive.function.client.WebClient;
 import java.time.Duration;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class BuildBotClient {
@@ -23,33 +24,36 @@ public class BuildBotClient {
 
   private BuildBotClient() {}
 
-  public static void setBaseUrl(@NonNull String newBaseUrl) {
-    baseUrl = newBaseUrl;
+  public static void setBaseUrl(@NonNull String baseUrl) {
+    Objects.requireNonNull(baseUrl);
+    BuildBotClient.baseUrl = baseUrl;
   }
   
   public static void run(@NonNull String buildBot, int initialBuildId) {
+    Objects.requireNonNull(buildBot);
+
     AtomicInteger buildId = new AtomicInteger(initialBuildId);
 
     WebClient.builder().baseUrl(baseUrl)
       .defaultHeader(HttpHeaders.CONTENT_TYPE, "application/json")
       .build()
       .get()
-      .uri(String.format( "%s/builds/%d?as_text=1", buildBot, buildId))
+      .uri(String.format( "%s/builds/%d?as_text=1", buildBot, buildId.get()))
       .accept(MediaType.TEXT_PLAIN)
       .retrieve()
       .bodyToMono(String.class)
-      .delaySubscription(Duration.ofSeconds(2))
+      .delaySubscription(Duration.ofSeconds(REQUEST_FREQUENCY))
       .onErrorReturn("error")
       .repeat()
       .subscribe(response -> {
         if (response.equals("error")) {
+          System.out.println("error");
           return;
         }
 
         try {
-          System.out.println(new ObjectMapper().readValue(response, BuildBotData.class));
           BuildBotData builder = new ObjectMapper().readValue(response, BuildBotData.class);
-          System.out.println(builder);
+          datastoreRepository.updateRevisionEntry(builder);
         } catch (Exception e) {
           System.out.println(e.getMessage());
         }
