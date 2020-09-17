@@ -85,3 +85,10 @@ ul {
   font-style: italic;
   text-transform: uppercase;
 }
+
+.data-table {
+  border-bottom-right-radius: 0.75rem;
+  border-collapse: collapse;
+  overflow: hidden;
+  text-align: center;
+}
