@@ -6,7 +6,10 @@ import java.util.Objects;
 
 public class BuildBotClientPopulation {
 
+  /** Base url of the BuildBot API. */
   private final String baseUrl;
+
+  /** Request frequency (in seconds). */
   private final int delay;
 
   public BuildBotClientPopulation(@NonNull String baseUrl, int delay) {
@@ -20,6 +23,12 @@ public class BuildBotClientPopulation {
     this("http://lab.llvm.org:8011/json/builders/", 10);
   }
 
+  /**
+   * Creates and runs fetchers to fetch data from the BuildBots with the given name and initial build id,
+   * provided in the form of {@link BuildBotInitializer}.
+   *
+   * @param buildBots information about the BuildBots to fetch data from.
+   */
   public void populate(@NonNull BuildBotInitializer... buildBots) {
     Objects.requireNonNull(buildBots);
 

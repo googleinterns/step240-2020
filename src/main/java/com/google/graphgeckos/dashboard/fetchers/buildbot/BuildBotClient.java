@@ -13,13 +13,14 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
+/** BuildBot API data fetcher. */
 public class BuildBotClient {
 
   /** Provides access to the storage. */
   @Autowired
   private DatastoreRepository datastoreRepository;
 
-  /** Base URL of the BuildBot API. */
+  /** Base url of the BuildBot API. */
   private final String baseUrl;
 
   /** Fetcher does requests to the BuildBot API every {@code delay} seconds. */

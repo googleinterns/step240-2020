@@ -23,9 +23,10 @@ public class BuildBotClientTest {
     }
   }
 
+  /** Tested BuildBot API fetcher. */
   @InjectMocks
   BuildBotClient client = new BuildBotClient(
-    "http://lab.llvm.org:8011/json/builders/", 1);
+    "http://lab.llvm.org:8011/json/builders", 1);
 
   @Mock
   DatastoreRepository datastoreRepository;
@@ -45,8 +46,9 @@ public class BuildBotClientTest {
     return seconds * 1000;
   }
 
+
   @Test
-  public void verifyValidResponseCauseUpdateCallToRepository() {
+  public void validResponseCausesUpdateCallToRepositoryWithValidArguments() {
     client.run(VALID_BUILD_BOT, VALID_BUILD_ID);
 
     long wait = secondsToMillis(client.getDelay()) * 2;
@@ -55,8 +57,9 @@ public class BuildBotClientTest {
   }
 
   @Test
-  public void verifyInvalidResponseCausesNoCallToReposiory() {
+  public void invalidResponseCausesNoCallToRepository() {
     client.run(VALID_BUILD_BOT, INVALID_BUILD_ID);
+
     Mockito.verify(datastoreRepository, Mockito.never()).updateRevisionEntry(Mockito.any());
   }
 
