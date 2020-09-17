@@ -53,8 +53,8 @@ public class BuildBotClient {
    * If the fetched data is empty (invalid) waits for {@code delay} seconds and tries
    * to make the same request.
    *
-   * @param buildBot name of the BuildBot as it is in the API (e.g "clang-x86_64-debian-fast").
-   * @param initialBuildId the id of the BuildBot's build from where to start fetching data.
+   * @param buildBot name of the BuildBot as it is in the API (e.g "clang-x86_64-debian-fast")
+   * @param initialBuildId the id of the BuildBot's build from where to start fetching data
    */
   public void run(@NonNull String buildBot, long initialBuildId, long delay) {
     Objects.requireNonNull(buildBot);
