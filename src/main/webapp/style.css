@@ -92,3 +92,9 @@ ul {
   grid: auto / repeat(3, 1fr);
   margin: 1rem;
 }
+
+.indicator {
+  border-radius: 1rem;
+  min-height: 0.5rem;
+  min-width: 0.5rem;
+}
