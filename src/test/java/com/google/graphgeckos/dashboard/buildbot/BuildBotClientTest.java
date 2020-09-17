@@ -17,7 +17,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class BuildBotClientTest {
 
   static class BuildBotDataMatcher implements ArgumentMatcher<BuildBotData> {
-
     @Override
     public boolean matches(BuildBotData data) {
       return data.isValid();
@@ -25,7 +24,8 @@ public class BuildBotClientTest {
   }
 
   @InjectMocks
-  BuildBotClient client;
+  BuildBotClient client = new BuildBotClient(
+    "http://lab.llvm.org:8011/json/builders/", 1);
 
   @Mock
   DatastoreRepository datastoreRepository;
@@ -37,13 +37,21 @@ public class BuildBotClientTest {
   }
 
   public final String VALID_BUILD_BOT = "clang-x86_64-debian-fast";
+
   public final int VALID_BUILD_ID = 36624;
+  public final int INVALID_BUILD_ID = 0;
 
   @Test
-  public void verifyValidUpdateCallToRepository() {
+  public void verifyValidResponseCauseUpdateCallToRepository() {
     client.run(VALID_BUILD_BOT, VALID_BUILD_ID);
     Mockito.verify(datastoreRepository, Mockito.after(client.getRequestFrequency() * 2000 - 10))
       .updateRevisionEntry(Mockito.argThat(new BuildBotDataMatcher()));
+  }
+
+  @Test
+  public void verifyInvalidResponseCausesNoCallToReposiory() {
+    client.run(VALID_BUILD_BOT, INVALID_BUILD_ID);
+    Mockito.verify(datastoreRepository, Mockito.never()).updateRevisionEntry(Mockito.any());
   }
 
 }
