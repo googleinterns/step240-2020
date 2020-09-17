@@ -85,3 +85,10 @@ ul {
   font-style: italic;
   text-transform: uppercase;
 }
+
+.builder-grid {
+  display: grid;
+  gap: 0.5rem;
+  grid: auto / repeat(3, 1fr);
+  margin: 1rem;
+}
