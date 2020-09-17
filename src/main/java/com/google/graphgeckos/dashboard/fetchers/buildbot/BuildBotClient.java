@@ -16,7 +16,7 @@ public class BuildBotClient {
 
   /** Provides access to the storage. */
   @Autowired
-  private static DatastoreRepository datastoreRepository;
+  private DatastoreRepository datastoreRepository;
 
   private static String baseUrl = "http://lab.llvm.org:8011/json/builders/";
 
@@ -56,13 +56,10 @@ public class BuildBotClient {
           System.out.println("error");
           return;
         }
-        System.out.println(response);
         try {
           BuildBotData builder = new ObjectMapper().readValue(response, BuildBotData.class);
-          System.out.println(builder.getCommitHash());
           datastoreRepository.updateRevisionEntry(builder);
         } catch (Exception e) {
-          System.out.println("SUKA BLIAT'");
           e.printStackTrace();
         }
         buildId.incrementAndGet();
