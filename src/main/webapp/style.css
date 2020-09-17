@@ -85,3 +85,9 @@ ul {
   font-style: italic;
   text-transform: uppercase;
 }
+
+/* The first row of the tray */
+.snapshot-tray > *:nth-child(-n+2) {
+  border-bottom: 0.25rem black solid;
+  padding: 0.5rem;
+}
