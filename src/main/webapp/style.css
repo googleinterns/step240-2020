@@ -72,6 +72,10 @@ ul {
   width: 1.5rem;
 }
 
+.header-toggle.active {
+  transform: rotate(90deg);
+}
+
 .header-hash {
   font-weight: bold;
 }
