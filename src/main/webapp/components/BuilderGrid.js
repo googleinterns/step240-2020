@@ -1,5 +1,4 @@
 import * as React from "react";
-import {getField} from "./utils/getField";
 
 /**
  * Component used as an indicator for build status.
@@ -38,7 +37,7 @@ const Builder = (props) => {
  * @param {string} props.builders[].name the name of the builder.
  */
 export const BuilderGrid = (props) => {
-  const builders = getField(props, 'builders', []);
+  const builders = props.builders;
 
   return (
     <div className='builder-grid'>
