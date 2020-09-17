@@ -18,21 +18,18 @@ public class BuildBotClient {
   @Autowired
   private DatastoreRepository datastoreRepository;
 
-  private static String baseUrl = "http://lab.llvm.org:8011/json/builders/";
+  private final String baseUrl;
 
-  private static int requestFrequency = 10;
+  private final int requestFrequencyInSeconds;
 
-  public static void setBaseUrl(@NonNull String baseUrl) {
+  public BuildBotClient(@NonNull String baseUrl, int requestFrequencyInSeconds) {
     Objects.requireNonNull(baseUrl);
-    BuildBotClient.baseUrl = baseUrl;
+    this.baseUrl = baseUrl;
+    this.requestFrequencyInSeconds = requestFrequencyInSeconds;
   }
 
-  public static void setRequestFrequency(int requestFrequency) {
-    BuildBotClient.requestFrequency = requestFrequency;
-  }
-
-  public static int getRequestFrequency() {
-    return requestFrequency;
+  public int getRequestFrequency() {
+    return requestFrequencyInSeconds;
   }
   
   public void run(@NonNull String buildBot, int initialBuildId) {
@@ -48,7 +45,7 @@ public class BuildBotClient {
       .accept(MediaType.TEXT_PLAIN)
       .retrieve()
       .bodyToMono(String.class)
-      .delaySubscription(Duration.ofSeconds(requestFrequency))
+      .delaySubscription(Duration.ofSeconds(requestFrequencyInSeconds))
       .onErrorReturn("error")
       .repeat()
       .subscribe(response -> {
