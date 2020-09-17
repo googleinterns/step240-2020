@@ -1,6 +1,0 @@
-cool-builder
-PASSED
-commitHash
-1235648
-logType
-logLink
