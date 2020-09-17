@@ -7,13 +7,13 @@ import java.util.Objects;
 public class BuildBotClientPopulation {
 
   private final String baseUrl;
-  private final int requetFrequencyInSeconds;
+  private final int delay;
 
-  public BuildBotClientPopulation(@NonNull String baseUrl, int requestFrequencyInSeconds) {
+  public BuildBotClientPopulation(@NonNull String baseUrl, int delay) {
     Objects.requireNonNull(baseUrl);
 
     this.baseUrl = baseUrl;
-    this.requetFrequencyInSeconds = requestFrequencyInSeconds;
+    this.delay = delay;
   }
 
   public BuildBotClientPopulation() {
@@ -27,7 +27,7 @@ public class BuildBotClientPopulation {
       throw new IllegalArgumentException("Expected one or more BuildBots, found zero");
     }
     Arrays.stream(buildBots)
-      .forEach(x -> new BuildBotClient(baseUrl, requetFrequencyInSeconds).run(x.name, x.initialBuildId));
+      .forEach(x -> new BuildBotClient(baseUrl, delay).run(x.name, x.initialBuildId));
   }
 
 }

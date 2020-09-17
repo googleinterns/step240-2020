@@ -15,9 +15,6 @@ public class DashboardApplication {
   public static void main(String[] args) {
 
     SpringApplication.run(DashboardApplication.class, args);
-    new BuildBotClientPopulation().populate(
-      new BuildBotInitializer("clang-x86_64-debian-fast", 36624)
-    );
   }
 
 }
