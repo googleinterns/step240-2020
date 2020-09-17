@@ -58,7 +58,7 @@ public class DatastoreRepositoryTests {
   public void testValidAddition() throws IOException, InterruptedException{
     DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
     Timestamp time = Timestamp.ofTimeMicroseconds(0);
-
+    
     Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("1", time)));
     Assert.assertEquals(getDummyEntity("1", time), (storage.getRevisionEntry("1")));
   }
@@ -203,7 +203,7 @@ public class DatastoreRepositoryTests {
     Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("5", time5)));
 
     Assert.assertTrue(storage.deleteRevisionEntry("3"));
-  
+
     List<BuildInfo> results = storage.getLastRevisionEntries(3, 2);
 
     Assert.assertEquals(results.size(), 2);
