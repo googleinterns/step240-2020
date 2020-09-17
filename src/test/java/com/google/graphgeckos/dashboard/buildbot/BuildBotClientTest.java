@@ -42,7 +42,7 @@ public class BuildBotClientTest {
   @Test
   public void verifyValidUpdateCallToRepository() {
     client.run(VALID_BUILD_BOT, VALID_BUILD_ID);
-    Mockito.verify(datastoreRepository, Mockito.after(BuildBotClient.getRequestFrequency() * 2000 - 10))
+    Mockito.verify(datastoreRepository, Mockito.after(client.getRequestFrequency() * 2000 - 10))
       .updateRevisionEntry(Mockito.argThat(new BuildBotDataMatcher()));
   }
 
