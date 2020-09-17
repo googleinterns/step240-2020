@@ -14,10 +14,8 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
-
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreException;
-import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
@@ -52,10 +50,6 @@ import org.springframework.stereotype.Repository;
 public class DatastoreRepository implements DataRepository {
   private DatastoreTemplate storage;
 
-  public DatastoreRepository() {
-    this(new DatastoreOptions.DefaultDatastoreFactory().create(DatastoreOptions.getDefaultInstance()));
-  }
-
   public DatastoreRepository(@NonNull Datastore underlyingStorage) {
     Objects.requireNonNull(underlyingStorage);
 
@@ -64,10 +58,10 @@ public class DatastoreRepository implements DataRepository {
     DatastoreMappingContext mappingContext = new DatastoreMappingContext();
 
     DatastoreServiceObjectToKeyFactory objectToKeyFactory =
-        new DatastoreServiceObjectToKeyFactory(supplier);
+      new DatastoreServiceObjectToKeyFactory(supplier);
 
     DefaultDatastoreEntityConverter entityConverter =
-        new DefaultDatastoreEntityConverter(mappingContext, objectToKeyFactory);
+      new DefaultDatastoreEntityConverter(mappingContext, objectToKeyFactory);
 
     storage = new DatastoreTemplate(supplier, entityConverter, mappingContext, objectToKeyFactory);
   }
@@ -150,17 +144,17 @@ public class DatastoreRepository implements DataRepository {
    */
   @Override
   public List<BuildInfo> getLastRevisionEntries(int number, int offset)
-                                                         throws IllegalArgumentException {
+    throws IllegalArgumentException {
     if (number < 0 || offset < 0) {
       throw new IllegalArgumentException("Both number and offset must be >= 0");
     }
 
     Query<Entity> query = Query.newEntityQueryBuilder()
-                               .setKind("revision")
-                               .setOrderBy(OrderBy.desc("timestamp"))
-                               .setOffset(offset)
-                               .setLimit(number)
-                               .build();
+      .setKind("revision")
+      .setOrderBy(OrderBy.desc("timestamp"))
+      .setOffset(offset)
+      .setLimit(number)
+      .build();
 
     List<BuildInfo> toBeReturned = new ArrayList<>();
     storage.query(query, BuildInfo.class).getIterable().forEach(toBeReturned::add);
