@@ -77,6 +77,10 @@ ul {
   transform: rotate(90deg);
 }
 
+.snapshot-header.active {
+  border-bottom: 0.25rem var(--primary) solid;
+}
+
 .header-hash {
   font-weight: bold;
 }
