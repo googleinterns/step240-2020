@@ -20,11 +20,19 @@ public class BuildBotClient {
 
   private static String baseUrl = "http://lab.llvm.org:8011/json/builders/";
 
-  private static final int REQUEST_FREQUENCY = 10;
+  private static int requestFrequency = 10;
 
   public static void setBaseUrl(@NonNull String baseUrl) {
     Objects.requireNonNull(baseUrl);
     BuildBotClient.baseUrl = baseUrl;
+  }
+
+  public static void setRequestFrequency(int requestFrequency) {
+    BuildBotClient.requestFrequency = requestFrequency;
+  }
+
+  public static int getRequestFrequency() {
+    return requestFrequency;
   }
   
   public void run(@NonNull String buildBot, int initialBuildId) {
@@ -40,7 +48,7 @@ public class BuildBotClient {
       .accept(MediaType.TEXT_PLAIN)
       .retrieve()
       .bodyToMono(String.class)
-      .delaySubscription(Duration.ofSeconds(REQUEST_FREQUENCY))
+      .delaySubscription(Duration.ofSeconds(requestFrequency))
       .onErrorReturn("error")
       .repeat()
       .subscribe(response -> {
@@ -48,17 +56,17 @@ public class BuildBotClient {
           System.out.println("error");
           return;
         }
-
+        System.out.println(response);
         try {
           BuildBotData builder = new ObjectMapper().readValue(response, BuildBotData.class);
           System.out.println(builder.getCommitHash());
           datastoreRepository.updateRevisionEntry(builder);
         } catch (Exception e) {
-          System.out.println(e.getMessage());
+          System.out.println("SUKA BLIAT'");
+          e.printStackTrace();
         }
         buildId.incrementAndGet();
       });
-    // TODO: [issue #68] Implement interaction between BuildBotController and storage
   }
 
 }

@@ -80,7 +80,7 @@ public class BuildBotData {
     this.status = status;
   }
 
-  public BuildBotData(String name) {
+  public BuildBotData(@JsonProperty("builderName") String name) {
     this.name = name;
   }
 
@@ -90,9 +90,12 @@ public class BuildBotData {
    * Representation of the json component, where the commitHash field is located.
    */
   @JsonProperty("sourceStamp")
+  @SuppressWarnings("unchecked")
   public void unpackSourceStamp(Map<String, Object> sourceStamp) {
     commitHash = sourceStamp.get("revision").toString();
-    timestamp = Timestamp.ofTimeMicroseconds(Long.parseLong(sourceStamp.get("when").toString()));
+    List<Object> changes = (ArrayList<Object>)sourceStamp.get("changes");
+    Map<String, Object> latestChange = (Map<String, Object>)changes.get(0);
+    timestamp = Timestamp.ofTimeMicroseconds(Long.parseLong(latestChange.get("when").toString()));
   }
 
   /**
