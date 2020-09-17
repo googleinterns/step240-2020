@@ -13,7 +13,7 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
-/** BuildBot API data fetcher. */
+/** A (external) BuildBot API json data fetcher. */
 public class BuildBotClient {
 
   /** Provides access to the storage. */
@@ -23,18 +23,9 @@ public class BuildBotClient {
   /** Base url of the BuildBot API. */
   private final String baseUrl;
 
-  /** Fetcher does requests to the BuildBot API every {@code delay} seconds. */
-  private final long delay;
-
-  public BuildBotClient(@NonNull String baseUrl, long delay) {
+  public BuildBotClient(@NonNull String baseUrl) {
     Objects.requireNonNull(baseUrl);
     this.baseUrl = baseUrl;
-    this.delay = delay;
-  }
-
-  /** Returns request frequency in seconds. */
-  public long getDelay() {
-    return delay;
   }
 
   /**
@@ -51,7 +42,7 @@ public class BuildBotClient {
    * @param buildBot name of the BuildBot as it is in the API (e.g "clang-x86_64-debian-fast").
    * @param initialBuildId the id of the BuildBot's build from where to start fetching data.
    */
-  public void run(@NonNull String buildBot, long initialBuildId) {
+  public void run(@NonNull String buildBot, long initialBuildId, long delay) {
     Objects.requireNonNull(buildBot);
 
     AtomicLong buildId = new AtomicLong(initialBuildId);
