@@ -93,6 +93,18 @@ ul {
   margin: 1rem;
 }
 
+.builder {
+  align-items: center;
+  background: var(--primary);
+  border-radius: 0.25rem;
+  color: black;
+  display: flex;
+  gap: 0.5rem;
+  overflow: hidden;
+  padding: 0.2rem 1rem;
+  white-space: nowrap;
+}
+
 .indicator {
   border-radius: 1rem;
   min-height: 0.5rem;
