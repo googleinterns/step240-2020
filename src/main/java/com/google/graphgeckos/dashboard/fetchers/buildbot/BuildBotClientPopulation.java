@@ -38,7 +38,7 @@ public class BuildBotClientPopulation {
    * Creates and runs fetchers to fetch data from the BuildBots with the given name and initial build id,
    * provided in the form of {@link BuildBotInitializer}.
    *
-   * @param buildBots information about the BuildBots to fetch data from.
+   * @param buildBots information about the BuildBots to fetch data from
    */
   public void populate(@NonNull BuildBotInitializer... buildBots) {
     Objects.requireNonNull(buildBots);
