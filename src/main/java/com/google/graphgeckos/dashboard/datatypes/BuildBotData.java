@@ -178,10 +178,6 @@ public class BuildBotData {
     this.timestamp = timestamp;
   }
 
-  public boolean isValid() {
-    return status != null && name != null && status != null && commitHash != null;
-  }
-
   /**
    * Checks if all non-transient fields are equal between BuildBotData instances.
    */
