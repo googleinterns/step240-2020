@@ -5,21 +5,18 @@ import com.google.graphgeckos.dashboard.fetchers.buildbot.BuildBotClient;
 import com.google.graphgeckos.dashboard.storage.DatastoreRepository;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
-import org.mockito.*;
+import org.mockito.ArgumentMatcher;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import static org.mockito.ArgumentMatchers.argThat;
 
 @RunWith(MockitoJUnitRunner.class)
-@ExtendWith(MockitoExtension.class)
 public class BuildBotClientTest {
 
-  class BuildBotDataMatcher implements ArgumentMatcher<BuildBotData> {
+  static class BuildBotDataMatcher implements ArgumentMatcher<BuildBotData> {
 
     @Override
     public boolean matches(BuildBotData data) {
@@ -28,24 +25,25 @@ public class BuildBotClientTest {
   }
 
   @InjectMocks
-  BuildBotClient client = new BuildBotClient();
+  BuildBotClient client;
 
   @Mock
   DatastoreRepository datastoreRepository;
 
+  /** Enables Mockito. */
+  @Before
+  public void init() {
+    MockitoAnnotations.initMocks(this);
+  }
 
-
-//  /** Enables Mockito. */
-//  @Before
-//  public void init() {
-//    MockitoAnnotations.initMocks(this);
-//  }
+  public final String VALID_BUILD_BOT = "clang-x86_64-debian-fast";
+  public final int VALID_BUILD_ID = 36624;
 
   @Test
-  public void allFieldsAreOfExpectedFormat() {
-    client.run("clang-x86_64-debian-fast", 36624);
+  public void verifyValidUpdateCallToRepository() {
+    client.run(VALID_BUILD_BOT, VALID_BUILD_ID);
     Mockito.verify(datastoreRepository, Mockito.after(BuildBotClient.getRequestFrequency() * 2000 - 10))
-      .updateRevisionEntry(argThat(new BuildBotDataMatcher()));
+      .updateRevisionEntry(Mockito.argThat(new BuildBotDataMatcher()));
   }
 
 }
