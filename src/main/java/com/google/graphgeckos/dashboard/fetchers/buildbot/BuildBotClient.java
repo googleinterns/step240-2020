@@ -11,7 +11,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class BuildBotClient {
 
@@ -35,11 +35,15 @@ public class BuildBotClient {
   public long getDelay() {
     return delay;
   }
-  
-  public void run(@NonNull String buildBot, int initialBuildId) {
+
+  /**
+   * @param buildBot name of the BuildBot as it is in the API (e.g "clang-x86_64-debian-fast").
+   * @param initialBuildId
+   */
+  public void run(@NonNull String buildBot, long initialBuildId) {
     Objects.requireNonNull(buildBot);
 
-    AtomicInteger buildId = new AtomicInteger(initialBuildId);
+    AtomicLong buildId = new AtomicLong(initialBuildId);
 
     WebClient.builder().baseUrl(baseUrl)
       .defaultHeader(HttpHeaders.CONTENT_TYPE, "application/json")
