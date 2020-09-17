@@ -30,8 +30,8 @@ import org.junit.Test;
 
 public class DatastoreRepositoryTests {
   private LocalDatastoreHelper emulator = LocalDatastoreHelper.newBuilder().setConsistency(1.0)
-    .setStoreOnDisk(false)
-    .build();
+                                                                           .setStoreOnDisk(false)
+                                                                           .build();
 
   public DatastoreRepositoryTests() throws IOException, InterruptedException {
     emulator.start();
@@ -203,7 +203,7 @@ public class DatastoreRepositoryTests {
     Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("5", time5)));
 
     Assert.assertTrue(storage.deleteRevisionEntry("3"));
-
+  
     List<BuildInfo> results = storage.getLastRevisionEntries(3, 2);
 
     Assert.assertEquals(results.size(), 2);
