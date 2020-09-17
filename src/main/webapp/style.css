@@ -70,6 +70,7 @@ ul {
 .header-toggle {
   height: 1.5rem;
   width: 1.5rem;
+  transition: 300ms transform ease-in-out;
 }
 
 .header-toggle.active {
