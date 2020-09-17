@@ -19,18 +19,21 @@ public class BuildBotClient {
   @Autowired
   private DatastoreRepository datastoreRepository;
 
+  /** Base URL of the BuildBot API. */
   private final String baseUrl;
 
-  private final int requestFrequencyInSeconds;
+  /** Fetcher does requests to the BuildBot API every {@code delay} seconds. */
+  private final long delay;
 
-  public BuildBotClient(@NonNull String baseUrl, int requestFrequencyInSeconds) {
+  public BuildBotClient(@NonNull String baseUrl, long delay) {
     Objects.requireNonNull(baseUrl);
     this.baseUrl = baseUrl;
-    this.requestFrequencyInSeconds = requestFrequencyInSeconds;
+    this.delay = delay;
   }
 
-  public int getRequestFrequency() {
-    return requestFrequencyInSeconds;
+  /** Returns request frequency in seconds. */
+  public long getDelay() {
+    return delay;
   }
   
   public void run(@NonNull String buildBot, int initialBuildId) {
@@ -46,7 +49,7 @@ public class BuildBotClient {
       .accept(MediaType.TEXT_PLAIN)
       .retrieve()
       .bodyToMono(String.class)
-      .delaySubscription(Duration.ofSeconds(requestFrequencyInSeconds))
+      .delaySubscription(Duration.ofSeconds(delay))
       .onErrorResume(e -> {
         System.out.println("Ignoring error: " + e.getMessage());
         return Mono.empty();

@@ -41,10 +41,16 @@ public class BuildBotClientTest {
   public final int VALID_BUILD_ID = 36624;
   public final int INVALID_BUILD_ID = 0;
 
+  private long secondsToMillis(long seconds) {
+    return seconds * 1000;
+  }
+
   @Test
   public void verifyValidResponseCauseUpdateCallToRepository() {
     client.run(VALID_BUILD_BOT, VALID_BUILD_ID);
-    Mockito.verify(datastoreRepository, Mockito.after(client.getRequestFrequency() * 2000 - 10))
+
+    long wait = secondsToMillis(client.getDelay()) * 2;
+    Mockito.verify(datastoreRepository, Mockito.after(wait))
       .updateRevisionEntry(Mockito.argThat(new BuildBotDataMatcher()));
   }
 
