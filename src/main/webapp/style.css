@@ -92,3 +92,13 @@ ul {
   overflow: hidden;
   text-align: center;
 }
+
+.data-table tr > * {
+  border: 0.25rem var(--primary) solid;
+  border-bottom: none;
+  border-top: none;
+}
+
+.data-table tr > *:nth-last-child(-n+2) {
+  border: none;
+}
