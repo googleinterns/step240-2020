@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.lang.NonNull;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -46,11 +47,13 @@ public class BuildBotClient {
       .retrieve()
       .bodyToMono(String.class)
       .delaySubscription(Duration.ofSeconds(requestFrequencyInSeconds))
-      .onErrorReturn("error")
+      .onErrorResume(e -> {
+        System.out.println("Ignoring error: " + e.getMessage());
+        return Mono.empty();
+      })
       .repeat()
       .subscribe(response -> {
-        if (response.equals("error")) {
-          System.out.println("error");
+        if (response.isEmpty()) {
           return;
         }
         try {
