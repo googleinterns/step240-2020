@@ -203,7 +203,7 @@ public class DatastoreRepositoryTests {
     Assert.assertTrue(storage.createRevisionEntry(getDummyGitData("5", time5)));
 
     Assert.assertTrue(storage.deleteRevisionEntry("3"));
-
+  
     List<BuildInfo> results = storage.getLastRevisionEntries(3, 2);
 
     Assert.assertEquals(results.size(), 2);
