@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GitHubController {
 
+  /** Provides access to the storage. */
   @Autowired
   private DatastoreRepository datastoreRepository;
 
