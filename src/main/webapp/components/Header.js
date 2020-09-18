@@ -20,12 +20,8 @@ export const Header = () => {
 
   return (
     <header className='header'>
-      <div>
-        <span className='title'>{TITLE}</span>
-      </div>
-      <div>
-        <Navigation options={OPTIONS}/>
-      </div>
+      <span className='title'>{TITLE}</span>
+      <Navigation options={OPTIONS}/>
     </header>
   );
 }
