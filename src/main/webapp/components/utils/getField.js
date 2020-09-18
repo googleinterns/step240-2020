@@ -6,7 +6,7 @@
  * @param field the target field, in string form.
  * @param defaultValue the value to be used if obj[field] === undefined.
  * @deprecated deprecated in favour of destructuring and property shorthand.
- * @see {@link https://github.com/googleinterns/step240-2020/pull/139|GitHub}
+ * @see {@link https://github.com/googleinterns/step240-2020/pull/176|GitHub}
  */
 export const getField = (obj, field, defaultValue) => {
   return obj[field] !== undefined ?
