@@ -8,7 +8,7 @@ import {getField} from "./getField";
  * @param obj the object to query the fields for.
  * @param fields an array of the target fields, in string form.
  * @param defaultValue the value to be used if obj[field] === undefined.
- * @deprecated extracting values with destructuring instead.
+ * @deprecated extract values with destructuring instead.
  * @see {@link https://github.com/googleinterns/step240-2020/pull/176|GitHub}
  */
 export const getFields = (obj, fields, defaultValue) => {
