@@ -35,11 +35,16 @@ export const BuildSnapshotContainer = React.memo((props) =>
         .catch(setData([]));
     }, []);
 
-    const content = <span>No new revisions to display ({new Date().toString()}).</span>
-    
+    const content = <span className='loader'>
+        No new revisions to display, {new Date().toString()}.</span>;
+
+    if (data.length > 0) {
+      content = data.map(snapshotData => <BuildSnapshot buildData={snapshotData}/>)
+    }
+
     return (
       <div id='build-snapshot-container'>
-        {data.map(snapshotData => <BuildSnapshot buildData={snapshotData}/>)}
+        {content}
       </div>
     );
   }
