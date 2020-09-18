@@ -1,7 +1,6 @@
 package com.google.graphgeckos.dashboard.github;
 
 import com.google.graphgeckos.dashboard.AbstractJsonTestInfo;
-import com.google.graphgeckos.dashboard.datatypes.GitHubData;
 
 /**
  * Represents input and expected output for a test. Used in {@see GitHubControllerTest}.
