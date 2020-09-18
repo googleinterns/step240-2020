@@ -114,6 +114,7 @@ ul {
   text-transform: uppercase;
 }
 
+/* Message Element in BuildSnapshot Container*/
 .loader {
   padding: 1rem 0;
   text-align: center;
