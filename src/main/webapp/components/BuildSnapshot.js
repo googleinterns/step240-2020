@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {BuilderDataTable} from './BuilderDataTable';
 import {BuilderGrid} from './BuilderGrid';
-import {getFields} from './utils/getFields.js';
 import toggleIcon from './resources/play.svg';
 
 /**
@@ -21,11 +20,8 @@ export const BuildSnapshot = (props) => {
   // and the indicator arrow on the Header should be facing downwards.
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const headerFields = ['description', 'commitHash', 'repository', 'status'];
-  const trayFields = ['builders', 'timestamp'];
-
-  const headerData = getFields(props.buildData, headerFields, '');
-  const trayData = getFields(props.buildData, trayFields, '');
+  const headerData = ({commitHash, description, repository, status} = props.buildData);
+  const trayData = ({builders, timestamp} = props.buildData);
 
   return (
     <div className='build-snapshot'>
