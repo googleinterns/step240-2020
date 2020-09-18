@@ -113,3 +113,8 @@ ul {
   font-style: italic;
   text-transform: uppercase;
 }
+
+.loader {
+  padding: 1rem 0;
+  text-align: center;
+}
