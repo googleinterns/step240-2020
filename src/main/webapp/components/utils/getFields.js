@@ -12,6 +12,7 @@ import {getField} from "./getField";
  * @see {@link https://github.com/googleinterns/step240-2020/pull/176|GitHub}
  */
 export const getFields = (obj, fields, defaultValue) => {
+  console.warn('getFields is deprecated. Use destructuring to get values.');
   const res = {};
   for (const field of fields) { 
     res[field] = getField(obj, field, defaultValue);
