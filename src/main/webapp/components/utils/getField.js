@@ -10,6 +10,7 @@
  */
 export const getField = (obj, field, defaultValue) => {
   console.warn('getField is deprecated. Use destructuring to extract values.');
+  
   return obj[field] !== undefined ?
       obj[field] :
       (defaultValue !== undefined ? defaultValue : null);

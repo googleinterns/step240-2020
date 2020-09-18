@@ -13,6 +13,7 @@ import {getField} from "./getField";
  */
 export const getFields = (obj, fields, defaultValue) => {
   console.warn('getFields is deprecated. Use destructuring to get values.');
+  
   const res = {};
   for (const field of fields) { 
     res[field] = getField(obj, field, defaultValue);
