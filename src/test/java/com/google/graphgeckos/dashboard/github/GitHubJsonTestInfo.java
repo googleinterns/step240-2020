@@ -1,6 +1,7 @@
 package com.google.graphgeckos.dashboard.github;
 
 import com.google.graphgeckos.dashboard.AbstractJsonTestInfo;
+import com.google.graphgeckos.dashboard.datatypes.GitHubData;
 
 /**
  * Represents input and expected output for a test. Used in {@see GitHubControllerTest}.
@@ -13,23 +14,16 @@ public class GitHubJsonTestInfo extends AbstractJsonTestInfo {
   private String timestamp;
   private String repositoryLink;
 
-  /**
-   * {@inheritDoc}
-   */
   public GitHubJsonTestInfo(String testName) {
     super(testName);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected String getPath() {
     return "src/test/resources/jsons/";
   }
 
   /**
-   * {@inheritDoc}
    * Values come in the following order: branch, commit hash, timestamp, repository link.
    *
    * @param expected Lines of the expected output file for the test.
