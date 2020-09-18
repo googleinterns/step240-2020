@@ -37,7 +37,7 @@ export const BuildSnapshotContainer = React.memo((props) =>
 
     let content;
     if (data.length > 0) {
-      content = data.map(snapshotData => <BuildSnapshot buildData={snapshotData}/>)
+      content = data.map(snapshot => <BuildSnapshot buildData={snapshot}/>);
     } else {
       content = <span className='loader'>
           No new revisions to display as of {new Date().toString()}.</span>;
