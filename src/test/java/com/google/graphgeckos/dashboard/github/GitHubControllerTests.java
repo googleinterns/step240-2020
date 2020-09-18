@@ -1,6 +1,7 @@
 package com.google.graphgeckos.dashboard.github;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import com.google.graphgeckos.dashboard.fetchers.github.GitHubController;
 import org.junit.Test;

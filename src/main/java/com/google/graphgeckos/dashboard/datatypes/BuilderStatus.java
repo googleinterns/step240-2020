@@ -14,28 +14,11 @@
 
 package com.google.graphgeckos.dashboard.datatypes;
 
-import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
-
 /**
- * Represents buildbot statuses.
+ * Represents BuildBot statuses.
  */
-@Entity(name = "buildStatus")
 public enum BuilderStatus {
-  FAILED("failed"),
-  PASSED("passed"),
-  LOST("lost");
-
-  private final String status;
-
-  BuilderStatus(String status) {
-    this.status = status;
-  }
-
-  /**
-   * Returns the String representation of the status. Cannot be null.
-   */
-  public String getStatus() {
-    return status;
-  }
-
+  FAILED,
+  PASSED,
+  LOST;
 }

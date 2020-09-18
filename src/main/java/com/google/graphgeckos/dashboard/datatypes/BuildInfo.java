@@ -21,6 +21,7 @@ import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Field;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Unindexed;
 import org.springframework.data.annotation.Id;
+import org.springframework.lang.NonNull;
 
 /**
  * This class encapsulates all the information gathered about a specific revision.
@@ -39,20 +40,37 @@ import org.springframework.data.annotation.Id;
 @Entity(name = "revision")
 public class BuildInfo {
 
+  /**
+   * The commit hash of the associated revision.
+   */
   @Id
   @Field(name = "commitHash")
-  private final String commitHash;
+  private String commitHash;
 
+  /**
+   * Timestamp when the commit was pushed.
+   */
   @Field(name = "timestamp")
-  private final Timestamp timestamp;
+  private Timestamp timestamp;
 
+  /**
+   * Branch where the commit was pushed.
+   */
+  @Unindexed
   @Field(name = "branch")
-  @Unindexed
-  private final String branch;
+  private String branch;
 
-  @Field(name = "builders")
+  /**
+   * List of buildbots which attempted compilation and their results.
+   */
   @Unindexed
-  private final List<BuildBotData> builders;
+  @Field(name = "builders")
+  private List<BuildBotData> builders;
+
+  /**
+   * Used by Spring GCP.
+   */
+  public BuildInfo() {}
 
   /**
    * Converts a {@link GitHubData} object to a BuildInfo object.
@@ -66,37 +84,43 @@ public class BuildInfo {
     this.builders = new ArrayList<>();
   }
 
-  /**
-   * Getter for the Git commit hash of the associated revision. Cannot be null.
-   */
+  @NonNull
   public String getCommitHash() {
     return commitHash;
   }
 
-  /**
-   * Returns time of when the commit was pushed as a {@link com.google.cloud#Timestamp
-   * Timestamp} value. Cannot be null.
-   */
+  @NonNull
   public Timestamp getTimestamp() {
     return timestamp;
   }
 
-  /**
-   * Returns name of the Git branch where the revision was pushed. Cannot be null.
-   */
+  @NonNull
   public String getBranch() {
     return branch;
   }
 
-  /**
-   * Returns builders which attempted the compilation of the revision. Cannot be null, and
-   * neither it's elements.
-   */
+  @NonNull
   public List<BuildBotData> getBuilders() {
     return builders;
   }
 
-  public void addBuilder(BuildBotData update) {
+  public void setCommitHash(@NonNull String commitHash) {
+    this.commitHash = commitHash;
+  }
+
+  public void setTimestamp(@NonNull Timestamp timestamp) {
+    this.timestamp = timestamp;
+  }
+
+  public void setBranch(@NonNull String branch) {
+    this.branch = branch;
+  }
+
+  public void setBuilders(@NonNull List<BuildBotData> builders) {
+    this.builders = new ArrayList<>(builders);
+  }
+
+  public void addBuilder(@NonNull BuildBotData update) {
     builders.add(update);
   }
 
@@ -112,8 +136,7 @@ public class BuildInfo {
       return false;
     }
     BuildInfo other = (BuildInfo) o;
-    return commitHash.equals(other.commitHash) && timestamp.equals(other.timestamp) &&
-           branch.equals(other.branch) && builders.equals(other.builders);
+    return commitHash.equals(other.commitHash) && timestamp.equals(other.timestamp);
   }
 
 }

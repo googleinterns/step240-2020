@@ -1,5 +1,8 @@
 import * as React from 'react';
+import {BuilderDataTable} from './BuilderDataTable';
+import {BuilderGrid} from './BuilderGrid';
 import {getFields} from './utils/getFields.js';
+import toggleIcon from './resources/play.svg';
 
 /**
  * Component used to render Build Information.
@@ -47,7 +50,8 @@ export const BuildSnapshot = (props) => {
  */
 const Header = (props) => {
   return (
-    <div className='header' onClick={() => props.onClick(!props.isOpen)}>
+    <div className='snapshot-header' onClick={() => props.onClick(!props.isOpen)}>
+      <img className='header-toggle' src={toggleIcon}/>
       <span className='header-hash'>{props.data.commitHash}</span>
       <span className='header-description'>{props.data.description}</span>
       <span className='failure-group'>Group</span>
@@ -74,7 +78,7 @@ const Tray = (props) => {
 
   if (props.isOpen !== true) { return null };
   return (
-    <div className='tray'>
+    <div className='snapshot-tray'>
       <span className='tray-timespan'>{props.data.timestamp}</span>
       <div className='tray-currentbot'>
         <span className='bot-display'>{builder.name}</span>

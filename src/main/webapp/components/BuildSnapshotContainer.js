@@ -9,7 +9,17 @@ import {BuildSnapshot} from "./BuildSnapshot";
  */
 export const BuildSnapshotContainer = React.memo((props) =>
   {
-    const SOURCE = '/data';
+    // Number of entries to be pulled.
+    // TODO: Determine true value for number of entries.
+    const NUMBER = 2;
+
+    // The starting point from which the entries are selected.
+    // Relative to the starting index.
+    // TODO: vary multiplier based on page number.
+    const OFFSET = NUMBER * 0;
+
+    const SOURCE = `/builders/number=${NUMBER}/offset=${OFFSET}`;
+
     const [data, setData] = React.useState([]);
 
     /**
@@ -19,12 +29,15 @@ export const BuildSnapshotContainer = React.memo((props) =>
      * @see <a href="www.robinwieruch.de/react-hooks-fetch-data">Fetching</a>
      */
     React.useEffect(() => {
-      fetch(SOURCE).then(res => setData(res.json()));
+      fetch(SOURCE)
+        .then(res => res.json())
+        .then(json => setData(json))
+        .catch(setData([]));
     }, []);
 
     return (
-      <div>
-        {data.map(snapshotData => <BuildSnapshot data={snapshotData}/>)}
+      <div id='build-snapshot-container'>
+        {data.map(snapshotData => <BuildSnapshot buildData={snapshotData}/>)}
       </div>
     );
   }
