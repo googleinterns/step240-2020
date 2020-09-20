@@ -42,7 +42,7 @@ import java.util.List;
 @RunWith(MockitoJUnitRunner.class)
 public class BuildBotClientTest {
 
-  private MockWebServer server = new MockWebServer();
+  private MockWebServer mockWebServer = new MockWebServer();
 
   /**
    * Tested BuildBot API fetcher.
@@ -53,47 +53,63 @@ public class BuildBotClientTest {
   @Mock
   DatastoreRepository datastoreRepository;
 
-  private final String VALID_BUILD_BOT_NAME = "clang-x86_64-debian-fast";
+  private final String VALID_BUILD_BOT_NAME_CLANG = "clang-x86_64-debian-fast";
+  private final String VALID_BUILD_BOT_NAME_FUCHSIA = "fuchsia-x86_64-linux";
   private final String NOT_FOUND_BUILD_BOT_NAME = "server-will-respond-with-404";
   private final String EMPTY_JSON_BUILD_BOT_NAME = "server-will-respond-with-empty-json";
 
   private final long INITIAL_BUILD_ID = 36624;
   private final long NEXT_BUILD_ID = INITIAL_BUILD_ID + 1;
-  private BuildBotClientTestInfo BUILD_BOT = new BuildBotClientTestInfo(VALID_BUILD_BOT_NAME);
-  private final String EMPTY_JSON = "";
+  private BuildBotClientTestInfo BUILD_BOT_CLANG = new BuildBotClientTestInfo(VALID_BUILD_BOT_NAME_CLANG);
+  private BuildBotClientTestInfo BUILD_BOT_FUCHSIA = new BuildBotClientTestInfo(VALID_BUILD_BOT_NAME_FUCHSIA);
+
+  private final String EMPTY_JSON_RESPONSE = "";
 
   /**
    * Request frequency.
    */
   private final long DELAY_ONE_SECOND = 1;
 
+  /**
+   * Determines the behaviour of the mocked server depending on the
+   * provided name of the Build Bot.
+   */
   Dispatcher dispatcher = new Dispatcher() {
 
     @Override
     public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
-      MockResponse firstValidResponse = new MockResponse()
+      MockResponse clangValidResponse = new MockResponse()
                                             .setResponseCode(200)
                                             .setHeader(
                                               HttpHeaders.CONTENT_TYPE,
                                               MediaType.APPLICATION_JSON_VALUE)
-                                            .setBody(BUILD_BOT.getContent());
+                                            .setBody(BUILD_BOT_CLANG.getContent());
+
+       MockResponse fuchsiaValidResponse = new MockResponse()
+                                            .setResponseCode(200)
+                                            .setHeader(
+                                              HttpHeaders.CONTENT_TYPE,
+                                              MediaType.APPLICATION_JSON_VALUE)
+                                            .setBody(BUILD_BOT_FUCHSIA.getContent());
+
       MockResponse pageNotFoundResponse = new MockResponse()
                                               .setResponseCode(404)
                                               .setHeader(
                                                 HttpHeaders.CONTENT_TYPE,
                                                 MediaType.APPLICATION_JSON_VALUE);
+
       MockResponse emptyJsonResponse = new MockResponse()
                                            .setResponseCode(200)
                                            .setHeader(
                                              HttpHeaders.CONTENT_TYPE,
                                              MediaType.APPLICATION_JSON_VALUE)
-                                           .setBody(EMPTY_JSON);
+                                           .setBody(EMPTY_JSON_RESPONSE);
 
-      if (request.getPath().contains(VALID_BUILD_BOT_NAME)) {
+      if (request.getPath().contains(VALID_BUILD_BOT_NAME_CLANG)) {
         if (request.getPath().contains(Long.toString(INITIAL_BUILD_ID))) {
-          return firstValidResponse;
+          return clangValidResponse;
         }
-        return firstValidResponse;
+        return fuchsiaValidResponse;
       }
 
       if (request.getPath().contains(NOT_FOUND_BUILD_BOT_NAME)) {
@@ -104,7 +120,7 @@ public class BuildBotClientTest {
         return emptyJsonResponse;
       }
 
-      throw new IllegalStateException();
+      throw new IllegalStateException("Unknown build bot name");
     }
 
   };
@@ -150,15 +166,17 @@ public class BuildBotClientTest {
   @Before
   public void init() throws IOException {
     MockitoAnnotations.initMocks(this);
-    server.play();
-    String baseUrl = server.getUrl("").toString();
+
+    mockWebServer.play();
+    mockWebServer.setDispatcher(dispatcher);
+
+    String baseUrl = mockWebServer.getUrl("").toString();
     client.setBaseUrl(baseUrl);
-    server.setDispatcher(dispatcher);
   }
 
   @After
   public void tearDown() throws IOException {
-    server.shutdown();
+    mockWebServer.shutdown();
   }
 
   private long secondsToMillis(long seconds) {
@@ -170,18 +188,19 @@ public class BuildBotClientTest {
    * to the storage via an instance of {@link DatastoreRepository}.
    * <p>
    * Given: valid build bot name, build id and delay.
-   * Expected behaviour: fetches JSON, turns JSON into a valid (no null fields) POJO,
+   * Expected behaviour: fetches JSON, turns JSON into a POJO,
    * passes this object as an argument to {@link DatastoreRepository::updateEntry}.
    */
   @Test
-  public void validResponseCausesUpdateCallToRepositoryWithValidArguments() {
+  public void validResponseCausesUpdateCallToRepositoryWithValidArgument() {
+    client.run(VALID_BUILD_BOT_NAME_CLANG, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
 
-    client.run(VALID_BUILD_BOT_NAME, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
-
-    // Wait to check if the datastoreRepository::updateRevisionEntry was called.
+    // Wait to check if the datastoreRepository::updateRevisionEntry was called
+    // because it takes time to get a response from server.
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 3;
     Mockito.verify(datastoreRepository, Mockito.after(delay).atLeast(1))
-      .updateRevisionEntry(Mockito.argThat(new BuildBotDataMatcher(BUILD_BOT)));
+      .updateRevisionEntry(
+        Mockito.argThat(new BuildBotDataMatcher(BUILD_BOT_CLANG)));
   }
 
   /**
@@ -190,9 +209,7 @@ public class BuildBotClientTest {
    */
   @Test
   public void serverErrorCausesNoCallToRepository() throws Exception {
-
     client.run(NOT_FOUND_BUILD_BOT_NAME, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
-
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 3;
     Mockito.verify(datastoreRepository, Mockito.after(delay).never()).updateRevisionEntry(Mockito.any());
   }
@@ -203,9 +220,7 @@ public class BuildBotClientTest {
    */
   @Test
   public void emptyJsonResponseCausesNoCallToRepository() throws Exception {
-
     client.run(EMPTY_JSON_BUILD_BOT_NAME, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
-
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 3;
     Mockito.verify(datastoreRepository, Mockito.after(delay).never()).updateRevisionEntry(Mockito.any());
   }
@@ -215,9 +230,7 @@ public class BuildBotClientTest {
    */
   @Test
   public void twoValidResponsesCausesTwoCallsToRepository() throws Exception {
-
-    client.run(VALID_BUILD_BOT_NAME, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
-
+    client.run(VALID_BUILD_BOT_NAME_CLANG, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 5;
     Mockito.verify(datastoreRepository, Mockito.timeout(delay).atLeast(2)).updateRevisionEntry(Mockito.any());
   }
