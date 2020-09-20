@@ -23,7 +23,7 @@ public class BuildBotClientTestInfo extends AbstractJsonTestInfo {
 
   @Override
   protected String getPath() {
-    return "src/test/resources/jsons/buildbots";
+    return "src/test/resources/jsons/buildbots/";
   }
 
   /**
