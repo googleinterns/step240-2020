@@ -125,6 +125,10 @@ public class BuildBotClientTest {
 
   };
 
+  /**
+   * Compares objects, stubbed from the {@link DatastoreRepository::updateRevisionEntry},
+   * with the corresponding expected values.
+   */
   static class BuildBotDataMatcher implements ArgumentMatcher<BuildBotData> {
 
     private String commitHash;
