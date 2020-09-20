@@ -26,6 +26,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Logger;
 
 /** A (external) BuildBot API json data fetcher. */
 public class BuildBotClient {
@@ -36,6 +37,8 @@ public class BuildBotClient {
 
   /** Base url of the BuildBot API. */
   private String baseUrl;
+
+  private static final Logger logger = Logger.getLogger(BuildBotClient.class.getName());
 
   public BuildBotClient(@NonNull String baseUrl) {
     Objects.requireNonNull(baseUrl);
@@ -71,21 +74,26 @@ public class BuildBotClient {
       .bodyToMono(String.class)
       .delaySubscription(Duration.ofSeconds(delay))
       .onErrorResume(e -> {
-        System.out.println("Ignoring error: " + e.getMessage());
+        logger.info("Ignoring error: " + e.getMessage());
         return Mono.empty();
       })
       .repeat()
       .subscribe(response -> {
         if (response.isEmpty()) {
+          logger.info(String.format("Error occured, waiting in %d seconds", delay));
           return;
         }
+        logger.info("Got valid json, will serialize it.");
         try {
           BuildBotData builder = new ObjectMapper().readValue(response, BuildBotData.class);
           datastoreRepository.updateRevisionEntry(builder);
         } catch (Exception e) {
+          logger.info("Unable to deserialize: " + response);
           e.printStackTrace();
         }
-        buildId.incrementAndGet();
+        long nextBuildId = buildId.incrementAndGet();
+        logger.info(
+               String.format("Next build id is %d, performing request in %d seconds", nextBuildId, delay));
       });
   }
 
