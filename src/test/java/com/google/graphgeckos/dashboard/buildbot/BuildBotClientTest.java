@@ -14,7 +14,10 @@
 
 package com.google.graphgeckos.dashboard.buildbot;
 
+import com.google.cloud.Timestamp;
 import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
+import com.google.graphgeckos.dashboard.datatypes.BuilderStatus;
+import com.google.graphgeckos.dashboard.datatypes.Log;
 import com.google.graphgeckos.dashboard.fetchers.buildbot.BuildBotClient;
 import com.google.graphgeckos.dashboard.storage.DatastoreRepository;
 import com.squareup.okhttp.mockwebserver.Dispatcher;
@@ -34,27 +37,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import java.io.IOException;
+import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BuildBotClientTest {
-
-  static class BuildBotDataMatcher implements ArgumentMatcher<BuildBotData> {
-
-    /**
-     * Checks if an instance of the {@link BuildBotData} provided by the tested {@code client}
-     * as an argument when calling {@link DatastoreRepository::updateRevisionEntry}.
-     *
-     * @param data instance of the {@link BuildBotData} to inspect.
-     * @return true if the {@code data} is valid {@see BuildBotData::isValid}.
-     */
-    @Override
-    public boolean matches(BuildBotData data) {
-      return data.getCommitHash() != null
-        && data.getName() != null
-        && data.getStatus() != null
-        && data.getLogs() != null;
-    }
-  }
 
   private MockWebServer server = new MockWebServer();
 
@@ -82,18 +68,25 @@ public class BuildBotClientTest {
   private final long DELAY_ONE_SECOND = 1;
 
   Dispatcher dispatcher = new Dispatcher() {
+
     @Override
     public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
       MockResponse firstValidResponse = new MockResponse()
                                             .setResponseCode(200)
-                                            .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                                            .setHeader(
+                                              HttpHeaders.CONTENT_TYPE,
+                                              MediaType.APPLICATION_JSON_VALUE)
                                             .setBody(BUILD_BOT.getContent());
       MockResponse pageNotFoundResponse = new MockResponse()
-                                          .setResponseCode(404)
-                                          .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+                                              .setResponseCode(404)
+                                              .setHeader(
+                                                HttpHeaders.CONTENT_TYPE,
+                                                MediaType.APPLICATION_JSON_VALUE);
       MockResponse emptyJsonResponse = new MockResponse()
                                            .setResponseCode(200)
-                                           .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                                           .setHeader(
+                                             HttpHeaders.CONTENT_TYPE,
+                                             MediaType.APPLICATION_JSON_VALUE)
                                            .setBody(EMPTY_JSON);
 
       if (request.getPath().contains(VALID_BUILD_BOT_NAME)) {
@@ -113,7 +106,43 @@ public class BuildBotClientTest {
 
       throw new IllegalStateException();
     }
+
   };
+
+  static class BuildBotDataMatcher implements ArgumentMatcher<BuildBotData> {
+
+    private String commitHash;
+    private Timestamp timestamp;
+    private String name;
+    private BuilderStatus status;
+    private List<Log> logs;
+
+    public BuildBotDataMatcher(BuildBotClientTestInfo expected) {
+      super();
+      this.commitHash = expected.getCommitHash();
+      this.timestamp = expected.getTimestamp();
+      this.name = expected.getName();
+      this.status = expected.getStatus();
+      this.logs = expected.getLogs();
+    }
+
+    /**
+     * Checks if an instance of the {@link BuildBotData} provided by the tested {@code client}
+     * as an argument when calling {@link DatastoreRepository::updateRevisionEntry}.
+     *
+     * @param data instance of the {@link BuildBotData} to inspect.
+     * @return true if the {@code data} is valid {@see BuildBotData::isValid}.
+     */
+    @Override
+    public boolean matches(BuildBotData data) {
+      return data.getCommitHash().equals(commitHash)
+        && data.getStatus().equals(status)
+        && data.getName().equals(name)
+        && data.getTimestamp().equals(timestamp)
+        && data.getLogs().equals(logs);
+    }
+
+  }
 
   /**
    * Enables Mockito.
@@ -152,14 +181,12 @@ public class BuildBotClientTest {
     // Wait to check if the datastoreRepository::updateRevisionEntry was called.
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 3;
     Mockito.verify(datastoreRepository, Mockito.after(delay).atLeast(1))
-      .updateRevisionEntry(Mockito.argThat(new BuildBotDataMatcher()));
+      .updateRevisionEntry(Mockito.argThat(new BuildBotDataMatcher(BUILD_BOT)));
   }
 
   /**
-   * Shouldn't attempt to access the storage via an instance of {@link DatastoreRepository}.
-   * <p>
-   * Given: invalid arguments (build id).
-   * Expected behaviour: doesn't access storage or throw any Exception.
+   * Shouldn't attempt to access the storage via an instance of {@link DatastoreRepository}
+   * or throw Exception when server responds with 404 exception.
    */
   @Test
   public void serverErrorCausesNoCallToRepository() throws Exception {
@@ -170,6 +197,10 @@ public class BuildBotClientTest {
     Mockito.verify(datastoreRepository, Mockito.after(delay).never()).updateRevisionEntry(Mockito.any());
   }
 
+  /**
+   * Shouldn't attempt to access the storage via an instance of {@link DatastoreRepository}
+   * or throw exception when server responds with empty JSON.
+   */
   @Test
   public void emptyJsonResponseCausesNoCallToRepository() throws Exception {
 
@@ -179,11 +210,15 @@ public class BuildBotClientTest {
     Mockito.verify(datastoreRepository, Mockito.after(delay).never()).updateRevisionEntry(Mockito.any());
   }
 
+  /**
+   * Should access the storage at least twice when given enough time for more than one request.
+   */
   @Test
   public void twoValidResponsesCausesTwoCallsToRepository() throws Exception {
+
     client.run(VALID_BUILD_BOT_NAME, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
 
-    long delay = secondsToMillis(DELAY_ONE_SECOND) * 10;
+    long delay = secondsToMillis(DELAY_ONE_SECOND) * 5;
     Mockito.verify(datastoreRepository, Mockito.timeout(delay).atLeast(2)).updateRevisionEntry(Mockito.any());
   }
 
