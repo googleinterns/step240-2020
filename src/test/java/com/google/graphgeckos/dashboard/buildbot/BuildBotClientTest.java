@@ -212,7 +212,7 @@ public class BuildBotClientTest {
    * or throw Exception when server responds with 404 exception.
    */
   @Test
-  public void serverErrorCausesNoCallToRepository() throws Exception {
+  public void serverErrorDoesNotCauseToRepository() throws Exception {
     client.run(NOT_FOUND_BUILD_BOT_NAME, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 3;
     Mockito.verify(datastoreRepository, Mockito.after(delay).never()).updateRevisionEntry(Mockito.any());
@@ -223,7 +223,7 @@ public class BuildBotClientTest {
    * or throw exception when server responds with empty JSON.
    */
   @Test
-  public void emptyJsonResponseCausesNoCallToRepository() throws Exception {
+  public void emptyJsonResponseDoesNotCauseCallToRepository() throws Exception {
     client.run(EMPTY_JSON_BUILD_BOT_NAME, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 3;
     Mockito.verify(datastoreRepository, Mockito.after(delay).never()).updateRevisionEntry(Mockito.any());
@@ -233,7 +233,7 @@ public class BuildBotClientTest {
    * Should access the storage at least twice when given enough time for more than one request.
    */
   @Test
-  public void twoValidResponsesCausesTwoCallsToRepository() throws Exception {
+  public void twoValidResponsesCauseTwoCallsToRepository() throws Exception {
     client.run(VALID_BUILD_BOT_NAME_CLANG, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 5;
     Mockito.verify(datastoreRepository, Mockito.timeout(delay).atLeast(2)).updateRevisionEntry(Mockito.any());
