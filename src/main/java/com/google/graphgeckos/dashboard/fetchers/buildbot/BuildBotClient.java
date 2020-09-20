@@ -63,7 +63,7 @@ public class BuildBotClient {
     Objects.requireNonNull(buildBot);
 
     AtomicLong buildId = new AtomicLong(initialBuildId);
-
+    logger.info("Started fetching");
     WebClient.builder().baseUrl(baseUrl)
       .defaultHeader(HttpHeaders.CONTENT_TYPE, "application/json")
       .build()
@@ -83,7 +83,7 @@ public class BuildBotClient {
           logger.info(String.format("Error occured, waiting in %d seconds", delay));
           return;
         }
-        logger.info("Got valid json, will serialize it.");
+        logger.info("Got valid json, will deserialize it.");
         try {
           BuildBotData builder = new ObjectMapper().readValue(response, BuildBotData.class);
           datastoreRepository.updateRevisionEntry(builder);
