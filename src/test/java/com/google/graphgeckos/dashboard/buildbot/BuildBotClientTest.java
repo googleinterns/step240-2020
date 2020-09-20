@@ -17,6 +17,11 @@ package com.google.graphgeckos.dashboard.buildbot;
 import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
 import com.google.graphgeckos.dashboard.fetchers.buildbot.BuildBotClient;
 import com.google.graphgeckos.dashboard.storage.DatastoreRepository;
+import com.squareup.okhttp.mockwebserver.Dispatcher;
+import com.squareup.okhttp.mockwebserver.MockResponse;
+import com.squareup.okhttp.mockwebserver.MockWebServer;
+import com.squareup.okhttp.mockwebserver.RecordedRequest;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +31,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import java.io.IOException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BuildBotClientTest {
@@ -48,39 +56,81 @@ public class BuildBotClientTest {
     }
   }
 
+  private MockWebServer server = new MockWebServer();
+
   /**
    * Tested BuildBot API fetcher.
    */
   @InjectMocks
-  BuildBotClient client = new BuildBotClient(
-    "http://lab.llvm.org:8011/json/builders");
+  BuildBotClient client = new BuildBotClient("ddd");
 
   @Mock
   DatastoreRepository datastoreRepository;
+
+  private final String VALID_BUILD_BOT_NAME = "clang-x86_64-debian-fast";
+  private final String NOT_FOUND_BUILD_BOT_NAME = "server-will-respond-with-404";
+  private final String EMPTY_JSON_BUILD_BOT_NAME = "server-will-respond-with-empty-json";
+
+  private final long INITIAL_BUILD_ID = 36624;
+  private final long NEXT_BUILD_ID = INITIAL_BUILD_ID + 1;
+  private BuildBotClientTestInfo BUILD_BOT = new BuildBotClientTestInfo(VALID_BUILD_BOT_NAME);
+  private final String EMPTY_JSON = "";
+
+  /**
+   * Request frequency.
+   */
+  private final long DELAY_ONE_SECOND = 1;
+
+  Dispatcher dispatcher = new Dispatcher() {
+    @Override
+    public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
+      MockResponse firstValidResponse = new MockResponse()
+                                            .setResponseCode(200)
+                                            .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                                            .setBody(BUILD_BOT.getContent());
+      MockResponse pageNotFoundResponse = new MockResponse()
+                                          .setResponseCode(404)
+                                          .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+      MockResponse emptyJsonResponse = new MockResponse()
+                                           .setResponseCode(200)
+                                           .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                                           .setBody(EMPTY_JSON);
+
+      if (request.getPath().contains(VALID_BUILD_BOT_NAME)) {
+        if (request.getPath().contains(Long.toString(INITIAL_BUILD_ID))) {
+          return firstValidResponse;
+        }
+        return firstValidResponse;
+      }
+
+      if (request.getPath().contains(NOT_FOUND_BUILD_BOT_NAME)) {
+        return pageNotFoundResponse;
+      }
+
+      if (request.getPath().contains(EMPTY_JSON_BUILD_BOT_NAME)) {
+        return emptyJsonResponse;
+      }
+
+      throw new IllegalStateException();
+    }
+  };
 
   /**
    * Enables Mockito.
    */
   @Before
-  public void init() {
+  public void init() throws IOException {
     MockitoAnnotations.initMocks(this);
+    server.play();
+    String baseUrl = server.getUrl("").toString();
+    client.setBaseUrl(baseUrl);
+    server.setDispatcher(dispatcher);
   }
 
-  /**
-   * Build Bot name.
-   */
-  public final String VALID_BUILD_BOT = "clang-x86_64-debian-fast";
-
-  /**
-   * Initial build ids.
-   */
-  public final int VALID_BUILD_ID = 36624;
-  public final int INVALID_BUILD_ID = 0;
-
-  /**
-   * Request frequency.
-   */
-  public final long DELAY_ONE_SECOND = 1;
+  @After
+  public void tearDown() throws IOException {
+    server.shutdown();
+  }
 
   private long secondsToMillis(long seconds) {
     return seconds * 1000;
@@ -96,11 +146,12 @@ public class BuildBotClientTest {
    */
   @Test
   public void validResponseCausesUpdateCallToRepositoryWithValidArguments() {
-    client.run(VALID_BUILD_BOT, VALID_BUILD_ID, DELAY_ONE_SECOND);
+
+    client.run(VALID_BUILD_BOT_NAME, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
 
     // Wait to check if the datastoreRepository::updateRevisionEntry was called.
-    long wait = secondsToMillis(DELAY_ONE_SECOND) * 3;
-    Mockito.verify(datastoreRepository, Mockito.after(wait))
+    long delay = secondsToMillis(DELAY_ONE_SECOND) * 3;
+    Mockito.verify(datastoreRepository, Mockito.after(delay).atLeast(1))
       .updateRevisionEntry(Mockito.argThat(new BuildBotDataMatcher()));
   }
 
@@ -111,10 +162,29 @@ public class BuildBotClientTest {
    * Expected behaviour: doesn't access storage or throw any Exception.
    */
   @Test
-  public void invalidResponseCausesNoCallToRepository() {
-    client.run(VALID_BUILD_BOT, INVALID_BUILD_ID, DELAY_ONE_SECOND);
+  public void serverErrorCausesNoCallToRepository() throws Exception {
 
-    Mockito.verify(datastoreRepository, Mockito.never()).updateRevisionEntry(Mockito.any());
+    client.run(NOT_FOUND_BUILD_BOT_NAME, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
+
+    long delay = secondsToMillis(DELAY_ONE_SECOND) * 3;
+    Mockito.verify(datastoreRepository, Mockito.after(delay).never()).updateRevisionEntry(Mockito.any());
+  }
+
+  @Test
+  public void emptyJsonResponseCausesNoCallToRepository() throws Exception {
+
+    client.run(EMPTY_JSON_BUILD_BOT_NAME, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
+
+    long delay = secondsToMillis(DELAY_ONE_SECOND) * 3;
+    Mockito.verify(datastoreRepository, Mockito.after(delay).never()).updateRevisionEntry(Mockito.any());
+  }
+
+  @Test
+  public void twoValidResponsesCausesTwoCallsToRepository() throws Exception {
+    client.run(VALID_BUILD_BOT_NAME, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
+
+    long delay = secondsToMillis(DELAY_ONE_SECOND) * 10;
+    Mockito.verify(datastoreRepository, Mockito.timeout(delay).atLeast(2)).updateRevisionEntry(Mockito.any());
   }
 
 }

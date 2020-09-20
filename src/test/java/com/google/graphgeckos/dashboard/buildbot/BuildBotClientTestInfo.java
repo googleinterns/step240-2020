@@ -15,7 +15,7 @@ public class BuildBotClientTestInfo extends AbstractJsonTestInfo {
   private String timestamp;
   private String name;
   private BuilderStatus status;
-  private List<Log> logs = new ArrayList<>();
+  private List<Log> logs;
 
   public BuildBotClientTestInfo(String testName) {
     super(testName);
@@ -38,6 +38,7 @@ public class BuildBotClientTestInfo extends AbstractJsonTestInfo {
         String.format("Wrong file format, expected four lines, found %d", expected.length)
       );
     }
+    logs = new ArrayList<>();
     commitHash = expected[0];
     timestamp = expected[1];
     name = expected[2];
