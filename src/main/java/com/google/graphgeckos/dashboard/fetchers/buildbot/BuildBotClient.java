@@ -35,7 +35,7 @@ public class BuildBotClient {
   private DatastoreRepository datastoreRepository;
 
   /** Base url of the BuildBot API. */
-  private final String baseUrl;
+  private String baseUrl;
 
   public BuildBotClient(@NonNull String baseUrl) {
     Objects.requireNonNull(baseUrl);
@@ -87,6 +87,10 @@ public class BuildBotClient {
         }
         buildId.incrementAndGet();
       });
+  }
+
+  public void setBaseUrl(String baseUrl) {
+    this.baseUrl = baseUrl;
   }
 
 }
