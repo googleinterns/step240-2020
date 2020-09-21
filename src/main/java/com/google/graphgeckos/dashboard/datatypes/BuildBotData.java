@@ -133,7 +133,7 @@ public class BuildBotData {
 
     BuildBotData other = (BuildBotData) o;
     return timestamp.equals(other.timestamp) && name.equals(other.name) &&
-           logs.equals(other.logs) && status.equals(other.status);
+           buildSteps.equals(other.buildSteps) && status.equals(other.status);
   }
 
 }
