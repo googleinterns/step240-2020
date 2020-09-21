@@ -162,7 +162,6 @@ public class BuildBotClientTest {
     private List<Log> logs;
 
     public BuildBotDataMatcher(BuildBotClientTestInfo expected) {
-      super();
       this.commitHash = expected.getCommitHash();
       this.timestamp = expected.getTimestamp();
       this.name = expected.getName();
