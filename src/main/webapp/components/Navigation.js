@@ -11,7 +11,8 @@ import {getField} from "./utils/getField";
 const NavigationItem = (props) => {
   return (
     <li>
-      <a href = {props.href}>{props.innerText}</a>
+      <a href={props.href}
+          target='_blank' rel='noopener noreferrer'>{props.innerText}</a>
     </li>
   );
 }
