@@ -27,7 +27,7 @@ import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 public class BuildStep {
 
   // Order of the step
-  @Field(name="steps")
+  @Field(name="step_number")
   private int stepNumber;
 
   // BuildStep name (e.g "clean-src-dir")
