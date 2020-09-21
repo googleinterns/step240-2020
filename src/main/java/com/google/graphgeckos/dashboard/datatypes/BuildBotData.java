@@ -86,7 +86,7 @@ public class BuildBotData {
 
   /**
    * Extracts nested commitHash("revision"), branch("branch") and
-   * timestamp("when")fields from the json@param sourceStamp.
+   * timestamp("when") fields from the json@param sourceStamp.
    * Representation of the json component, where the commitHash field is located.
    */
   @JsonProperty("sourceStamp")
