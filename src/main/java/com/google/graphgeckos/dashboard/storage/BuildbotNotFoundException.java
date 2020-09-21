@@ -15,7 +15,7 @@
 package com.google.graphgeckos.dashboard.storage;
 
 /**
- * This exception signals that a request has been made for a "index" entry to the database
+ * This exception signals that a request has been made for an "index" entry to the database
  * but there is no entry with that key.
  */
 public class BuildbotNotFoundException extends IllegalArgumentException {
