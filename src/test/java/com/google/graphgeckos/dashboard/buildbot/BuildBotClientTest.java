@@ -75,7 +75,11 @@ public class BuildBotClientTest {
    * provided name of the Build Bot.
    */
   Dispatcher dispatcher = new Dispatcher() {
-    
+
+    /**
+     * Response when the {@code VALID_BUILD_BOT_NAME_CLANG} data is requested. Status OK(200),
+     * Responds with the original (taken from the API) clang-x86_64-debian-fast JSON.
+     */
     private final MockResponse CLANG_VALID_RESPONSE = new MockResponse()
       .setResponseCode(200)
       .setHeader(
@@ -83,6 +87,10 @@ public class BuildBotClientTest {
         MediaType.APPLICATION_JSON_VALUE)
       .setBody(BUILD_BOT_CLANG.getContent());
 
+    /**
+     * Response when the {@code VALID_BUILD_BOT_NAME_FUCHSIA} data is requested. Status OK (200),
+     * Responds with the original (taken from the API) fuchsia-x86_64-linux JSON.
+     */
     private final MockResponse FUCHSIA_VALID_RESPONSE = new MockResponse()
       .setResponseCode(200)
       .setHeader(
@@ -90,12 +98,19 @@ public class BuildBotClientTest {
         MediaType.APPLICATION_JSON_VALUE)
       .setBody(BUILD_BOT_FUCHSIA.getContent());
 
+    /**
+     * Response when the {@code VALID_BUILD_BOT_NAME_FUCHSIA} data is requested. Status NOT FOUND (404).
+     */
     private final MockResponse PAGE_NOT_FOUND_RESPONSE = new MockResponse()
       .setResponseCode(404)
       .setHeader(
         HttpHeaders.CONTENT_TYPE,
         MediaType.APPLICATION_JSON_VALUE);
 
+    /**
+     * Response when the {@code VALID_BUILD_BOT_NAME_FUCHSIA} data is requested. Status OK (200).
+     * Responds with empty JSON.
+     */
     private final MockResponse EMPTY_JSON_RESPONSE = new MockResponse()
       .setResponseCode(200)
       .setHeader(
@@ -104,8 +119,9 @@ public class BuildBotClientTest {
       .setBody(EMPTY_JSON);
 
     @Override
-    public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
+    public MockResponse dispatch(RecordedRequest request) {
 
+      /* Expected form of the request url: baseUrl/buildBot/builds/buildId?as_text=1 . */
       if (request.getPath().contains(VALID_BUILD_BOT_NAME_CLANG)) {
         if (request.getPath().contains(Long.toString(INITIAL_BUILD_ID))) {
           return CLANG_VALID_RESPONSE;
@@ -121,6 +137,10 @@ public class BuildBotClientTest {
         return EMPTY_JSON_RESPONSE;
       }
 
+      /*
+      Handles requests to the defined Build Bots only to verify that
+      the client performs requests of the expected form.
+      */
       throw new IllegalStateException("Unknown build bot name");
     }
 
