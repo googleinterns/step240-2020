@@ -70,10 +70,10 @@ public class BuildBotData {
    */
   public BuildBotData() {}
 
-  public BuildBotData(String commitHash, String name, List<Log> logs, BuilderStatus status) {
+  public BuildBotData(String commitHash, String name, List<BuildStep> buildSteps, BuilderStatus status) {
     this.commitHash = commitHash;
     this.name = name;
-    this.logs.addAll(logs);
+    this.buildSteps.addAll(buildSteps);
     this.status = status;
   }
 
