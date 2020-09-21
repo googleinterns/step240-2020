@@ -83,4 +83,8 @@ public class BuildBotClientTestInfo extends AbstractJsonTestInfo {
   public List<Log> getLogs() {
     return logs;
   }
+
+  public String getContent() {
+    return content;
+  }
 }

@@ -53,8 +53,4 @@ public abstract class AbstractJsonTestInfo {
    */
   protected abstract void assignExpectedValues(String[] expected);
 
-  public String getContent() {
-    return content;
-  }
-
 }
