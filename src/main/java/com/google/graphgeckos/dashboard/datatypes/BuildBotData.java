@@ -106,8 +106,8 @@ public class BuildBotData {
     this.name = name;
   }
 
-  public void setLogs(@NonNull List<Log> logs) {
-    this.logs = new ArrayList<>(logs);
+  public void setSteps(@NonNull List<BuildStep> buildSteps) {
+    this.buildSteps = new ArrayList<>(buildSteps);
   }
 
   public void setStatus(@NonNull BuilderStatus status) {
