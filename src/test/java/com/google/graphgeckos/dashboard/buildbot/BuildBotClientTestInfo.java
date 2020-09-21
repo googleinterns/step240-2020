@@ -48,7 +48,7 @@ public class BuildBotClientTestInfo extends AbstractJsonTestInfo {
    */
   @Override
   protected void assignExpectedValues(String[] expected) {
-    if (expected.length < 4) {
+    if (expected.length < 4 || expected.length % 2 == 1) {
       throw new IllegalArgumentException(
         String.format("Wrong file format, expected four lines, found %d", expected.length)
       );

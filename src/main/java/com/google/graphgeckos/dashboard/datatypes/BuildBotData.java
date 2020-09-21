@@ -128,7 +128,7 @@ public class BuildBotData {
    * Unpacks logs represented as list of lists of two strings,
    * where the first one is a type of the log and the second one
    * is a link to the log.
-   * 
+   *
    * @param logs Representation of the json component, where the logs are located
    */
   @JsonProperty("logs")
