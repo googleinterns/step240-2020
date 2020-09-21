@@ -163,9 +163,6 @@ public class DatastoreRepository implements DataRepository {
     return storage.findById(commitHash, BuildInfo.class);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   public int getBuildbotIndex(String buildbotName) throws IllegalArgumentException, NotBoundException {
     if (buildbotName == null) {
       throw new IllegalArgumentException("buildbotName cannot be null");
@@ -180,9 +177,6 @@ public class DatastoreRepository implements DataRepository {
     return associatedEntity.getIndex();
   }
 
-  /**
-   * {@inheritDoc}
-   */
   public void setBuildbotIndex(String buildbotName, int newValue) throws IllegalArgumentException,
                                                                   IndexOutOfBoundsException {
     if (buildbotName == null) {
@@ -199,9 +193,6 @@ public class DatastoreRepository implements DataRepository {
     storage.save(associatedEntity);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   public void registerNewBuildbot(String buildbotName, int value) {
     if (buildbotName == null) {
       throw new IllegalArgumentException("buildbotName cannot be null");
