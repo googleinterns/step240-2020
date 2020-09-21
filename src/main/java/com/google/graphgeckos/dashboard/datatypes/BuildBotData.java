@@ -83,8 +83,8 @@ public class BuildBotData {
   }
 
   @NonNull
-  public List<Log> getLogs() {
-    return logs;
+  public List<BuildStep> getSteps() {
+    return buildSteps;
   }
 
   @NonNull
