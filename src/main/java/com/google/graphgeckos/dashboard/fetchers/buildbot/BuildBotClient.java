@@ -63,7 +63,7 @@ public class BuildBotClient {
     Objects.requireNonNull(buildBot);
 
     AtomicLong buildId = new AtomicLong(initialBuildId);
-    logger.info("Started fetching");
+    logger.info(String.format("Builder %s: started fetching from the base url: %s", buildBot, baseUrl));
     WebClient.builder().baseUrl(baseUrl)
       .defaultHeader(HttpHeaders.CONTENT_TYPE, "application/json")
       .build()
@@ -80,20 +80,22 @@ public class BuildBotClient {
       .repeat()
       .subscribe(response -> {
         if (response.isEmpty()) {
-          logger.info(String.format("Error occured, waiting in %d seconds", delay));
+          logger.info(
+            String.format("Builder %s: Error occurred, waiting for %d seconds", buildBot, delay));
           return;
         }
-        logger.info("Got valid json, will deserialize it.");
+        logger.info(String.format("Builder %s: trying to deserialize valid JSON", buildBot));
         try {
           BuildBotData builder = new ObjectMapper().readValue(response, BuildBotData.class);
           datastoreRepository.updateRevisionEntry(builder);
         } catch (Exception e) {
-          logger.info("Unable to deserialize: " + response);
+          logger.info(String.format("Builder %s: can't deserialize JSON", buildBot));
           e.printStackTrace();
         }
         long nextBuildId = buildId.incrementAndGet();
         logger.info(
-               String.format("Next build id is %d, performing request in %d seconds", nextBuildId, delay));
+               String.format(
+                 "Builder %s:Next build id is %d, performing request in %d seconds", buildBot, nextBuildId, delay));
       });
   }
 
