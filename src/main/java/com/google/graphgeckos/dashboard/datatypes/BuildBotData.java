@@ -66,7 +66,7 @@ public class BuildBotData {
    * Builder compilation status, as described by {@link BuilderStatus}.
    */
   @Field(name = "status")
-  private BuilderStatus status;
+  private BuilderStatus status = BuilderStatus.FAILED;
 
   /**
    * Only used by Spring GCP.
