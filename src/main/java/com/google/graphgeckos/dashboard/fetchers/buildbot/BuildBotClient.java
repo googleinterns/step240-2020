@@ -14,8 +14,8 @@
 
 package com.google.graphgeckos.dashboard.fetchers.buildbot;
 
-import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
 import com.google.graphgeckos.dashboard.storage.DatastoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
