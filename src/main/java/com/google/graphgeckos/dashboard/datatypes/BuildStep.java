@@ -136,4 +136,18 @@ public class BuildStep {
   public void addLog(@NonNull Log log) {
     this.logs.add(log);
   }
+
+  /**
+   * Checks if all non-transient fields are equal between BuildStep instances.
+   */
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || !(o instanceof BuildStep)) {
+      return false;
+    }
+
+    BuildStep other = (BuildStep) o;
+    return stepNumber.equals(other.stepNumber);
+  }
+
 }
