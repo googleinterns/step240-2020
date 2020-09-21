@@ -53,10 +53,11 @@ public class BuildBotData {
   private String name;
 
   /**
-   * The logs of each compilation stage, stored as described by {@link Log}.
+   * Step data for each individual stage of compilation. See {@link
+   *      com.google.graphgeckos.dashboard.storage.BuildStep BuildStep}
    */
-  @Field(name = "logs")
-  private List<Log> logs = new ArrayList<>();
+  @Field(name = "steps")
+  private List<BuildStep> steps = new ArrayList<>();
 
   /**
    * Builder compilation status, as described by {@link BuilderStatus}.
