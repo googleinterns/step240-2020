@@ -87,7 +87,8 @@ public class BuildBotData {
   /**
    * Extracts nested commitHash("revision"), branch("branch") and
    * timestamp("when") fields from the json
-   * @param sourceStamp Representation of the json component, where the commitHash field is located.
+   *
+   * @param sourceStamp Representation of the json component, where the commitHash field is located
    */
   @JsonProperty("sourceStamp")
   @SuppressWarnings("unchecked")
@@ -103,7 +104,8 @@ public class BuildBotData {
    * If something failed, then the buildbot is considered failed {@code FAILED}.
    * If something is lost, then the buildbot is considered lost {@code LOST}.
    * Otherwise the buildbot is considered passed {@code PASSED}.
-   * @param words Words of the "text" JSON field.
+   *
+   * @param words Words of the "text" JSON field
    */
   @JsonProperty("text")
   private void extractStatus(List<String> words) {
@@ -126,7 +128,8 @@ public class BuildBotData {
    * Unpacks logs represented as list of lists of two strings,
    * where the first one is a type of the log and the second one
    * is a link to the log.
-   * @param logs Representation of the json component, where the logs are located.
+   * 
+   * @param logs Representation of the json component, where the logs are located
    */
   @JsonProperty("logs")
   private void unpackLogs(List<String[]> logs) {
