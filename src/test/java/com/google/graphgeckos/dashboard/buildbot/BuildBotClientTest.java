@@ -63,7 +63,7 @@ public class BuildBotClientTest {
   private BuildBotClientTestInfo BUILD_BOT_CLANG = new BuildBotClientTestInfo(VALID_BUILD_BOT_NAME_CLANG);
   private BuildBotClientTestInfo BUILD_BOT_FUCHSIA = new BuildBotClientTestInfo(VALID_BUILD_BOT_NAME_FUCHSIA);
 
-  private final String EMPTY_JSON_RESPONSE = "";
+  private final String EMPTY_JSON = "";
 
   /**
    * Request frequency.
@@ -75,49 +75,50 @@ public class BuildBotClientTest {
    * provided name of the Build Bot.
    */
   Dispatcher dispatcher = new Dispatcher() {
+    
+    private final MockResponse CLANG_VALID_RESPONSE = new MockResponse()
+      .setResponseCode(200)
+      .setHeader(
+        HttpHeaders.CONTENT_TYPE,
+        MediaType.APPLICATION_JSON_VALUE)
+      .setBody(BUILD_BOT_CLANG.getContent());
+
+    private final MockResponse FUCHSIA_VALID_RESPONSE = new MockResponse()
+      .setResponseCode(200)
+      .setHeader(
+        HttpHeaders.CONTENT_TYPE,
+        MediaType.APPLICATION_JSON_VALUE)
+      .setBody(BUILD_BOT_FUCHSIA.getContent());
+
+    private final MockResponse PAGE_NOT_FOUND_RESPONSE = new MockResponse()
+      .setResponseCode(404)
+      .setHeader(
+        HttpHeaders.CONTENT_TYPE,
+        MediaType.APPLICATION_JSON_VALUE);
+
+    private final MockResponse EMPTY_JSON_RESPONSE = new MockResponse()
+      .setResponseCode(200)
+      .setHeader(
+        HttpHeaders.CONTENT_TYPE,
+        MediaType.APPLICATION_JSON_VALUE)
+      .setBody(EMPTY_JSON);
 
     @Override
     public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
-      MockResponse clangValidResponse = new MockResponse()
-                                            .setResponseCode(200)
-                                            .setHeader(
-                                              HttpHeaders.CONTENT_TYPE,
-                                              MediaType.APPLICATION_JSON_VALUE)
-                                            .setBody(BUILD_BOT_CLANG.getContent());
-
-       MockResponse fuchsiaValidResponse = new MockResponse()
-                                            .setResponseCode(200)
-                                            .setHeader(
-                                              HttpHeaders.CONTENT_TYPE,
-                                              MediaType.APPLICATION_JSON_VALUE)
-                                            .setBody(BUILD_BOT_FUCHSIA.getContent());
-
-      MockResponse pageNotFoundResponse = new MockResponse()
-                                              .setResponseCode(404)
-                                              .setHeader(
-                                                HttpHeaders.CONTENT_TYPE,
-                                                MediaType.APPLICATION_JSON_VALUE);
-
-      MockResponse emptyJsonResponse = new MockResponse()
-                                           .setResponseCode(200)
-                                           .setHeader(
-                                             HttpHeaders.CONTENT_TYPE,
-                                             MediaType.APPLICATION_JSON_VALUE)
-                                           .setBody(EMPTY_JSON_RESPONSE);
 
       if (request.getPath().contains(VALID_BUILD_BOT_NAME_CLANG)) {
         if (request.getPath().contains(Long.toString(INITIAL_BUILD_ID))) {
-          return clangValidResponse;
+          return CLANG_VALID_RESPONSE;
         }
-        return fuchsiaValidResponse;
+        return FUCHSIA_VALID_RESPONSE;
       }
 
       if (request.getPath().contains(NOT_FOUND_BUILD_BOT_NAME)) {
-        return pageNotFoundResponse;
+        return PAGE_NOT_FOUND_RESPONSE;
       }
 
       if (request.getPath().contains(EMPTY_JSON_BUILD_BOT_NAME)) {
-        return emptyJsonResponse;
+        return EMPTY_JSON_RESPONSE;
       }
 
       throw new IllegalStateException("Unknown build bot name");
@@ -131,6 +132,9 @@ public class BuildBotClientTest {
    */
   static class BuildBotDataMatcher implements ArgumentMatcher<BuildBotData> {
 
+    /**
+     * Expected output fields. See {@link com.google.graphgeckos.dashboard.datatypes.BuildBotData} to learn more.
+     */
     private String commitHash;
     private Timestamp timestamp;
     private String name;
@@ -150,7 +154,7 @@ public class BuildBotClientTest {
      * Checks if an instance of the {@link BuildBotData} provided by the tested {@code client}
      * as an argument when calling {@link DatastoreRepository::updateRevisionEntry}.
      *
-     * @param data instance of the {@link BuildBotData} to inspect.
+     * @param data instance of the {@link BuildBotData} to inspect
      * @return true if the {@code data} is valid {@see BuildBotData::isValid}.
      */
     @Override
