@@ -1,0 +1,20 @@
+c89b3af0e3e970820ed35798ab2516459a8d829d
+1600635185
+fuchsia-x86_64-linux
+PASSED
+stdio
+http://lab.llvm.org:8011/builders/fuchsia-x86_64-linux/builds/11567/steps/Checkout%20the%20source%20code/logs/stdio
+stdio
+http://lab.llvm.org:8011/builders/fuchsia-x86_64-linux/builds/11567/steps/fetch-sdk/logs/stdio
+stdio
+http://lab.llvm.org:8011/builders/fuchsia-x86_64-linux/builds/11567/steps/extract-sdk/logs/stdio
+stdio
+http://lab.llvm.org:8011/builders/fuchsia-x86_64-linux/builds/11567/steps/cmake-configure/logs/stdio
+stdio
+http://lab.llvm.org:8011/builders/fuchsia-x86_64-linux/builds/11567/steps/ninja-build/logs/stdio
+warnings (2)
+http://lab.llvm.org:8011/builders/fuchsia-x86_64-linux/builds/11567/steps/ninja-build/logs/warnings%20%282%29
+stdio
+http://lab.llvm.org:8011/builders/fuchsia-x86_64-linux/builds/11567/steps/check/logs/stdio
+stdio
+http://lab.llvm.org:8011/builders/fuchsia-x86_64-linux/builds/11567/steps/install/logs/stdio
