@@ -148,3 +148,33 @@ ul {
   padding: 1rem 0;
   text-align: center;
 }
+
+.hiddenButton {
+  border: solid #333;
+  border-width: 0 5px 5px 0;
+  float: right;
+  padding: 5px;
+}
+
+.paginationButton {
+  border: solid white;
+  border-width: 0 5px 5px 0;
+  float: right;
+  padding: 5px;
+}
+
+.prevPage {
+  margin: 0 3rem 0 0;
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+}
+
+.nextPage {
+  margin: 0 -3rem 0 0;
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+
+.currentPage {
+  font: 2rem normal 'Roboto' sans-serif;
+}
