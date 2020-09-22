@@ -114,6 +114,31 @@ ul {
   text-transform: uppercase;
 }
 
+.builder-grid {
+  display: grid;
+  gap: 0.5rem;
+  grid: auto / repeat(3, 1fr);
+  margin: 1rem;
+}
+
+.builder {
+  align-items: center;
+  background: var(--primary);
+  border-radius: 0.25rem;
+  color: black;
+  display: flex;
+  gap: 0.5rem;
+  overflow: hidden;
+  padding: 0.2rem 1rem;
+  white-space: nowrap;
+}
+
+.indicator {
+  border-radius: 1rem;
+  min-height: 0.5rem;
+  min-width: 0.5rem;
+}
+
 /* The first row of the tray */
 .snapshot-tray > *:nth-child(-n+2) {
   border-bottom: 0.25rem var(--primary) solid;
