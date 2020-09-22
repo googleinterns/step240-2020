@@ -20,8 +20,11 @@ export const BuildSnapshot = (props) => {
   // and the indicator arrow on the Header should be facing downwards.
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const headerData = ({commitHash, description, repository, status} = props.buildData);
-  const trayData = ({builders, timestamp} = props.buildData);
+  const {builders, commitHash, description,
+      repository, status, timestamp} = props.buildData;
+
+  const headerData = {commitHash, description, repository, status};
+  const trayData = {builders, timestamp};
 
   return (
     <div className='build-snapshot'>
