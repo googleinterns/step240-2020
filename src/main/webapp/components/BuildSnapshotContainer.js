@@ -40,7 +40,7 @@ export const BuildSnapshotContainer = React.memo((props) =>
       content = data.map(snapshot => <BuildSnapshot buildData={snapshot}/>);
     } else {
       content = <span className='loader'>
-          No new revisions to display as of {new Date().toString()}.</span>;
+          No new revisions to display as of {new Date().toLocaleString()}.</span>;
     }
 
     return (
