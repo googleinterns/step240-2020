@@ -89,8 +89,7 @@ public interface DataRepository {
    * @throws IllegalArgumentException if {@code buildbotName} is null
    * @throws BuildbotNotFound if there is no "index" entry related to the name provided
    */
-  int getBuildbotIndex(String buildbotName) throws IllegalArgumentException,
-                                                   BuildbotNotFoundException;
+  int getBuildbotIndex(String buildbotName);
 
   /**
    * Updates the database with a new value for the internal buildbot revision index. Used by the
@@ -103,8 +102,7 @@ public interface DataRepository {
    * @throws IndexOutOfBoundsException if newValue is lower or equal than the previous
    *      recorded value
    */
-  void setBuildbotIndex(String buildbotName, int newValue) throws IllegalArgumentException,
-                                                                  IndexOutOfBoundsException;
+  void setBuildbotIndex(String buildbotName, int newValue);
 
   /**
    * Creates a new "index" entry if there is none with the same name in the database. This should
@@ -117,6 +115,5 @@ public interface DataRepository {
    * @throws IndexOutOfBoundsException if value is negative when creating a new entry, or if value
    *      is lower or equal than the previous recorded value
    */
-  void registerNewBuildbot(String buildbotName, int value) throws IllegalArgumentException,
-                                                          IndexOutOfBoundsException;
+  void registerNewBuildbot(String buildbotName, int value);
 }
