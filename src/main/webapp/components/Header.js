@@ -15,7 +15,7 @@ const OPTIONS = [
 /**
  * Main Navigation Component
  */
-export const Header = () => {
+export const Header = _ => {
   const TITLE = 'LLVM Build View';
 
   return (
