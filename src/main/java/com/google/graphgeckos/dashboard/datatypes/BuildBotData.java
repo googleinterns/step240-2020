@@ -91,11 +91,16 @@ public class BuildBotData {
    * @param sourceStamp Representation of the json component, where the commitHash field is located
    */
   @JsonProperty("sourceStamp")
-  @SuppressWarnings("unchecked")
   public void unpackSourceStamp(Map<String, Object> sourceStamp) {
     commitHash = sourceStamp.get("revision").toString();
-    List<Object> changes = (ArrayList<Object>)sourceStamp.get("changes");
+
+    // These unchecked casts are safe because of the received JSONs
+    // {field_name : {data}}, where the field_name is always a String.
+    @SuppressWarnings("unchecked")
+    List<Object> changes = (List<Object>)sourceStamp.get("changes");
+    @SuppressWarnings("unchecked")
     Map<String, Object> latestChange = (Map<String, Object>)changes.get(0);
+
     timestamp = Timestamp.ofTimeMicroseconds(Long.parseLong(latestChange.get("when").toString()));
   }
 
