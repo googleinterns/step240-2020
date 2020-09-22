@@ -163,8 +163,8 @@ public class DatastoreRepository implements DataRepository {
     return storage.findById(commitHash, BuildInfo.class);
   }
 
-  public int getBuildbotIndex(String buildbotName) throws IllegalArgumentException,
-                                                          BuildbotNotFoundException {
+  public int getBuildbotIndex(String buildbotName) throws BuildbotNotFoundException,
+                                                          NullPointerException {
     Preconditions.checkNotNull(buildbotName, "buildbotName cannot be null");
 
     BuilderIndex associatedEntity = storage.findById(buildbotName, BuilderIndex.class);
@@ -177,7 +177,7 @@ public class DatastoreRepository implements DataRepository {
   }
 
   public void setBuildbotIndex(String buildbotName, int newValue) throws IllegalArgumentException,
-                                                                  IndexOutOfBoundsException {
+                                                                         NullPointerException {
     Preconditions.checkNotNull(buildbotName, "buildbotName cannot be null");
 
     BuilderIndex associatedEntity = storage.findById(buildbotName, BuilderIndex.class);
@@ -192,20 +192,18 @@ public class DatastoreRepository implements DataRepository {
     storage.save(associatedEntity);
   }
 
-  public void registerNewBuildbot(String buildbotName, int value) {
+  public void registerNewBuildbot(String buildbotName, int value) throws IllegalArgumentException,
+                                                                         NullPointerException {
     Preconditions.checkNotNull(buildbotName, "buildbotName cannot be null");
 
     BuilderIndex associatedEntity = storage.findById(buildbotName, BuilderIndex.class);
 
     Preconditions.checkArgument(value <= associatedEntity.getIndex(),
                                "value cannot be <= than the previous known value");
-
-    Preconditions.checkArgument(value < 0, "value cannot be negative");
-
-    if (associatedEntity == null) {
-      BuilderIndex newEntity = new BuilderIndex(name, value);
-
-      storage.save(newEntity);
-    }
+    Preconditions.checkArgument(value < 0,
+                               "value cannot be negative");
+    
+    BuilderIndex newEntity = new BuilderIndex(name, value);
+    storage.save(newEntity);
   }
 }

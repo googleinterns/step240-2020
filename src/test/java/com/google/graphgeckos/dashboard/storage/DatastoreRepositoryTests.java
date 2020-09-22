@@ -112,13 +112,17 @@ public class DatastoreRepositoryTests {
       storage.deleteRevisionEntry(null);
     });
 
-    assertThrows(IllegalArgumentException.class, () -> {
+    assertThrows(NullPointerException.class, () -> {
       storage.getBuildbotIndex(null);
     });
 
-    assertThrows(IllegalArgumentException.class, () -> {
+    assertThrows(NullPointerException.class, () -> {
       storage.setBuildbotIndex(null, 0);
     });
+
+    assertThrows(NullPointerException.class, () -> {
+      storage.registerNewBuildbot(null, 0);
+    })
   }
 
   @Test
@@ -247,12 +251,63 @@ public class DatastoreRepositoryTests {
 
     storage.setBuildbotIndex("tester", 1000);
 
-    assertThrows(IndexOutOfBoundsException.class, () -> {
+    assertThrows(IllegalArgumentException.class, () -> {
       storage.setBuildbotIndex("tester", 1);
     });
 
-    assertThrows(IndexOutOfBoundsException.class, () -> {
+    assertThrows(IllegalArgumentException.class, () -> {
       storage.setBuildbotIndex("tester", 1000);
+    });
+  }
+
+  @Test
+  public void testValidRegistration() throws IOException, InterruptedException {
+    DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
+
+    storage.registerNewBuildbot("test", 1);
+
+    assertEquals(1, storage.getBuildbotIndex("test"));
+  }
+
+  @Test
+  public void testAlreadyRegisteredLargerIndex() throws IOException, InterruptedException {
+    DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
+
+    storage.registerNewBuildbot("test", 1);
+
+    storage.registerNewBuildbot("test", 3);
+
+    assertEquals(3, storage.getBuildbotIndex("test"));
+  }
+
+  @Test
+  public void testAlreadyRegisteredSameIndex() throws IOException, InterruptedException {
+    DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
+
+    storage.registerNewBuildbot("test", 1);
+
+    storage.registerNewBuildbot("test", 1);
+
+    assertEquals(1, storage.getBuildbotIndex("test"));
+  }
+
+  @Test
+  public void testAlreadyRegisteredSmallerIndex() throws IOException, InterruptedException {
+    DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
+
+    storage.registerNewBuildbot("test", 3);
+
+    assertThrows(IllegalArgumentException.class, () -> {
+      storage.registerNewBuildbot("test", 1);
+    });
+  }
+
+    @Test
+  public void testFirstRegistrationNegative() throws IOException, InterruptedException {
+    DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
+
+    assertThrows(IllegalArgumentException.class, () -> {
+      storage.registerNewBuildbot("test", -1);
     });
   }
 }
