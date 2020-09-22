@@ -108,7 +108,8 @@ public interface DataRepository {
 
   /**
    * Creates a new "index" entry if there is none with the same name in the database. This should
-   * be called once before setting the index for a buildbot that has no previous entry.
+   * be called once before setting the index for a buildbot that has no previous entry. If the
+   * value provided is larger than the previous value, the call updates the value.
    *
    * @param name the name of the buildbot to register
    * @param value the starting index value of the buildbot
