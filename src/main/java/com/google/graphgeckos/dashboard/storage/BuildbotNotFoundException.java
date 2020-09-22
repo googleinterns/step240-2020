@@ -19,7 +19,7 @@ package com.google.graphgeckos.dashboard.storage;
  * but there is no entry with that key.
  */
 public class BuildbotNotFoundException extends IllegalArgumentException {
-  public BuildbotNotFoundException(String s) {
-    super(s);
+  public BuildbotNotFoundException(String exceptionMessage) {
+    super(exceptionMessage);
   }
 }
