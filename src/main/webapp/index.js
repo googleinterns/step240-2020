@@ -5,6 +5,6 @@ import {App} from "./App";
 // Render our App Component to element with ID == target
 const target = 'root';
 render (
-  <App name = 'Sam'/>,
+  <App/>,
   document.getElementById(target)
 );
