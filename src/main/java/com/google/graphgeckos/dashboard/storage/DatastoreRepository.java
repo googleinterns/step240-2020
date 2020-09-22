@@ -14,6 +14,7 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
+import com.google.common.base.Preconditions;
 import com.google.cloud.datastore.DatastoreException;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Query;
@@ -22,7 +23,6 @@ import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
 import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
 import com.google.graphgeckos.dashboard.datatypes.BuilderIndex;
 import com.google.graphgeckos.dashboard.datatypes.GitHubData;
-import java.rmi.NotBoundException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,15 +163,14 @@ public class DatastoreRepository implements DataRepository {
     return storage.findById(commitHash, BuildInfo.class);
   }
 
-  public int getBuildbotIndex(String buildbotName) throws IllegalArgumentException, NotBoundException {
-    if (buildbotName == null) {
-      throw new IllegalArgumentException("buildbotName cannot be null");
-    }
+  public int getBuildbotIndex(String buildbotName) throws IllegalArgumentException,
+                                                          BuildbotNotFoundException {
+    Preconditions.checkNotNull(buildbotName, "buildbotName cannot be null");
 
     BuilderIndex associatedEntity = storage.findById(buildbotName, BuilderIndex.class);
 
     if (associatedEntity == null) {
-      throw new NotBoundException("buildbotName not bound to any index");
+      throw new BuildbotNotFoundException("buildbotName not bound to any index");
     }
 
     return associatedEntity.getIndex();
@@ -179,14 +178,14 @@ public class DatastoreRepository implements DataRepository {
 
   public void setBuildbotIndex(String buildbotName, int newValue) throws IllegalArgumentException,
                                                                   IndexOutOfBoundsException {
-    if (buildbotName == null) {
-      throw new IllegalArgumentException("buildbotName cannot be null");
-    }
+    Preconditions.checkNotNull(buildbotName, "buildbotName cannot be null");
 
     BuilderIndex associatedEntity = storage.findById(buildbotName, BuilderIndex.class);
 
-    if (associatedEntity == null || newValue <= associatedEntity.getIndex()) {
-      throw new IndexOutOfBoundsException("newValue cannot be lower than or equal the previous index");
+    Preconditions.checkNotNull(associatedEntity, "no associated entity with the provided name");
+
+    Preconditions.checkArgument(newValue <= associatedEntity.getIndex(),
+                               "newValue cannot be lower than or equal the previous index");
     }
 
     associatedEntity.setIndex(newValue);
@@ -194,22 +193,19 @@ public class DatastoreRepository implements DataRepository {
   }
 
   public void registerNewBuildbot(String buildbotName, int value) {
-    if (buildbotName == null) {
-      throw new IllegalArgumentException("buildbotName cannot be null");
-    }
+    Preconditions.checkNotNull(buildbotName, "buildbotName cannot be null");
 
     BuilderIndex associatedEntity = storage.findById(buildbotName, BuilderIndex.class);
 
-    if (associatedEntity == null) {
-      if (value < 0) {
-        throw new IndexOutOfBoundsException("value cannot be negative");
-      }
+    Preconditions.checkArgument(value <= associatedEntity.getIndex(),
+                               "value cannot be <= than the previous known value");
 
+    Preconditions.checkArgument(value < 0, "value cannot be negative");
+
+    if (associatedEntity == null) {
       BuilderIndex newEntity = new BuilderIndex(name, value);
 
       storage.save(newEntity);
-    } else if (value <= associatedEntity.getIndex()) {
-      throw new IndexOutOfBoundsException("value cannot be <= than the previous known value");
     }
   }
 }

@@ -14,6 +14,13 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+
+import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.testing.LocalDatastoreHelper;
 import com.google.cloud.Timestamp;
 import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
@@ -21,12 +28,10 @@ import com.google.graphgeckos.dashboard.datatypes.BuilderStatus;
 import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
 import com.google.graphgeckos.dashboard.datatypes.GitHubData;
 import java.io.IOException;
-import java.rmi.NotBoundException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
 import java.util.List;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -45,6 +50,10 @@ public class DatastoreRepositoryTests {
 
   private BuildBotData getDummyUpdate(String commitHash) {
     return new BuildBotData(commitHash, "tester", new ArrayList<>(), BuilderStatus.PASSED);
+  }
+
+  private Entity getIndexEntity(String name, int index) {
+    return Entity.Builder.newBuilder(name).set("index")
   }
 
   @Before
@@ -225,14 +234,14 @@ public class DatastoreRepositoryTests {
 
     storage.setBuildbotIndex("tester", 1000);
     
-    Assert.assertEquals(1000, storage.getBuildbotIndex("tester"));
+    assertEquals(1000, storage.getBuildbotIndex("tester"));
   }
 
   @Test
   public void testInvalidGetIndexRequest() throws IOException, InterruptedException {
     DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
 
-    Assert.assertThrows(NotBoundException.class, () -> {
+    assertThrows(BuildbotNotFoundException.class, () -> {
       storage.getBuildbotIndex("tester");
     });
   }
@@ -243,11 +252,11 @@ public class DatastoreRepositoryTests {
 
     storage.setBuildbotIndex("tester", 1000);
 
-    Assert.assertThrows(IndexOutOfBoundsException.class, () -> {
+    assertThrows(IndexOutOfBoundsException.class, () -> {
       storage.setBuildbotIndex("tester", 1);
     });
 
-    Assert.assertThrows(IndexOutOfBoundsException.class, () -> {
+    assertThrows(IndexOutOfBoundsException.class, () -> {
       storage.setBuildbotIndex("tester", 1000);
     });
   }
