@@ -35,9 +35,17 @@ export const BuildSnapshotContainer = React.memo((props) =>
         .catch(setData([]));
     }, []);
 
+    let content;
+    if (data.length > 0) {
+      content = data.map(snapshot => <BuildSnapshot buildData={snapshot}/>);
+    } else {
+      content = <span className='loader'>
+          No new revisions to display as of {new Date().toLocaleString()}.</span>;
+    }
+
     return (
-      <div>
-        {data.map(snapshotData => <BuildSnapshot buildData={snapshotData}/>)}
+      <div id='build-snapshot-container'>
+        {content}
       </div>
     );
   }
