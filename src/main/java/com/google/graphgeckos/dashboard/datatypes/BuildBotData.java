@@ -138,8 +138,8 @@ public class BuildBotData {
    * @param logs Representation of the json component, where the logs are located
    */
   @JsonProperty("logs")
-  private void unpackLogs(List<String[]> logs) {
-    logs.forEach(x -> this.logs.add(new Log(x)));
+  private void unpackLogs(List<List<String>> logs) {
+    logs.forEach(x -> this.logs.add(new Log(x.get(0), x.get(1))));
   }
 
   @NonNull
