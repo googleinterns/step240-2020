@@ -14,11 +14,11 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
-import com.google.common.base.Preconditions;
 import com.google.cloud.datastore.DatastoreException;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
+import com.google.common.base.Preconditions;
 import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
 import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
 import com.google.graphgeckos.dashboard.datatypes.BuilderIndex;
