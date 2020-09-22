@@ -35,43 +35,25 @@ public class BuilderIndex {
   @Field(name = "timestamp")
   private int index;
 
-  /**
-   * Used only by Spring GCP.
-   */
   public BuilderIndex() { }
 
-  /**
-   * Constructs the BuilderIndex instance to be stored inside GCD.
-   */
   public BuilderIndex(String name, int index) {
     this.name = name;
     this.index = index;
   }
 
-  /**
-   * @return the name of the builder.
-   */
   public String getName() {
     return name;
   }
 
-  /**
-   * @return the index of the builder.
-   */
   public int getIndex() {
     return index;
   }
 
-  /**
-   * @param name the new name of the builder
-   */
   public void setName(String name) {
     this.name = name;
   }
 
-  /**
-   * @param index the new index of the builder
-   */
   public void setIndex(int index) {
     this.index = index;
   }
