@@ -114,6 +114,12 @@ ul {
   text-transform: uppercase;
 }
 
+/* The first row of the tray */
+.snapshot-tray > *:nth-child(-n+2) {
+  border-bottom: 0.25rem var(--primary) solid;
+  padding: 0.5rem;
+}
+
 /* Message Element in BuildSnapshot Container*/
 .loader {
   padding: 1rem 0;
