@@ -20,7 +20,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
-import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.testing.LocalDatastoreHelper;
 import com.google.cloud.Timestamp;
 import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
@@ -50,10 +49,6 @@ public class DatastoreRepositoryTests {
 
   private BuildBotData getDummyUpdate(String commitHash) {
     return new BuildBotData(commitHash, "tester", new ArrayList<>(), BuilderStatus.PASSED);
-  }
-
-  private Entity getIndexEntity(String name, int index) {
-    return Entity.Builder.newBuilder(name).set("index")
   }
 
   @Before
