@@ -93,14 +93,8 @@ public class BuildBotData {
   @JsonProperty("sourceStamp")
   public void unpackSourceStamp(Map<String, Object> sourceStamp) {
     commitHash = sourceStamp.get("revision").toString();
-
-    // These unchecked casts are safe because of the received JSONs
-    // {field_name : {data}}, where the field_name is always a String.
-    @SuppressWarnings("unchecked")
-    List<Object> changes = (List<Object>)sourceStamp.get("changes");
-    @SuppressWarnings("unchecked")
-    Map<String, Object> latestChange = (Map<String, Object>)changes.get(0);
-
+    List<?> changes = (List<?>) sourceStamp.get("changes");
+    Map<?, ?> latestChange = (Map<?, ?>) changes.get(0);
     timestamp = Timestamp.ofTimeMicroseconds(Long.parseLong(latestChange.get("when").toString()));
   }
 
