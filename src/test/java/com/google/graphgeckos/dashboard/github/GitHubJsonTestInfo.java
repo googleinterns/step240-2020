@@ -25,7 +25,7 @@ public class GitHubJsonTestInfo extends AbstractJsonTestInfo {
    */
   @Override
   protected String getPath() {
-    return "src/test/resources/jsons/";
+    return "src/test/resources/jsons/github/";
   }
 
   /**
