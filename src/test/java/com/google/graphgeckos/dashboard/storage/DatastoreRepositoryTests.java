@@ -96,27 +96,27 @@ public class DatastoreRepositoryTests {
   public void testRequestsNullData() throws IOException, InterruptedException {
     DatastoreRepository storage = new DatastoreRepository();
 
-    Assert.assertThrows(IllegalArgumentException.class, () -> {
+    assertThrows(IllegalArgumentException.class, () -> {
       storage.createRevisionEntry(null);
     });
 
-    Assert.assertThrows(IllegalArgumentException.class, () -> {
+    assertThrows(IllegalArgumentException.class, () -> {
       storage.getRevisionEntry(null);
     });
 
-    Assert.assertThrows(IllegalArgumentException.class, () -> {
+    assertThrows(IllegalArgumentException.class, () -> {
       storage.updateRevisionEntry(null);
     });
 
-    Assert.assertThrows(IllegalArgumentException.class, () -> {
+    assertThrows(IllegalArgumentException.class, () -> {
       storage.deleteRevisionEntry(null);
     });
 
-    Assert.assertThrows(IllegalArgumentException.class, () -> {
+    assertThrows(IllegalArgumentException.class, () -> {
       storage.getBuildbotIndex(null);
     });
 
-    Assert.assertThrows(IllegalArgumentException.class, () -> {
+    assertThrows(IllegalArgumentException.class, () -> {
       storage.setBuildbotIndex(null, 0);
     });
   }
