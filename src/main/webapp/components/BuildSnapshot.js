@@ -26,7 +26,7 @@ import toggleIcon from './resources/play.svg';
  * @param {string} props.buildData[].commitHash - Commit hash.
  * @param {string} props.buildData[].repository - URL to the GitHub repository.
  * @param {string} props.buildData[].status - The status of the build.
- * Either 'passed', 'failed' or 'lost'.
+ *    Either 'passed', 'failed' or 'lost'.
  * @param {string} props.buildData[].timestamp - Timestamp of commit push.
  */
 export const BuildSnapshot = (props) => {
