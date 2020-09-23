@@ -14,9 +14,12 @@
 
 package com.google.graphgeckos.dashboard.datatypes;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.cloud.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Field;
 import org.springframework.data.annotation.Transient;
@@ -27,6 +30,7 @@ import org.springframework.lang.NonNull;
  * of {@link BuildInfo}
  */
 @Entity(name = "builder")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BuildBotData {
 
   /**
@@ -62,7 +66,7 @@ public class BuildBotData {
    * Builder compilation status, as described by {@link BuilderStatus}.
    */
   @Field(name = "status")
-  private BuilderStatus status;
+  private BuilderStatus status = BuilderStatus.FAILED;
 
   /**
    * Only used by Spring GCP.
@@ -74,6 +78,62 @@ public class BuildBotData {
     this.name = name;
     this.logs.addAll(logs);
     this.status = status;
+  }
+
+  public BuildBotData(@JsonProperty("builderName") String name) {
+    this.name = name;
+  }
+
+  /**
+   * Extracts nested commitHash("revision"), branch("branch") and
+   * timestamp("when") fields from the json
+   *
+   * @param sourceStamp Representation of the json component, where the commitHash field is located
+   */
+  @JsonProperty("sourceStamp")
+  public void unpackSourceStamp(Map<String, Object> sourceStamp) {
+    commitHash = sourceStamp.get("revision").toString();
+    List<?> changes = (List<?>) sourceStamp.get("changes");
+    Map<?, ?> latestChange = (Map<?, ?>) changes.get(0);
+    timestamp = Timestamp.ofTimeMicroseconds(Long.parseLong(latestChange.get("when").toString()));
+  }
+
+  /**
+   * Defines builder status based on a phrase provided in parsed json.
+   * If something failed or the phrase doesn't contain any of the key words
+   * ("failed", "successful", "lost"), then the buildbot is considered failed {@code FAILED}.
+   * If something is lost, then the buildbot is considered lost {@code LOST}.
+   * If  the buildbot is considered passed {@code PASSED}.
+   *
+   * @param words Words of the "text" JSON field
+   */
+  @JsonProperty("text")
+  private void extractStatus(List<String> words) {
+    for (String word : words) {
+      if (word.equals("failed")) {
+        status = BuilderStatus.FAILED;
+        break;
+      }
+      if (word.equals("lost")) {
+        status = BuilderStatus.LOST;
+        break;
+      }
+      if (word.equals("successful")) {
+        status = BuilderStatus.PASSED;
+      }
+    }
+  }
+
+  /**
+   * Unpacks logs represented as list of lists of two strings,
+   * where the first one is a type of the log and the second one
+   * is a link to the log.
+   *
+   * @param logs Representation of the json component, where the logs are located
+   */
+  @JsonProperty("logs")
+  private void unpackLogs(List<List<String>> logs) {
+    logs.forEach(x -> this.logs.add(new Log(x.get(0), x.get(1))));
   }
 
   @NonNull

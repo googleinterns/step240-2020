@@ -16,6 +16,8 @@ package com.google.graphgeckos.dashboard.storage;
 
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreException;
+import com.google.cloud.datastore.DatastoreOptions;
+import com.google.cloud.datastore.DatastoreOptions.DefaultDatastoreFactory;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
@@ -66,6 +68,9 @@ public class DatastoreRepository implements DataRepository {
     storage = new DatastoreTemplate(supplier, entityConverter, mappingContext, objectToKeyFactory);
   }
 
+  public DatastoreRepository() {
+    this(new DefaultDatastoreFactory().create(DatastoreOptions.getDefaultInstance()));
+  }
 
   /**
    * {@inheritDoc}
