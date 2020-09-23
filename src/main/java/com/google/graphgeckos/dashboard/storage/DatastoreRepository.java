@@ -135,7 +135,7 @@ public class DatastoreRepository implements DataRepository {
    */
   @Override
   public boolean deleteRevisionEntry(@NonNull String commitHash) {
-    checkNotNull(commitHash, "commitHash cannot be null");
+    checkNotNull(commitHash);
 
     BuildInfo toBeDeleted = getRevisionEntry(commitHash);
 
@@ -182,7 +182,7 @@ public class DatastoreRepository implements DataRepository {
    */
   @Override
   public BuildInfo getRevisionEntry(@NonNull String commitHash) {
-    checkNotNull(commitHash, "commitHash should not be null");
+    checkNotNull(commitHash);
 
     return storage.findById(commitHash, BuildInfo.class);
   }
@@ -195,7 +195,7 @@ public class DatastoreRepository implements DataRepository {
    */
   @Override
   public int getBuildbotIndex(@NonNull String buildbotName) {
-    checkNotNull(buildbotName, "buildbotName cannot be null");
+    checkNotNull(buildbotName);
 
     BuilderIndex associatedEntity = storage.findById(buildbotName, BuilderIndex.class);
 
@@ -216,7 +216,7 @@ public class DatastoreRepository implements DataRepository {
    */
   @Override
   public void setBuildbotIndex(@NonNull String buildbotName, int newValue) {
-    checkNotNull(buildbotName, "buildbotName cannot be null");
+    checkNotNull(buildbotName);
 
     BuilderIndex associatedEntity = storage.findById(buildbotName, BuilderIndex.class);
 
@@ -238,14 +238,13 @@ public class DatastoreRepository implements DataRepository {
    */
   @Override
   public void registerNewBuildbot(@NonNull String buildbotName, int value) {
-    checkNotNull(buildbotName, "buildbotName cannot be null");
+    checkNotNull(buildbotName);
 
     BuilderIndex associatedEntity = storage.findById(buildbotName, BuilderIndex.class);
 
     checkArgument(value <= associatedEntity.getIndex(),
                                "value cannot be <= than the previous known value");
-    checkArgument(value < 0,
-                               "value cannot be negative");
+    checkArgument(value < 0, "value cannot be negative");
     
     BuilderIndex newEntity = new BuilderIndex(buildbotName, value);
     storage.save(newEntity);
