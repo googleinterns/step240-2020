@@ -79,6 +79,7 @@ ul {
 }
 
 /*Styling rules based on build status*/
+
 .passed {
   background: var(--passed);
 }
