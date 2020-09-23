@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.graphgeckos.dashboard.fetchers.buildbot;
+package com.google.graphgeckos.dashboard.fetchers.github;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.util.Preconditions;
-import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
+import com.google.graphgeckos.dashboard.datatypes.GitHubData;
 import com.google.graphgeckos.dashboard.storage.DatastoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
 /** A (external) BuildBot API json data fetcher. */
-public class BuildBotClient {
+public class GitHubClient {
 
   /** Provides access to the storage. */
   @Autowired
@@ -38,9 +38,9 @@ public class BuildBotClient {
   /** Base url of the BuildBot API, LLVM BuildBot API base url is "http://lab.llvm.org:8011/json/builders" */
   private String baseUrl;
 
-  private static final Logger logger = Logger.getLogger(BuildBotClient.class.getName());
+  private static final Logger logger = Logger.getLogger(GitHubClient.class.getName());
 
-  public BuildBotClient(@NonNull String baseUrl) {
+  public GitHubClient(@NonNull String baseUrl) {
     this.baseUrl = Preconditions.checkNotNull(baseUrl);
   }
 
