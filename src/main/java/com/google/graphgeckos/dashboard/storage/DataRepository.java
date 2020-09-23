@@ -82,7 +82,7 @@ public interface DataRepository {
    *
    * @param buildbotName the name of the buildbot to search for
    * @return the last known revision index for which there is information in the database.
-   * @throws IllegalArgumentException if {@code buildbotName} is null
+   * @throws NullPointerException if {@code buildbotName} is null
    * @throws BuildbotNotFound if there is no "index" entry related to the name provided
    */
   int getBuildbotIndex(String buildbotName);
@@ -93,9 +93,9 @@ public interface DataRepository {
    *
    * @param buildbotName the name of the buildbot to update
    * @param newValue the new index value
-   * @throws IllegalArgumentException if {@code buildbotName} is null or there is no "index" entry
-   *      with that key
-   * @throws IndexOutOfBoundsException if newValue is lower or equal than the previous
+   * @throws BuildbotNotFound if there is no "index" entry related to the name provided
+   * @throws NullPointerException if {@code buildbotName} is null
+   * @throws IllegalArgumentException if newValue is lower or equal than the previous
    *      recorded value
    */
   void setBuildbotIndex(String buildbotName, int newValue);
@@ -107,9 +107,9 @@ public interface DataRepository {
    *
    * @param name the name of the buildbot to register
    * @param value the starting index value of the buildbot
-   * @throws IllegalArgumentException if {@code name} is null
-   * @throws IndexOutOfBoundsException if value is negative when creating a new entry, or if value
-   *      is lower or equal than the previous recorded value
+   * @throws NullPointerException if {@code name} is null
+   * @throws IllegalArgumentException if value is negative when creating a new entry, or if value
+   *      is lower than the previous recorded value
    */
   void registerNewBuildbot(String buildbotName, int value);
 }
