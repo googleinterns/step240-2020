@@ -79,11 +79,15 @@ ul {
 }
 
 .passed {
-  background-color: var(--passed);
+  background: var(--passed);
 }
 
 .failed {
-  background-color: var(--failed);
+  background: var(--failed);
+}
+
+.lost {
+  background: var(--lost);
 }
 
 #build-snapshot-container {
