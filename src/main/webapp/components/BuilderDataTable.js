@@ -1,5 +1,18 @@
+// Copyright 2020 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 import * as React from 'react';
-import {getField} from './utils/getField.js';
 
 // The target fields to be extracted from each build step
 // and displayed on each row.
@@ -19,17 +32,17 @@ const HEADERS = ['no.', 'text', 'log'];
  * @param {string} props.buildSteps[].logs - A URL pointing to the log file.
  */
 export const BuilderDataTable = props => {
-  const buildSteps = getField(props, 'buildSteps', []);
+  const buildSteps = props.buildSteps;
 
   return (
     <table className='data-table'>
       <thead>
-        <tr>{HEADERS.map(header => <th>{header}</th>)}</tr>
+        <tr>{HEADERS.map((header, idx) => <th key={idx}>{header}</th>)}</tr>
       </thead>
       <tbody>
         {buildSteps.map(datapoint => 
           <tr>
-            {BUILD_STEP_FIELDS.map(field => <td>{datapoint[field]}</td>)}
+            {BUILD_STEP_FIELDS.map((field, idx) => <td key={idx}>{datapoint[field]}</td>)}
           </tr>
         )}
       </tbody>

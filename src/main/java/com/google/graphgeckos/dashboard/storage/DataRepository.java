@@ -75,5 +75,41 @@ public interface DataRepository {
    * @return null if no object was found, else a BuildInfo instance of the database entry
    *     associated to that commitHash.
    */
-  BuildInfo getRevisionEntry(String commitHash);
+  BuildInfo getRevisionEntry(String commitHash) throws IllegalArgumentException;
+
+  /**
+   * Queries the database for the last known index for a specific buildbot. Used by the fetchers.
+   *
+   * @param buildbotName the name of the buildbot to search for
+   * @return the last known revision index for which there is information in the database.
+   * @throws IllegalArgumentException if {@code buildbotName} is null
+   * @throws BuildbotNotFound if there is no "index" entry related to the name provided
+   */
+  int getBuildbotIndex(String buildbotName);
+
+  /**
+   * Updates the database with a new value for the internal buildbot revision index. Used by the
+   * fetchers.
+   *
+   * @param buildbotName the name of the buildbot to update
+   * @param newValue the new index value
+   * @throws IllegalArgumentException if {@code buildbotName} is null or there is no "index" entry
+   *      with that key
+   * @throws IndexOutOfBoundsException if newValue is lower or equal than the previous
+   *      recorded value
+   */
+  void setBuildbotIndex(String buildbotName, int newValue);
+
+  /**
+   * Creates a new "index" entry if there is none with the same name in the database. This should
+   * be called once before setting the index for a buildbot that has no previous entry. If the
+   * value provided is larger than the previous value, the call updates the value.
+   *
+   * @param name the name of the buildbot to register
+   * @param value the starting index value of the buildbot
+   * @throws IllegalArgumentException if {@code name} is null
+   * @throws IndexOutOfBoundsException if value is negative when creating a new entry, or if value
+   *      is lower or equal than the previous recorded value
+   */
+  void registerNewBuildbot(String buildbotName, int value);
 }
