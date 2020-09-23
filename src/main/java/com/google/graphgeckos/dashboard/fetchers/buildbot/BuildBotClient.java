@@ -40,7 +40,7 @@ public class GitHubClient {
 
   private static final Logger logger = Logger.getLogger(GitHubClient.class.getName());
 
-  public GitHubClient(@NonNull String baseUrl) {
+  private GitHubClient(@NonNull String baseUrl) {
     this.baseUrl = Preconditions.checkNotNull(baseUrl);
   }
 
