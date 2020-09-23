@@ -73,6 +73,7 @@ ul {
   transition: 300ms transform ease-in-out;
 }
 
+/*Animate the open/close icon when snapshot is open*/
 .snapshot-header.active > .header-toggle {
   transform: rotate(90deg);
 }
