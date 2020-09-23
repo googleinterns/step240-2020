@@ -91,11 +91,10 @@ public class BuildBotData {
    * @param sourceStamp Representation of the json component, where the commitHash field is located
    */
   @JsonProperty("sourceStamp")
-  @SuppressWarnings("unchecked")
   public void unpackSourceStamp(Map<String, Object> sourceStamp) {
     commitHash = sourceStamp.get("revision").toString();
-    List<Object> changes = (ArrayList<Object>)sourceStamp.get("changes");
-    Map<String, Object> latestChange = (Map<String, Object>)changes.get(0);
+    List<?> changes = (List<?>) sourceStamp.get("changes");
+    Map<?, ?> latestChange = (Map<?, ?>) changes.get(0);
     timestamp = Timestamp.ofTimeMicroseconds(Long.parseLong(latestChange.get("when").toString()));
   }
 
@@ -133,8 +132,8 @@ public class BuildBotData {
    * @param logs Representation of the json component, where the logs are located
    */
   @JsonProperty("logs")
-  private void unpackLogs(List<String[]> logs) {
-    logs.forEach(x -> this.logs.add(new Log(x)));
+  private void unpackLogs(List<List<String>> logs) {
+    logs.forEach(x -> this.logs.add(new Log(x.get(0), x.get(1))));
   }
 
   @NonNull

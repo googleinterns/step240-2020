@@ -15,6 +15,7 @@
 package com.google.graphgeckos.dashboard.fetchers.buildbot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.api.client.util.Preconditions;
 import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
 import com.google.graphgeckos.dashboard.storage.DatastoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import java.time.Duration;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
@@ -41,8 +41,7 @@ public class BuildBotClient {
   private static final Logger logger = Logger.getLogger(BuildBotClient.class.getName());
 
   public BuildBotClient(@NonNull String baseUrl) {
-    Objects.requireNonNull(baseUrl);
-    this.baseUrl = baseUrl;
+    this.baseUrl = Preconditions.checkNotNull(baseUrl);
   }
 
   /**
@@ -60,10 +59,10 @@ public class BuildBotClient {
    * @param initialBuildId the id of the BuildBot's build from where to start fetching data
    */
   public void run(@NonNull String buildBot, long initialBuildId, long delay) {
-    Objects.requireNonNull(buildBot);
 
     AtomicLong buildId = new AtomicLong(initialBuildId);
-    logger.info(String.format("Builder %s: started fetching from the base url: %s", buildBot, baseUrl));
+    logger.info(String.format("Builder %s: started fetching from the base url: %s",
+                              Preconditions.checkNotNull(initialBuildId), baseUrl));
     WebClient.builder().baseUrl(baseUrl)
       .defaultHeader(HttpHeaders.CONTENT_TYPE, "application/json")
       .build()
