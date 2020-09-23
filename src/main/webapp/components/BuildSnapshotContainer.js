@@ -52,7 +52,7 @@ export const BuildSnapshotContainer = React.memo((props) =>
           No new revisions to display as of {new Date().toLocaleString()}.</span>;
     }
 
-    let hasPrev = pageNumber == 0;
+    let hasPrev = pageNumber === 0;
     let hasNext = data.length < NUMBER;
 
     let paginationNavbar = 
