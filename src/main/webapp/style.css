@@ -135,6 +135,7 @@ ul {
 .data-table {
   border-bottom-right-radius: 0.75rem;
   border-collapse: collapse;
+  height: 100%;
   overflow: hidden;
   text-align: center;
 }
