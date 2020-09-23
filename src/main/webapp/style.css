@@ -52,8 +52,8 @@ ul {
 .snapshot-header {
   align-items: center;
   border: .25rem var(--primary) solid;
-  box-shadow: 0 .25rem .25rem rgba(0, 0, 0, .25);
   border-radius: .5rem;
+  box-shadow: 0 .25rem .25rem rgba(0, 0, 0, .25);
   color: var(--primary);
   display: flex;
   gap: 1rem;
@@ -73,7 +73,7 @@ ul {
   transition: 300ms transform ease-in-out;
 }
 
-/* Animate the open/close icon when snapshot is open */
+/* Rotate the toggle icon to face downwards when the snapshot is open */
 .snapshot-header.active > .header-toggle {
   transform: rotate(90deg);
 }
