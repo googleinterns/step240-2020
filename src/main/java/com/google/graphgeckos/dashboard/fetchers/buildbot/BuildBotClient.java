@@ -72,7 +72,7 @@ public class GitHubClient {
       .build()
       .get()
       .uri("/")
-      .accept(MediaType.TEXT_PLAIN)
+      .accept(MediaType.APPLICATION_JSON)
       .retrieve()
       .bodyToMono(String.class)
       .delaySubscription(Duration.ofSeconds(delay))
