@@ -102,6 +102,11 @@ ul {
   padding: 0.75rem 2rem;
 }
 
+.snapshot-tray {
+  display: grid;
+  grid: min-content 1fr / repeat(2, 1fr);
+}
+
 .header-wrap {
   align-items: center;
   display: flex;
