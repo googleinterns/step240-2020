@@ -78,6 +78,7 @@ ul {
   font-size: 1rem;
 }
 
+/*Styling changes based on build status*/
 .passed {
   background: var(--passed);
 }
