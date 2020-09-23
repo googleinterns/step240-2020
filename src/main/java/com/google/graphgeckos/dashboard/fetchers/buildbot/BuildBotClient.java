@@ -89,8 +89,8 @@ public class GitHubClient {
         }
         logger.info(String.format("GitHub: trying to deserialize valid JSON"));
         try {
-          BuildBotData builder = new ObjectMapper().readValue(response, BuildBotData.class);
-          datastoreRepository.updateRevisionEntry(builder);
+          GitHubData gitHubData = new ObjectMapper().readValue(response, GitHubData.class);
+          datastoreRepository.createRevisionEntry(gitHubData);
         } catch (Exception e) {
           logger.info(String.format("GitHub: can't deserialize JSON"));
           e.printStackTrace();
