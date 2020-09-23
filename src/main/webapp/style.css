@@ -95,11 +95,14 @@ ul {
 
 .snapshot-header {
   align-items: center;
+  border: .25rem var(--primary) solid;
+  border-radius: .5rem;
+  box-shadow: 0 .25rem .25rem rgba(0, 0, 0, .25);
   color: var(--primary);
   display: flex;
   gap: 1rem;
   justify-content: space-between;
-  padding: 0.75rem 2rem;
+  padding: .75rem 2rem;
 }
 
 .snapshot-tray {
@@ -116,6 +119,16 @@ ul {
 .header-toggle {
   height: 1.5rem;
   width: 1.5rem;
+  transition: 300ms transform ease-in-out;
+}
+
+/* Rotate the toggle icon to face downwards when the snapshot is open */
+.snapshot-header.active > .header-toggle {
+  transform: rotate(90deg);
+}
+
+.snapshot-header.active {
+  border-bottom: .25rem var(--primary) solid;
 }
 
 .header-hash {
