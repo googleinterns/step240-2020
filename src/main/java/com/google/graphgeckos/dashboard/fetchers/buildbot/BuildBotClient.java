@@ -71,7 +71,7 @@ public class GitHubClient {
       .defaultHeader(HttpHeaders.CONTENT_TYPE, "application/json")
       .build()
       .get()
-      .uri(String.format( "/%s/builds/%d?as_text=1", buildBot, buildId.get()))
+      .uri("/")
       .accept(MediaType.TEXT_PLAIN)
       .retrieve()
       .bodyToMono(String.class)
