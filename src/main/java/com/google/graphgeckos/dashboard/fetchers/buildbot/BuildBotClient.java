@@ -64,7 +64,6 @@ public class GitHubClient {
    */
   public void run(@NonNull long delay) {
 
-    AtomicLong buildId = new AtomicLong(initialBuildId);
     logger.info(String.format("GitHub: started fetching from the base url: %s",
                               baseUrl));
     WebClient.builder().baseUrl(baseUrl)
