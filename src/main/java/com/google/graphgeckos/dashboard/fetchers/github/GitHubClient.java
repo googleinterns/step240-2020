@@ -35,7 +35,7 @@ public class GitHubClient {
   @Autowired
   private DatastoreRepository datastoreRepository;
 
-  /** Base url of the BuildBot API, LLVM BuildBot API base url is "http://lab.llvm.org:8011/json/builders" */
+  /** Base url of the BuildBot API, LLVM BuildBot API base url is "https://api.github.com/repos/llvm/llvm-project/commits/master" */
   private String baseUrl;
 
   private static final Logger logger = Logger.getLogger(GitHubClient.class.getName());
