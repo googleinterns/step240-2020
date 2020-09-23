@@ -20,10 +20,10 @@ import com.google.graphgeckos.dashboard.datatypes.BuilderStatus;
 import com.google.graphgeckos.dashboard.datatypes.Log;
 import com.google.graphgeckos.dashboard.fetchers.buildbot.BuildBotClient;
 import com.google.graphgeckos.dashboard.storage.DatastoreRepository;
-import com.squareup.okhttp.mockwebserver.Dispatcher;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+import okhttp3.mockwebserver.Dispatcher;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -119,7 +119,7 @@ public class BuildBotClientTest {
       .setBody(EMPTY_JSON);
 
     @Override
-    public MockResponse dispatch(RecordedRequest request) {
+    public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
 
       /* Expected form of the request url: baseUrl/buildBot/builds/buildId?as_text=1 . */
       if (request.getPath().contains(VALID_BUILD_BOT_NAME_CLANG)) {
@@ -194,10 +194,9 @@ public class BuildBotClientTest {
   public void init() throws IOException {
     MockitoAnnotations.initMocks(this);
 
-    mockWebServer.play();
+    mockWebServer.start();
     mockWebServer.setDispatcher(dispatcher);
-
-    String baseUrl = mockWebServer.getUrl("").toString();
+    String baseUrl = "http://" + mockWebServer.getHostName() + ":" + mockWebServer.getPort();
     client.setBaseUrl(baseUrl);
   }
 
