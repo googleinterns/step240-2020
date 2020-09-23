@@ -184,7 +184,6 @@ public class DatastoreRepository implements DataRepository {
 
     Preconditions.checkArgument(newValue <= associatedEntity.getIndex(),
                                "newValue cannot be lower than or equal the previous index");
-    }
 
     associatedEntity.setIndex(newValue);
     storage.save(associatedEntity);
@@ -200,7 +199,7 @@ public class DatastoreRepository implements DataRepository {
     Preconditions.checkArgument(value < 0,
                                "value cannot be negative");
     
-    BuilderIndex newEntity = new BuilderIndex(name, value);
+    BuilderIndex newEntity = new BuilderIndex(buildbotName, value);
     storage.save(newEntity);
   }
 }
