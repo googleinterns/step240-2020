@@ -41,7 +41,7 @@ export const BuildSnapshot = (props) => {
   const headerData = {commitHash, description, repository, status};
   const trayData = {builders, timestamp};
 
-  // Set backgroundColour based on build status
+  // Set background based on build status.
   const snapshotClassName = 'build-snapshot'.concat(' ' + status);
 
   return (
