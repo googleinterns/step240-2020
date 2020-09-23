@@ -44,6 +44,10 @@ public class GitHubClient {
     this.baseUrl = Preconditions.checkNotNull(baseUrl);
   }
 
+  public GitHubClient() {
+    this("https://api.github.com/repos/llvm/llvm-project/commits/master");
+  }
+
   /**
    * Starts fetching process. Fetches data every {@code delay} seconds from the url:
    * {@code baseUrl}/{@code buildBot}/builds/{@code buildId}?as_text=1.
