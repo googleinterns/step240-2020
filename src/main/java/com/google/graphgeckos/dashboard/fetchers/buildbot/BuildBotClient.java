@@ -94,10 +94,9 @@ public class GitHubClient {
           logger.info(String.format("GitHub: can't deserialize JSON"));
           e.printStackTrace();
         }
-        long nextBuildId = buildId.incrementAndGet();
         logger.info(
                String.format(
-                 "GitHub: Next build id is %d, performing request in %d seconds", nextBuildId, delay));
+                 "GitHub: Performing re-request in %d seconds", delay));
       });
   }
 
