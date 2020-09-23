@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.graphgeckos.dashboard.fetchers.buildbot;
+package com.google.graphgeckos.dashboard.fetchers.github;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.util.Preconditions;
@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
 /** A (external) BuildBot API json data fetcher. */
-public class BuildBotClient {
+public class GitHubClient {
 
   /** Provides access to the storage. */
   @Autowired
@@ -38,10 +38,14 @@ public class BuildBotClient {
   /** Base url of the BuildBot API, LLVM BuildBot API base url is "http://lab.llvm.org:8011/json/builders" */
   private String baseUrl;
 
-  private static final Logger logger = Logger.getLogger(BuildBotClient.class.getName());
+  private static final Logger logger = Logger.getLogger(GitHubClient.class.getName());
 
-  public BuildBotClient(@NonNull String baseUrl) {
+  private GitHubClient(@NonNull String baseUrl) {
     this.baseUrl = Preconditions.checkNotNull(baseUrl);
+  }
+
+  public GitHubClient() {
+    this("https://api.github.com/repos/llvm/llvm-project/commits/master");
   }
 
   /**
@@ -58,17 +62,16 @@ public class BuildBotClient {
    * @param buildBot name of the BuildBot as it is in the API (e.g "clang-x86_64-debian-fast")
    * @param initialBuildId the id of the BuildBot's build from where to start fetching data
    */
-  public void run(@NonNull String buildBot, long initialBuildId, long delay) {
+  public void run(@NonNull long delay) {
 
-    AtomicLong buildId = new AtomicLong(initialBuildId);
-    logger.info(String.format("Builder %s: started fetching from the base url: %s",
-                              Preconditions.checkNotNull(initialBuildId), baseUrl));
+    logger.info(String.format("GitHub: started fetching from the base url: %s",
+                              baseUrl));
     WebClient.builder().baseUrl(baseUrl)
       .defaultHeader(HttpHeaders.CONTENT_TYPE, "application/json")
       .build()
       .get()
-      .uri(String.format( "/%s/builds/%d?as_text=1", buildBot, buildId.get()))
-      .accept(MediaType.TEXT_PLAIN)
+      .uri("/")
+      .accept(MediaType.APPLICATION_JSON)
       .retrieve()
       .bodyToMono(String.class)
       .delaySubscription(Duration.ofSeconds(delay))
@@ -80,21 +83,20 @@ public class BuildBotClient {
       .subscribe(response -> {
         if (response.isEmpty()) {
           logger.info(
-            String.format("Builder %s: Error occurred, waiting for %d seconds", buildBot, delay));
+            String.format("GitHub: Error occurred, waiting for %d seconds", delay));
           return;
         }
-        logger.info(String.format("Builder %s: trying to deserialize valid JSON", buildBot));
+        logger.info(String.format("GitHub: trying to deserialize valid JSON"));
         try {
-          BuildBotData builder = new ObjectMapper().readValue(response, BuildBotData.class);
-          datastoreRepository.updateRevisionEntry(builder);
+          GitHubData gitHubData = new ObjectMapper().readValue(response, GitHubData.class);
+          datastoreRepository.createRevisionEntry(gitHubData);
         } catch (Exception e) {
-          logger.info(String.format("Builder %s: can't deserialize JSON", buildBot));
+          logger.info(String.format("GitHub: can't deserialize JSON"));
           e.printStackTrace();
         }
-        long nextBuildId = buildId.incrementAndGet();
         logger.info(
                String.format(
-                 "Builder %s:Next build id is %d, performing request in %d seconds", buildBot, nextBuildId, delay));
+                 "GitHub: Performing re-request in %d seconds", delay));
       });
   }
 
