@@ -20,6 +20,7 @@
 :root {
   --background: #0c0d25;
   --failed: #dc4f4f;
+  --lost: #979d95;
   --passed: #4fdc7f;
   --primary: white;
   font-size: 16px;
