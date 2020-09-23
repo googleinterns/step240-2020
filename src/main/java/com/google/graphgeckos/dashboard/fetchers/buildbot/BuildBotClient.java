@@ -65,8 +65,8 @@ public class GitHubClient {
   public void run(@NonNull long delay) {
 
     AtomicLong buildId = new AtomicLong(initialBuildId);
-    logger.info(String.format("Builder %s: started fetching from the base url: %s",
-                              Preconditions.checkNotNull(initialBuildId), baseUrl));
+    logger.info(String.format("GitHub: started fetching from the base url: %s",
+                              baseUrl));
     WebClient.builder().baseUrl(baseUrl)
       .defaultHeader(HttpHeaders.CONTENT_TYPE, "application/json")
       .build()
@@ -84,21 +84,21 @@ public class GitHubClient {
       .subscribe(response -> {
         if (response.isEmpty()) {
           logger.info(
-            String.format("Builder %s: Error occurred, waiting for %d seconds", buildBot, delay));
+            String.format("GitHub: Error occurred, waiting for %d seconds", delay));
           return;
         }
-        logger.info(String.format("Builder %s: trying to deserialize valid JSON", buildBot));
+        logger.info(String.format("GitHub: trying to deserialize valid JSON"));
         try {
           BuildBotData builder = new ObjectMapper().readValue(response, BuildBotData.class);
           datastoreRepository.updateRevisionEntry(builder);
         } catch (Exception e) {
-          logger.info(String.format("Builder %s: can't deserialize JSON", buildBot));
+          logger.info(String.format("GitHub: can't deserialize JSON"));
           e.printStackTrace();
         }
         long nextBuildId = buildId.incrementAndGet();
         logger.info(
                String.format(
-                 "Builder %s:Next build id is %d, performing request in %d seconds", buildBot, nextBuildId, delay));
+                 "GitHub: Next build id is %d, performing request in %d seconds", nextBuildId, delay));
       });
   }
 
