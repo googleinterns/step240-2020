@@ -68,7 +68,7 @@ public class BuilderIndex {
       return true;
     }
 
-    BuildInfo other = (BuilderIndex) o;
+    BuilderIndex other = (BuilderIndex) o;
     return this.name == other.name && this.index == other.index;
   }
 }
