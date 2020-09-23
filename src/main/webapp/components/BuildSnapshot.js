@@ -72,7 +72,7 @@ const Header = (props) => {
       <span className='header-hash'>{props.data.commitHash}</span>
       <span className='header-description'>{props.data.description}</span>
       <span className='failure-group'>Group</span>
-      <span className='header-status'>{props.data.status}</span>
+      <span className='header-status'>{props.data.status.toUpperCase()}</span>
     </div>
   );
 }
