@@ -15,6 +15,7 @@
 package com.google.graphgeckos.dashboard.datatypes;
 
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
+import org.springframework.cloud.gcp.data.datastore.core.mapping.Field;
 
 /**
  * Contains the log information from a single compilation stage from a given build bot.
@@ -23,36 +24,47 @@ import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 public class Log {
 
   // Log type (e.g "stdio")
-  private final String type;
+  @Field(name = "type")
+  private String type;
 
   // Log link (e.g "http://lab.llvm.org:8011/builders/mlir-nvidia/builds/6403/logs/stdio")
-  private final String link;
+  @Field(name = "link")
+  private String link;
 
   /**
-   * Constructs an instance of Log. Both type and link can be null.
+   * Used only by Spring GCP.
    */
+  public Log() {}
+
   public Log(String type, String link) {
     this.type = type;
     this.link = link;
   }
 
-  public Log(String[] logComponents) {
-    this.type = logComponents[0];
-    this.link = logComponents[1];
-  }
-
-  /**
-   * Returns the type of the log as a String. Can be null.
-   */
   public String getType() {
     return type;
   }
 
-  /**
-   * Returns a link to the full version of the log. Can be null.
-   */
   public String getLink() {
     return link;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public void setLink(String link) {
+    this.link = link;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || !(o instanceof Log)) {
+      return false;
+    }
+
+    Log other = (Log) o;
+    return type.equals(other.type) && link.equals(other.link);
   }
 
 }

@@ -14,7 +14,10 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
+import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreException;
+import com.google.cloud.datastore.DatastoreOptions;
+import com.google.cloud.datastore.DatastoreOptions.DefaultDatastoreFactory;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
@@ -23,8 +26,13 @@ import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
 import com.google.graphgeckos.dashboard.datatypes.GitHubData;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Objects;
+import java.util.function.Supplier;
 import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
+import org.springframework.cloud.gcp.data.datastore.core.convert.DatastoreServiceObjectToKeyFactory;
+import org.springframework.cloud.gcp.data.datastore.core.convert.DefaultDatastoreEntityConverter;
+import org.springframework.cloud.gcp.data.datastore.core.mapping.DatastoreMappingContext;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -42,90 +50,104 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class DatastoreRepository implements DataRepository {
-  @Autowired
   private DatastoreTemplate storage;
 
-  /**
-   * {@inheritDoc}
-   */
-  public boolean createRevisionEntry(GitHubData entryData) throws IllegalArgumentException {
-    if (entryData == null) {
-      throw new IllegalArgumentException("entryData cannot be null");
-    }
+  public DatastoreRepository(@NonNull Datastore underlyingStorage) {
+    Objects.requireNonNull(underlyingStorage);
 
-    if (getRevisionEntry(entryData.getCommitHash()) == null) {
-      try {
-        storage.save(new BuildInfo(entryData));
-      } catch (DatastoreException e) {
-        e.printStackTrace();
-        System.err.println(e);
-    
-        return false;
-      }
+    Supplier<Datastore> supplier = () -> underlyingStorage;
 
-      return true;
-    }
+    DatastoreMappingContext mappingContext = new DatastoreMappingContext();
 
-    return false;
+    DatastoreServiceObjectToKeyFactory objectToKeyFactory =
+        new DatastoreServiceObjectToKeyFactory(supplier);
+
+    DefaultDatastoreEntityConverter entityConverter =
+        new DefaultDatastoreEntityConverter(mappingContext, objectToKeyFactory);
+
+    storage = new DatastoreTemplate(supplier, entityConverter, mappingContext, objectToKeyFactory);
+  }
+
+  public DatastoreRepository() {
+    this(new DefaultDatastoreFactory().create(DatastoreOptions.getDefaultInstance()));
   }
 
   /**
    * {@inheritDoc}
+   *
+   * @throws NullPointerException if the {@code entryData} is null.
    */
-  public boolean updateRevisionEntry(BuildBotData updateData) throws IllegalArgumentException {
-    if (updateData == null) {
-      throw new IllegalArgumentException("entryData cannot be null");
+  @Override
+  public boolean createRevisionEntry(@NonNull GitHubData entryData) {
+    Objects.requireNonNull(entryData);
+
+    if (getRevisionEntry(entryData.getCommitHash()) != null) {
+      return false;
     }
+
+    try {
+      storage.save(new BuildInfo(entryData));
+    } catch (DatastoreException e) {
+      e.printStackTrace();
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @throws NullPointerException if the {@code updateData} is null.
+   */
+  @Override
+  public boolean updateRevisionEntry(@NonNull BuildBotData updateData) {
+    Objects.requireNonNull(updateData);
 
     BuildInfo associatedEntity = getRevisionEntry(updateData.getCommitHash());
 
-    if (associatedEntity != null) {
-      associatedEntity.addBuilder(updateData);
-
-      try {
-        storage.save(associatedEntity);
-      } catch (DatastoreException e) {
-        e.printStackTrace();
-        System.err.println(e);
-    
-        return false;
-      }
-
-      return true;
+    if (associatedEntity == null) {
+      return false;
     }
 
-    return false;
+    try {
+      storage.save(associatedEntity);
+    } catch (DatastoreException e) {
+      e.printStackTrace();
+      return false;
+    }
+
+    return true;
   }
 
   /**
    * {@inheritDoc}
+   *
+   * @throws NullPointerException if the {@code commitHash} is null.
    */
-  public boolean deleteRevisionEntry(String commitHash) throws IllegalArgumentException {
-    if (commitHash == null) {
-      throw new IllegalArgumentException("commitHash cannot be null");
-    }
+  @Override
+  public boolean deleteRevisionEntry(@NonNull String commitHash) {
+    Objects.requireNonNull(commitHash);
 
     BuildInfo toBeDeleted = getRevisionEntry(commitHash);
 
-    if (toBeDeleted != null) {
-      try {
-        storage.delete(toBeDeleted);
-      } catch (DatastoreException e) {
-        e.printStackTrace();
-        System.err.println(e);
-
-        return false;
-      }
-
+    if (toBeDeleted == null) {
       return true;
     }
 
-    return false;
+    try {
+      storage.delete(toBeDeleted);
+    } catch (DatastoreException e) {
+      e.printStackTrace();
+      return false;
+    }
+
+    return true;
   }
 
   /**
    * {@inheritDoc}
    */
+  @Override
   public List<BuildInfo> getLastRevisionEntries(int number, int offset)
                                                          throws IllegalArgumentException {
     if (number < 0 || offset < 0) {
@@ -139,24 +161,19 @@ public class DatastoreRepository implements DataRepository {
                                .setLimit(number)
                                .build();
 
-    Iterable<BuildInfo> results = storage.query(query, BuildInfo.class).getIterable();
-
-    List<BuildInfo> toBeReturned = new ArrayList<BuildInfo>();
-
-    for (BuildInfo entity : results) {
-      toBeReturned.add(entity);
-    }
-
+    List<BuildInfo> toBeReturned = new ArrayList<>();
+    storage.query(query, BuildInfo.class).getIterable().forEach(toBeReturned::add);
     return toBeReturned;
   }
 
   /**
    * {@inheritDoc}
+   *
+   * @throws NullPointerException if the {@code commitHash} is null.
    */
-  public BuildInfo getRevisionEntry(String commitHash) throws IllegalArgumentException {
-    if (commitHash == null) {
-      throw new IllegalArgumentException("commitHash cannot be null");
-    }
+  @Override
+  public BuildInfo getRevisionEntry(@NonNull String commitHash) {
+    Objects.requireNonNull(commitHash);
 
     return storage.findById(commitHash, BuildInfo.class);
   }

@@ -14,16 +14,23 @@
 
 package com.google.graphgeckos.dashboard.datatypes;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.cloud.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
+import org.springframework.cloud.gcp.data.datastore.core.mapping.Field;
+import org.springframework.data.annotation.Transient;
+import org.springframework.lang.NonNull;
 
 /**
  * Contains the information retrieved from a single build bot. It is used as a member
  * of {@link BuildInfo}
  */
 @Entity(name = "builder")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BuildBotData {
 
   /**
@@ -33,23 +40,38 @@ public class BuildBotData {
    * it in the right {@link BuildInfo} in the storage.
    * Used in {@link com.google.graphgeckos.dashboard.storage.DatastoreRepository}.
    */
+  @Transient
+  @Field(name = "commitHash")
   private String commitHash;
 
-  /* The timestamp of the build. */
+  /** 
+   * The timestamp of the build. 
+   */
+  @Field(name = "timestamp")
   private Timestamp timestamp;
 
-  /* Name of the buildbot. */
+  /**
+   * Name of the buildbot.
+   */
+  @Field(name = "name")
   private String name;
 
   /**
    * The logs of each compilation stage, stored as described by {@link Log}.
    */
-  private final List<Log> logs = new ArrayList<>();
+  @Field(name = "logs")
+  private List<Log> logs = new ArrayList<>();
 
   /**
    * Builder compilation status, as described by {@link BuilderStatus}.
    */
-  private BuilderStatus status;
+  @Field(name = "status")
+  private BuilderStatus status = BuilderStatus.FAILED;
+
+  /**
+   * Only used by Spring GCP.
+   */
+  public BuildBotData() {}
 
   public BuildBotData(String commitHash, String name, List<Log> logs, BuilderStatus status) {
     this.commitHash = commitHash;
@@ -58,41 +80,119 @@ public class BuildBotData {
     this.status = status;
   }
 
-  public BuildBotData() {}
+  public BuildBotData(@JsonProperty("builderName") String name) {
+    this.name = name;
+  }
 
   /**
-   * Returns the name of the builder bot. Cannot be null.
+   * Extracts nested commitHash("revision"), branch("branch") and
+   * timestamp("when") fields from the json
+   *
+   * @param sourceStamp Representation of the json component, where the commitHash field is located
    */
+  @JsonProperty("sourceStamp")
+  public void unpackSourceStamp(Map<String, Object> sourceStamp) {
+    commitHash = sourceStamp.get("revision").toString();
+    List<?> changes = (List<?>) sourceStamp.get("changes");
+    Map<?, ?> latestChange = (Map<?, ?>) changes.get(0);
+    timestamp = Timestamp.ofTimeMicroseconds(Long.parseLong(latestChange.get("when").toString()));
+  }
+
+  /**
+   * Defines builder status based on a phrase provided in parsed json.
+   * If something failed or the phrase doesn't contain any of the key words
+   * ("failed", "successful", "lost"), then the buildbot is considered failed {@code FAILED}.
+   * If something is lost, then the buildbot is considered lost {@code LOST}.
+   * If  the buildbot is considered passed {@code PASSED}.
+   *
+   * @param words Words of the "text" JSON field
+   */
+  @JsonProperty("text")
+  private void extractStatus(List<String> words) {
+    for (String word : words) {
+      if (word.equals("failed")) {
+        status = BuilderStatus.FAILED;
+        break;
+      }
+      if (word.equals("lost")) {
+        status = BuilderStatus.LOST;
+        break;
+      }
+      if (word.equals("successful")) {
+        status = BuilderStatus.PASSED;
+      }
+    }
+  }
+
+  /**
+   * Unpacks logs represented as list of lists of two strings,
+   * where the first one is a type of the log and the second one
+   * is a link to the log.
+   *
+   * @param logs Representation of the json component, where the logs are located
+   */
+  @JsonProperty("logs")
+  private void unpackLogs(List<List<String>> logs) {
+    logs.forEach(x -> this.logs.add(new Log(x.get(0), x.get(1))));
+  }
+
+  @NonNull
   public String getName() {
     return name;
   }
 
-  /**
-   * Returns the list of logs for each compilation stage. Cannot be null.
-   */
+  @NonNull
   public List<Log> getLogs() {
     return logs;
   }
 
-  /**
-   * Returns the compilation status of the builder. Cannot be null.
-   */
+  @NonNull
   public BuilderStatus getStatus() {
     return status;
   }
 
-  /**
-   * Returns the commit hash of the commit tested by the current buildbot.
-   */
+  @NonNull
   public String getCommitHash() {
     return commitHash;
   }
 
-  /**
-   * Returns the timestamp of the build.
-   */
+  @NonNull
   public Timestamp getTimestamp() {
     return timestamp;
+  }
+
+  public void setName(@NonNull String name) {
+    this.name = name;
+  }
+
+  public void setLogs(@NonNull List<Log> logs) {
+    this.logs = new ArrayList<>(logs);
+  }
+
+  public void setStatus(@NonNull BuilderStatus status) {
+    this.status = status;
+  }
+
+  public void setCommitHash(@NonNull String commitHash) {
+    this.commitHash = commitHash;
+  }
+
+  public void setTimestamp(@NonNull Timestamp timestamp) {
+    this.timestamp = timestamp;
+  }
+
+  /**
+   * Checks if all non-transient fields are equal between BuildBotData instances.
+   */
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || !(o instanceof BuildBotData)) {
+      return false;
+    }
+
+    BuildBotData other = (BuildBotData) o;
+    return timestamp.equals(other.timestamp) && name.equals(other.name) &&
+           logs.equals(other.logs) && status.equals(other.status);
   }
 
 }
