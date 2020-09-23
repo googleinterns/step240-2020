@@ -93,7 +93,7 @@ const Tray = (props) => {
       <div className='tray-currentbot'>
         <span className='bot-display'>{builder.name}</span>
       </div>
-      <BuilderGrid onClick={selectBuilder} data={props.data.builders}/>
+      <BuilderGrid onClick={selectBuilder} builders={props.data.builders}/>
       <BuilderDataTable buildSteps={builder.buildSteps}/>
     </div>
   );
