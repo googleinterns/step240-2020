@@ -62,7 +62,7 @@ export const BuildSnapshot = (props) => {
  * @param {string} props.data[].status - The status of the build.
  */
 const Header = (props) => {
-  const headerClassName = 'snapshot-header';
+  let headerClassName = 'snapshot-header';
   if (props.isOpen === true) {
     headerClassName = 'snapshot-header active';
   }
