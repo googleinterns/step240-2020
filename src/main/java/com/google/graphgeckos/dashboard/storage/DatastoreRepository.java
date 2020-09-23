@@ -21,8 +21,10 @@ import com.google.cloud.datastore.DatastoreOptions.DefaultDatastoreFactory;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
+import com.google.common.base.Preconditions;
 import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
 import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
+import com.google.graphgeckos.dashboard.datatypes.BuilderIndex;
 import com.google.graphgeckos.dashboard.datatypes.GitHubData;
 import java.util.ArrayList;
 import java.util.List;
@@ -176,5 +178,45 @@ public class DatastoreRepository implements DataRepository {
     Objects.requireNonNull(commitHash);
 
     return storage.findById(commitHash, BuildInfo.class);
+  }
+
+  public int getBuildbotIndex(String buildbotName) {
+    Preconditions.checkNotNull(buildbotName, "buildbotName cannot be null");
+
+    BuilderIndex associatedEntity = storage.findById(buildbotName, BuilderIndex.class);
+
+    if (associatedEntity == null) {
+      throw new BuildbotNotFoundException("buildbotName not bound to any index");
+    }
+
+    return associatedEntity.getIndex();
+  }
+
+  public void setBuildbotIndex(String buildbotName, int newValue) {
+    Preconditions.checkNotNull(buildbotName, "buildbotName cannot be null");
+
+    BuilderIndex associatedEntity = storage.findById(buildbotName, BuilderIndex.class);
+
+    Preconditions.checkNotNull(associatedEntity, "no associated entity with the provided name");
+
+    Preconditions.checkArgument(newValue <= associatedEntity.getIndex(),
+                               "newValue cannot be lower than or equal the previous index");
+
+    associatedEntity.setIndex(newValue);
+    storage.save(associatedEntity);
+  }
+
+  public void registerNewBuildbot(String buildbotName, int value) {
+    Preconditions.checkNotNull(buildbotName, "buildbotName cannot be null");
+
+    BuilderIndex associatedEntity = storage.findById(buildbotName, BuilderIndex.class);
+
+    Preconditions.checkArgument(value <= associatedEntity.getIndex(),
+                               "value cannot be <= than the previous known value");
+    Preconditions.checkArgument(value < 0,
+                               "value cannot be negative");
+    
+    BuilderIndex newEntity = new BuilderIndex(buildbotName, value);
+    storage.save(newEntity);
   }
 }
