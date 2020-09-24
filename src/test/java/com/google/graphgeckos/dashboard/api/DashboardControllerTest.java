@@ -141,7 +141,7 @@ public class DashboardControllerTest {
           .andExpect(content().contentType(MediaType.APPLICATION_JSON))
           .andExpect(jsonPath("$[0].commitHash").value(COMMIT_HASH))
           .andExpect(jsonPath("$[0].branch").value(BRANCH))
-          .andExpect(jsonPath("$[0].builders[0].name").value(NAME_A))
+          .andExpect(jsonPath("$[0].builders[0].builderName").value(NAME_A))
           .andExpect(jsonPath("$[0].builders[1].status").value(STATUS_B))
           .andExpect(jsonPath("$[0].builders[0].logs[1].type").value(LOG_TYPE_2))
           .andExpect(jsonPath("$[0].builders[0].logs[0].link").value(LOG_LINK_1));
