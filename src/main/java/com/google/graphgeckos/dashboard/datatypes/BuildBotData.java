@@ -135,8 +135,13 @@ public class BuildBotData {
    */
   @JsonProperty("steps")
   private void unpackSteps(List<Map<String, Object>> steps) {
+    for(Map<String, ?> step : steps) {
+      List<?> text = step.get("text");
+      String textString = Arrays.toString(text); 
+      this.bui
+    }
     steps.forEach(step -> this.buildSteps.add(new BuildStep(
-      step.get("step_number"), Arrays.toString(step.get("text")),
+      step.get("step_number"), textString),
       step.get("isFinished"), step.get("logs")
     )));
   }
