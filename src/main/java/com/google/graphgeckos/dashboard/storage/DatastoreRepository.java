@@ -242,9 +242,11 @@ public class DatastoreRepository implements DataRepository {
 
     BuilderIndex associatedEntity = storage.findById(buildbotName, BuilderIndex.class);
 
-    checkArgument(value <= associatedEntity.getIndex(),
-                               "value cannot be <= than the previous known value");
-    checkArgument(value < 0, "value cannot be negative");
+    if (associatedEntity != null) {
+      checkArgument(value >= associatedEntity.getIndex(),
+                                "value cannot be < than the previous known value");
+    }
+    checkArgument(value >= 0, "value cannot be negative");
     
     BuilderIndex newEntity = new BuilderIndex(buildbotName, value);
     storage.save(newEntity);
