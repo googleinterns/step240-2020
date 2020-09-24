@@ -153,9 +153,6 @@ ul {
 /* Pagination Button Element when hidden */
 .hiddenButton {
   background: transparent;
-  border-width: 0 var(--button-size) var(--button-size) 0;
-  float: right;
-  padding: var(--button-size);
 }
 
 /* Pagination Button Element when visible */
