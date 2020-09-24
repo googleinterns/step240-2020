@@ -13,12 +13,9 @@
 // limitations under the License.
 
 package com.google.graphgeckos.dashboard.datatypes;
-
 import java.util.Arrays;
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Field;
 import org.springframework.lang.NonNull;
