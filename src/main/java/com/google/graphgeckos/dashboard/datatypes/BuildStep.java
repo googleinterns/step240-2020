@@ -107,7 +107,7 @@ public class BuildStep {
   /**
    * Returns an array of the logs associated with this step. Can be null.
    */
-  public Log[] getLogs() {
+  public List<Log> getLogs() {
     return this.logs;
   }
 
