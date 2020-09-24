@@ -1,3 +1,18 @@
+/* Copyright 2020 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+*/
+
 @import url(https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap);
 
 /* Base Styling */
@@ -57,7 +72,8 @@ ul {
 
 .build-snapshot {
   color: var(--primary);
-  border-radius: 1rem;
+  border: 0.25rem var(--primary) solid;
+  border-radius: 0.5rem;
   flex: 1;
   font-size: 1rem;
 }
@@ -79,14 +95,16 @@ ul {
 
 .snapshot-header {
   align-items: center;
-  border: 0.25rem var(--primary) solid;
-  box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.25);
-  border-radius: 0.5rem;
   color: var(--primary);
   display: flex;
   gap: 1rem;
   justify-content: space-between;
-  padding: 0.75rem 2rem;
+  padding: .75rem 2rem;
+}
+
+.snapshot-tray {
+  display: grid;
+  grid: min-content 1fr / repeat(2, 1fr);
 }
 
 .header-wrap {
@@ -98,6 +116,16 @@ ul {
 .header-toggle {
   height: 1.5rem;
   width: 1.5rem;
+  transition: 300ms transform ease-in-out;
+}
+
+/* Rotate the toggle icon to face downwards when the snapshot is open */
+.snapshot-header.active > .header-toggle {
+  transform: rotate(90deg);
+}
+
+.snapshot-header.active {
+  border-bottom: .25rem var(--primary) solid;
 }
 
 .header-hash {
@@ -112,4 +140,58 @@ ul {
 .header-status {
   font-style: italic;
   text-transform: uppercase;
+}
+
+.data-table {
+  border-bottom-right-radius: 0.75rem;
+  border-collapse: collapse;
+  overflow: hidden;
+  text-align: center;
+}
+
+.data-table tr > * {
+  border: 0.25rem var(--primary) solid;
+  border-bottom: none;
+  border-top: none;
+}
+
+.data-table tr > *:nth-last-child(-n+2) {
+  border: none;
+}
+
+.builder-grid {
+  display: grid;
+  gap: 0.5rem;
+  grid: auto / repeat(3, 1fr);
+  margin: 1rem;
+}
+
+.builder {
+  align-items: center;
+  background: var(--primary);
+  border-radius: 0.25rem;
+  color: black;
+  display: flex;
+  gap: 0.5rem;
+  overflow: hidden;
+  padding: 0.2rem 1rem;
+  white-space: nowrap;
+}
+
+.indicator {
+  border-radius: 1rem;
+  min-height: 0.5rem;
+  min-width: 0.5rem;
+}
+
+/* The first row of the tray */
+.snapshot-tray > *:nth-child(-n+2) {
+  border-bottom: 0.25rem var(--primary) solid;
+  padding: 0.5rem;
+}
+
+/* Message Element in BuildSnapshot Container*/
+.loader {
+  padding: 1rem 0;
+  text-align: center;
 }

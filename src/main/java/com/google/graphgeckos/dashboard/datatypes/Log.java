@@ -41,11 +41,6 @@ public class Log {
     this.link = link;
   }
 
-  public Log(String[] logComponents) {
-    this.type = logComponents[0];
-    this.link = logComponents[1];
-  }
-
   public String getType() {
     return type;
   }

@@ -14,6 +14,9 @@
 
 package com.google.graphgeckos.dashboard.storage;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreException;
 import com.google.cloud.datastore.DatastoreOptions;
@@ -23,10 +26,10 @@ import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
 import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
 import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
+import com.google.graphgeckos.dashboard.datatypes.BuilderIndex;
 import com.google.graphgeckos.dashboard.datatypes.GitHubData;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Supplier;
 import org.springframework.cloud.gcp.data.datastore.core.DatastoreTemplate;
 import org.springframework.cloud.gcp.data.datastore.core.convert.DatastoreServiceObjectToKeyFactory;
@@ -52,8 +55,14 @@ import org.springframework.stereotype.Repository;
 public class DatastoreRepository implements DataRepository {
   private DatastoreTemplate storage;
 
+  /**
+   * Constructs a DatastoreRepository which uses {@code underlyingStorage} as the database
+   * interface which ultimately handles the requests.
+   * 
+   * @throws NullPointerException if {@code underlyingStorage} is null
+   */
   public DatastoreRepository(@NonNull Datastore underlyingStorage) {
-    Objects.requireNonNull(underlyingStorage);
+    checkNotNull(underlyingStorage);
 
     Supplier<Datastore> supplier = () -> underlyingStorage;
 
@@ -75,11 +84,11 @@ public class DatastoreRepository implements DataRepository {
   /**
    * {@inheritDoc}
    *
-   * @throws NullPointerException if the {@code entryData} is null.
+   * @throws NullPointerException if {@code entryData} is null.
    */
   @Override
   public boolean createRevisionEntry(@NonNull GitHubData entryData) {
-    Objects.requireNonNull(entryData);
+    checkNotNull(entryData);
 
     if (getRevisionEntry(entryData.getCommitHash()) != null) {
       return false;
@@ -97,11 +106,11 @@ public class DatastoreRepository implements DataRepository {
   /**
    * {@inheritDoc}
    *
-   * @throws NullPointerException if the {@code updateData} is null.
+   * @throws NullPointerException if {@code updateData} is null.
    */
   @Override
   public boolean updateRevisionEntry(@NonNull BuildBotData updateData) {
-    Objects.requireNonNull(updateData);
+    checkNotNull(updateData);
 
     BuildInfo associatedEntity = getRevisionEntry(updateData.getCommitHash());
 
@@ -122,11 +131,11 @@ public class DatastoreRepository implements DataRepository {
   /**
    * {@inheritDoc}
    *
-   * @throws NullPointerException if the {@code commitHash} is null.
+   * @throws NullPointerException if {@code commitHash} is null.
    */
   @Override
   public boolean deleteRevisionEntry(@NonNull String commitHash) {
-    Objects.requireNonNull(commitHash);
+    checkNotNull(commitHash);
 
     BuildInfo toBeDeleted = getRevisionEntry(commitHash);
 
@@ -146,13 +155,13 @@ public class DatastoreRepository implements DataRepository {
 
   /**
    * {@inheritDoc}
+   * 
+   * @throws IllegalArgumentException if either number or offset are < 0
    */
   @Override
-  public List<BuildInfo> getLastRevisionEntries(int number, int offset)
-                                                         throws IllegalArgumentException {
-    if (number < 0 || offset < 0) {
-      throw new IllegalArgumentException("Both number and offset must be >= 0");
-    }
+  public List<BuildInfo> getLastRevisionEntries(int number, int offset) {
+    checkArgument(number >= 0, "number must be >= 0");
+    checkArgument(offset >= 0, "offset must be >= 0");
 
     Query<Entity> query = Query.newEntityQueryBuilder()
                                .setKind("revision")
@@ -169,12 +178,75 @@ public class DatastoreRepository implements DataRepository {
   /**
    * {@inheritDoc}
    *
-   * @throws NullPointerException if the {@code commitHash} is null.
+   * @throws NullPointerException if the {@code commitHash} is null
    */
   @Override
   public BuildInfo getRevisionEntry(@NonNull String commitHash) {
-    Objects.requireNonNull(commitHash);
+    checkNotNull(commitHash);
 
     return storage.findById(commitHash, BuildInfo.class);
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @throws IllegalArgumentException if {@code buildbotName} is null
+   * @throws BuildbotNotFound if there is no "index" entry related to the name provided
+   */
+  @Override
+  public int getBuildbotIndex(@NonNull String buildbotName) {
+    checkNotNull(buildbotName);
+
+    BuilderIndex associatedEntity = storage.findById(buildbotName, BuilderIndex.class);
+
+    if (associatedEntity == null) {
+      throw new BuildbotNotFoundException("buildbotName not bound to any index");
+    }
+
+    return associatedEntity.getIndex();
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @throws IllegalArgumentException if {@code buildbotName} is null or there is no "index" entry
+   *      with that key
+   * @throws IndexOutOfBoundsException if newValue is lower or equal than the previous
+   *      recorded value
+   */
+  @Override
+  public void setBuildbotIndex(@NonNull String buildbotName, int newValue) {
+    checkNotNull(buildbotName);
+
+    BuilderIndex associatedEntity = storage.findById(buildbotName, BuilderIndex.class);
+
+    checkNotNull(associatedEntity, "no associated entity with the provided name");
+
+    checkArgument(newValue <= associatedEntity.getIndex(),
+                               "newValue cannot be lower than or equal the previous index");
+
+    associatedEntity.setIndex(newValue);
+    storage.save(associatedEntity);
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @throws IllegalArgumentException if {@code name} is null
+   * @throws IndexOutOfBoundsException if value is negative when creating a new entry, or if value
+   *      is lower or equal than the previous recorded value
+   */
+  @Override
+  public void registerNewBuildbot(@NonNull String buildbotName, int value) {
+    checkNotNull(buildbotName);
+
+    BuilderIndex associatedEntity = storage.findById(buildbotName, BuilderIndex.class);
+
+    checkArgument(value <= associatedEntity.getIndex(),
+                               "value cannot be <= than the previous known value");
+    checkArgument(value < 0, "value cannot be negative");
+    
+    BuilderIndex newEntity = new BuilderIndex(buildbotName, value);
+    storage.save(newEntity);
   }
 }

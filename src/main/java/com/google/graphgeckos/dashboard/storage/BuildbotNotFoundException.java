@@ -12,13 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import * as React from "react";
-import {render} from "react-dom";
-import {App} from "./App";
+package com.google.graphgeckos.dashboard.storage;
 
-// Render our App Component to element with ID == target
-const target = 'root';
-render (
-  <App name = 'Sam'/>,
-  document.getElementById(target)
-);
+/**
+ * This exception signals that a request has been made for an "index" entry to the database
+ * but there is no entry with that key.
+ */
+public class BuildbotNotFoundException extends IllegalArgumentException {
+  public BuildbotNotFoundException(String exceptionMessage) {
+    super(exceptionMessage);
+  }
+}
