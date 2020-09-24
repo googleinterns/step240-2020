@@ -60,7 +60,7 @@ public class BuildStep {
    * @param isStarted - indicates if the step has been initiated.
    * @param logs - the logs associated with the build step.
    */
-  BuildStep(String name, String[] text, boolean isFinished, boolean isStarted, Log[] logs) {
+  BuildStep(String name, String[] text, boolean isFinished, boolean isStarted, List<Log> logs) {
     this.name = name;
     this.text = Arrays.toString(text);
     this.isFinished = isFinished;
