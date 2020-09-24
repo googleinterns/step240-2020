@@ -17,6 +17,7 @@ package com.google.graphgeckos.dashboard.datatypes;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.cloud.Timestamp;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -132,9 +133,12 @@ public class BuildBotData {
    *
    * @param logs Representation of the json component, where the logs are located
    */
-  @JsonProperty("step_number")
-  private void unpackLogs(List<List<String>> logs) {
-    logs.forEach(x -> this.logs.add(new Log(x.get(0), x.get(1))));
+  @JsonProperty("steps")
+  private void unpackLogs(List<Map<String, Object>> steps) {
+    steps.forEach(step -> this.buildSteps.add(new BuildStep(
+      step.get("step_number"), Arrays.toString(step.get("text")),
+      step.get("isFinished"), step.get("logs")
+    )));
   }
 
   @NonNull
