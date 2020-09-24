@@ -17,7 +17,6 @@ package com.google.graphgeckos.dashboard.datatypes;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.cloud.Timestamp;
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -134,16 +133,32 @@ public class BuildBotData {
    * @param logs Representation of the json component, where the logs are located
    */
   @JsonProperty("steps")
-  private void unpackSteps(List<Map<String, Object>> steps) {
+  private void unpackSteps(List<Map<String, ?>> steps) {
     for(Map<String, ?> step : steps) {
-      List<?> text = step.get("text");
-      String textString = Arrays.toString(text); 
-      this.bui
+
+      int stepNumber = (int) step.get("step_number");
+
+      List<?> textList = (List<?>) step.get("text");
+      String text = "";
+      StringBuilder sb = new StringBuilder();
+      textList.forEach(t -> sb.append(t).append(' '));
+      text = sb.toString();
+
+      String name = step.get("name").toString();
+      boolean isFinished = (boolean) step.get("isFinished");
+      boolean isStarted = (boolean) step.get("isStarted");
+
+      List<?> logList = (List<?>) step.get("logs");
+      List<Log> logs = new ArrayList<Log>();
+      logList.forEach(log -> {
+        List<?> listlog = (List<?>) log;
+        logs.add(new Log(listlog.get(0).toString(), listlog.get(1).toString()));
+      });
+
+      this.buildSteps.add(new BuildStep(
+        stepNumber, name, text, isFinished, isStarted, logs
+      ));
     }
-    steps.forEach(step -> this.buildSteps.add(new BuildStep(
-      step.get("step_number"), textString),
-      step.get("isFinished"), step.get("logs")
-    )));
   }
 
   @NonNull
