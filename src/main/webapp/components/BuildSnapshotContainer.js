@@ -24,7 +24,7 @@ export const BuildSnapshotContainer = React.memo((props) =>
     const SOURCE = `/builders/number=${NUMBER}/offset=${OFFSET}`;
 
     /**
-     * Moves pageNumber with a set increment
+     * Moves pageNumber with a set increment.
      *
      * @param increment is how many pages to jump over
      *     (negative values for going back)
