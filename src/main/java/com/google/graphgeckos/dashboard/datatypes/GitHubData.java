@@ -16,15 +16,15 @@ public class GitHubData {
 
   private String repositoryLink;
 
-  /**
-   * Extracts commit id (also known as commit hash) and timestamp nested fields from the data of the head_commit
-   * field.
-   * @param headCommit representation of the head_commit field of the GitHub API request json.
-   */
-  @JsonProperty("head_commit")
-  private void unpackHeadCommit(Map<String, Object> headCommit) {
-    commitHash = headCommit.get("id").toString();
-    timestamp = headCommit.get("timestamp").toString();
+  @JsonProperty("sha")
+  private void unpackCommitHash(String sha) {
+    this.commitHash = sha;
+  }
+
+  @JsonProperty("commit")
+  private void unpackTimeStamp(Map<String, ?> headCommit) {
+    Map<?, ?> author = (Map<?, ?>) headCommit.get("author");
+    this.timestamp = author.get("date").toString();
   }
 
   /**
