@@ -13,7 +13,7 @@ export const BuildSnapshotContainer = React.memo((props) =>
     const [data, setData] = React.useState([]);
 
     // Number of entries to be pulled. 20 seems reasonable enough.
-    // TODO: Add options for this number on paginationNavbar
+    // TODO: Add options for this number on paginationNavbar.
     const NUMBER = 20;
 
     // The starting point from which the entries are selected.
