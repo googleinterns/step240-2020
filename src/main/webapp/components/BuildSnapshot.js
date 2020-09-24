@@ -62,8 +62,13 @@ export const BuildSnapshot = (props) => {
  * @param {string} props.data[].status - The status of the build.
  */
 const Header = (props) => {
+  let headerClassName = 'snapshot-header';
+  if (props.isOpen === true) {
+    headerClassName = 'snapshot-header active';
+  }
+
   return (
-    <div className='snapshot-header' onClick={() => props.onClick(!props.isOpen)}>
+    <div className={headerClassName} onClick={() => props.onClick(!props.isOpen)}>
       <img className='header-toggle' src={toggleIcon}/>
       <span className='header-hash'>{props.data.commitHash}</span>
       <span className='header-description'>{props.data.description}</span>
