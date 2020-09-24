@@ -85,6 +85,7 @@ public class BuildStep {
   /**
    * Returns the order of the step. Value always >= 0.
    */
+  @NonNull
   public int getStepNumber() {
     return this.stepNumber;
   }
@@ -92,6 +93,7 @@ public class BuildStep {
   /**
    * Returns a boolean indicating if the step has been started.
    */
+  @NonNull
   public boolean isStarted() {
     return this.isStarted;
   }
@@ -99,6 +101,7 @@ public class BuildStep {
   /**
    * Returns a boolean indicating if the step has been completed.
    */
+  @NonNull
   public boolean isFinished() {
     return this.isFinished;
   }
