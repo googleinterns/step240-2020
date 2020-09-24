@@ -57,7 +57,7 @@ public class BuildBotData {
    *      com.google.graphgeckos.dashboard.storage.BuildStep BuildStep}
    */
   @Field(name = "steps")
-  private List<BuildStep> steps = new ArrayList<>();
+  private List<BuildStep> buildSteps = new ArrayList<>();
 
   /**
    * Builder compilation status, as described by {@link BuilderStatus}.
