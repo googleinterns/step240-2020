@@ -4,10 +4,10 @@
 
 :root {
   --background: #0c0d25;
+  --button-size: .3125rem;
   --failed: #dc4f4f;
   --passed: #4fdc7f;
   --primary: white;
-  --button-size: .3125rem;
   font-size: 16px;
 }
 
