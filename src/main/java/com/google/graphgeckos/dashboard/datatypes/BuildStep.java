@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
+import org.springframework.cloud.gcp.data.datastore.core.mapping.Field;
+import org.springframework.lang.NonNull;
 
 /**
  * Contains the information for an individual step of a build.
@@ -27,27 +29,27 @@ import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 public class BuildStep {
 
   // Order of the step
-  @Field(name="step_number")
+  @Field(name = "step_number")
   private int stepNumber;
 
   // BuildStep name (e.g "clean-src-dir")
-  @Field(name="name")
+  @Field(name = "name")
   private String name;
 
   // BuildStep text (e.g "clean-src-dir skipped")
-  @Field(name="text")
+  @Field(name = "text")
   private String text;
 
   // Indicator of whether or not the step is complete
-  @Field(name="isFinished")
+  @Field(name = "isFinished")
   private boolean isFinished;
 
   // Indicator of whether or not the step has started
-  @Field(name="isStarted")
+  @Field(name = "isStarted")
   private boolean isStarted;
 
   // All the logs associated with this step
-  @Field(name="logs")
+  @Field(name = "logs")
   private List<Log> logs;
 
   /**
