@@ -126,11 +126,9 @@ public class BuildBotData {
   }
 
   /**
-   * Unpacks logs represented as list of lists of two strings,
-   * where the first one is a type of the log and the second one
-   * is a link to the log.
+   * Unpacks the build steps represented as JSON
    *
-   * @param logs Representation of the json component, where the logs are located
+   * @param steps Representation of component where the steps are found.
    */
   @JsonProperty("steps")
   private void unpackSteps(List<Map<String, ?>> steps) {
