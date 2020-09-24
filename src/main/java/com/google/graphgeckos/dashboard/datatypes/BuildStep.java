@@ -65,7 +65,7 @@ public class BuildStep {
     this.text = Arrays.toString(text);
     this.isFinished = isFinished;
     this.isStarted = isStarted;
-    this.logs = Arrays.asList(logs);
+    this.logs = logs;
   }
 
   /**
