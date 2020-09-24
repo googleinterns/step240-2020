@@ -4,7 +4,7 @@ public class BuildBotSetUpData {
 
   // Name of the BuildBot
   public final String name;
-  
+
   // Build id from where to start fetching.
   public final long initialId;
 

@@ -12,8 +12,10 @@ public class BuildBotSetUpReaderTest {
   private final BuildBotSetUpData BOT_A = new BuildBotSetUpData("clang-x86_64-debian-fast", 600, 0);
   private final BuildBotSetUpData BOT_B = new BuildBotSetUpData("mlir-nvidia", 600, 0);
 
+  // Given: json with info of two BuildBots.
+  // Expected: a list of two properly parsed BuildBot.
   @Test
-  public void deserializeDataToExpectedListOfBuildBotSetUpData() {
+  public void parsesGivenConfigFileProperlyIntoBuildBotSetUpData() {
     BuildBotSetUpReader.setJsonPath("src/test/resources/jsons/reader/input_just_json.txt");
     List<BuildBotSetUpData> result = BuildBotSetUpReader.read();
     BuildBotSetUpData botA = result.get(0);
