@@ -17,6 +17,8 @@ package com.google.graphgeckos.dashboard.datatypes;
 import java.util.Arrays;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Field;
 import org.springframework.lang.NonNull;
@@ -25,6 +27,7 @@ import org.springframework.lang.NonNull;
  * Contains the information for an individual step of a build.
  */
 @Entity(name = "buildStep")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BuildStep {
 
   // Order of the step
