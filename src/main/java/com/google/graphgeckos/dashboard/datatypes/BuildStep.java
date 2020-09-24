@@ -149,7 +149,7 @@ public class BuildStep {
     }
 
     BuildStep other = (BuildStep) o;
-    return stepNumber.equals(other.stepNumber);
+    return stepNumber == other.stepNumber;
   }
 
 }
