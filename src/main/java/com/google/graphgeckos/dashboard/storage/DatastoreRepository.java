@@ -197,9 +197,11 @@ public class DatastoreRepository implements DataRepository {
 
     BuilderIndex associatedEntity = storage.findById(buildbotName, BuilderIndex.class);
 
-    Preconditions.checkNotNull(associatedEntity, "no associated entity with the provided name");
+    if (associatedEntity == null) {
+      throw new BuildbotNotFoundException("buildbotName not bound to any index");
+    }
 
-    Preconditions.checkArgument(newValue <= associatedEntity.getIndex(),
+    Preconditions.checkArgument(newValue > associatedEntity.getIndex(),
                                "newValue cannot be lower than or equal the previous index");
 
     associatedEntity.setIndex(newValue);
@@ -211,9 +213,11 @@ public class DatastoreRepository implements DataRepository {
 
     BuilderIndex associatedEntity = storage.findById(buildbotName, BuilderIndex.class);
 
-    Preconditions.checkArgument(value <= associatedEntity.getIndex(),
-                               "value cannot be <= than the previous known value");
-    Preconditions.checkArgument(value < 0,
+    if (associatedEntity != null) {
+      Preconditions.checkArgument(value >= associatedEntity.getIndex(),
+                                "value cannot be < than the previous known value");
+    }
+    Preconditions.checkArgument(value >= 0,
                                "value cannot be negative");
     
     BuilderIndex newEntity = new BuilderIndex(buildbotName, value);
