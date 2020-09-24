@@ -145,7 +145,9 @@ public class BuildBotData {
       text = sb.toString();
 
       String name = step.get("name").toString();
+
       boolean isFinished = (boolean) step.get("isFinished");
+
       boolean isStarted = (boolean) step.get("isStarted");
 
       List<?> logList = (List<?>) step.get("logs");
