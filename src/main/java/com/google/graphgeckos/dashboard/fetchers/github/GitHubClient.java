@@ -72,7 +72,7 @@ public class GitHubClient {
       .uri("/")
       .accept(MediaType.APPLICATION_JSON)
       .retrieve()
-      .bodyToMono(String.class)
+      .bodyToMono(GitHubData.class)
       .delaySubscription(Duration.ofSeconds(delay))
       .onErrorResume(e -> {
         logger.info("Ignoring error: " + e.getMessage());
@@ -80,7 +80,7 @@ public class GitHubClient {
       })
       .repeat()
       .subscribe(response -> {
-        if (response.isEmpty()) {
+        if (response == null) {
           logger.info(
             String.format("GitHub: Error occurred, waiting for %d seconds", delay));
           return;
