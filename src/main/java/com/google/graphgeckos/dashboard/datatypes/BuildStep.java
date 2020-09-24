@@ -52,7 +52,7 @@ public class BuildStep {
   private List<Log> logs;
 
   /**
-   * Name, text and logs can be null
+   * Text and logs can be null
    * @param name - name of the build step
    * @param text - output text related to step's build status
    * @param isFinished - indicates if the step has been completed
