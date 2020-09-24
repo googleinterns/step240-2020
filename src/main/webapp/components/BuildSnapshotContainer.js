@@ -66,10 +66,13 @@ export const BuildSnapshotContainer = React.memo((props) =>
 
     return (
       <>
+        <div id='pagination-navbar-top'>
+          {paginationNavbar}
+        </div>
         <div id='build-snapshot-container'>
           {content}
         </div>
-        <div id='pagination-navbar'>
+        <div id='pagination-navbar-bottom'>
           {paginationNavbar}
         </div>
       </>
