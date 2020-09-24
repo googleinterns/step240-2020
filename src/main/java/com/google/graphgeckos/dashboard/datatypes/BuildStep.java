@@ -64,7 +64,7 @@ public class BuildStep {
    */
   BuildStep(String name, String text, boolean isFinished, boolean isStarted, List<Log> logs) {
     this.name = name;
-    this.text = Arrays.toString(text);
+    this.text = text;
     this.isFinished = isFinished;
     this.isStarted = isStarted;
     this.logs = logs;
