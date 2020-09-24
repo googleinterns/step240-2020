@@ -25,7 +25,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import java.time.Duration;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
 /** A (external) BuildBot API json data fetcher. */
