@@ -138,6 +138,8 @@ public class BuildBotData {
 
       List<?> textList = (List<?>) step.get("text");
       String text = "";
+      
+      // Flatten textList to String
       StringBuilder sb = new StringBuilder();
       textList.forEach(t -> sb.append(t).append(' '));
       text = sb.toString();
