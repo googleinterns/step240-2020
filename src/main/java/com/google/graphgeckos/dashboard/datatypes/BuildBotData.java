@@ -134,7 +134,7 @@ public class BuildBotData {
    * @param logs Representation of the json component, where the logs are located
    */
   @JsonProperty("steps")
-  private void unpackLogs(List<Map<String, Object>> steps) {
+  private void unpackSteps(List<Map<String, Object>> steps) {
     steps.forEach(step -> this.buildSteps.add(new BuildStep(
       step.get("step_number"), Arrays.toString(step.get("text")),
       step.get("isFinished"), step.get("logs")
