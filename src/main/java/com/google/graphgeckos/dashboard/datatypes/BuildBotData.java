@@ -150,11 +150,12 @@ public class BuildBotData {
 
       boolean isStarted = (boolean) step.get("isStarted");
 
-      List<?> logList = (List<?>) step.get("logs");
       List<Log> logs = new ArrayList<Log>();
-      logList.forEach(log -> {
-        List<?> listlog = (List<?>) log;
-        logs.add(new Log(listlog.get(0).toString(), listlog.get(1).toString()));
+      List<?> rawLogs = (List<?>) step.get("logs");
+
+      rawLogs.forEach(rawLog -> {
+        List<?> log = (List<?>) rawLog;
+        logs.add(new Log(log.get(0).toString(), log.get(1).toString()));
       });
 
       this.buildSteps.add(new BuildStep(
