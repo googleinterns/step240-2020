@@ -20,7 +20,7 @@ export const BuildSnapshotContainer = React.memo((props) =>
     // Relative to the starting index.
     const OFFSET = NUMBER * pageNumber;
 
-    // The endpoint from where we get data from
+    // The endpoint from where we get data from.
     const SOURCE = `/builders/number=${NUMBER}/offset=${OFFSET}`;
 
     /**
