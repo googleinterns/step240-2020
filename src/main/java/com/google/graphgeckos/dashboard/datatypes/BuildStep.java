@@ -31,7 +31,7 @@ import org.springframework.lang.NonNull;
 public class BuildStep {
 
   // Order of the step
-  @Field(name = "step_number")
+  @Field(name = "stepNumber")
   private int stepNumber;
 
   // BuildStep name (e.g "clean-src-dir")
@@ -62,7 +62,7 @@ public class BuildStep {
    * @param isStarted - indicates if the step has been initiated
    * @param logs - the logs associated with the build step
    */
-  BuildStep(String name, String text, boolean isFinished, boolean isStarted, List<Log> logs) {
+  BuildStep(int stepNumber, String name, String text, boolean isFinished, boolean isStarted, List<Log> logs) {
     this.name = name;
     this.text = text;
     this.isFinished = isFinished;
