@@ -222,8 +222,8 @@ public class DatastoreRepository implements DataRepository {
 
     checkNotNull(associatedEntity, "no associated entity with the provided name");
 
-    checkArgument(newValue <= associatedEntity.getIndex(),
-                               "newValue cannot be lower than or equal the previous index");
+    checkArgument(newValue >= associatedEntity.getIndex(),
+                               "newValue cannot be lower than the previous index");
 
     associatedEntity.setIndex(newValue);
     storage.save(associatedEntity);
