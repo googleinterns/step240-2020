@@ -7,6 +7,7 @@
   --failed: #dc4f4f;
   --passed: #4fdc7f;
   --primary: white;
+  --button-size: .3125rem;
   font-size: 16px;
 }
 
@@ -143,32 +144,36 @@ ul {
   padding: 0.5rem;
 }
 
-/* Message Element in BuildSnapshot Container*/
+/* Message Element in BuildSnapshot Container */
 .loader {
   padding: 1rem 0;
   text-align: center;
 }
 
+/* Pagination Button Element when hidden */
 .hiddenButton {
-  border: solid #333;
-  border-width: 0 5px 5px 0;
+  background: transparent;
+  border-width: 0 var(--button-size) var(--button-size) 0;
   float: right;
-  padding: 5px;
+  padding: var(--button-size);
 }
 
+/* Pagination Button Element when visible */
 .paginationButton {
-  border: solid white;
-  border-width: 0 5px 5px 0;
+  border: solid var(--primary);
+  border-width: 0 var(--button-size) var(--button-size) 0;
   float: right;
-  padding: 5px;
+  padding: var(--button-size);
 }
 
+/* Proper rotation and position properties for the previous page button */
 .prevPage {
   margin: 0 3rem 0 0;
   transform: rotate(135deg);
   -webkit-transform: rotate(135deg);
 }
 
+/* Proper rotation and position properties for the next page button */
 .nextPage {
   margin: 0 -3rem 0 0;
   transform: rotate(-45deg);
