@@ -18,7 +18,7 @@ import com.google.cloud.Timestamp;
 import com.google.graphgeckos.dashboard.datatypes.GitHubData;
 import com.google.graphgeckos.dashboard.datatypes.BuilderStatus;
 import com.google.graphgeckos.dashboard.datatypes.Log;
-import com.google.graphgeckos.dashboard.fetchers.buildbot.GitHubClient;
+import com.google.graphgeckos.dashboard.fetchers.github.GitHubClient;
 import com.google.graphgeckos.dashboard.storage.DatastoreRepository;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
@@ -53,7 +53,7 @@ public class GitHubClientTest {
   @Mock
   DatastoreRepository datastoreRepository;
 
-  private final String VALID_MASTER = "input_llvm_master_json";
+  private final String VALID_MASTER = "llvm_master_json";
 
   private GitHubJsonTestInfo LLVM_MASTER = new GitHubJsonTestInfo(VALID_MASTER);
 
@@ -81,40 +81,12 @@ public class GitHubClientTest {
         MediaType.APPLICATION_JSON_VALUE)
       .setBody(LLVM_MASTER.getContent());
 
-    /**
-     * Response when the {@code VALID_BUILD_BOT_NAME_FUCHSIA} data is requested. Status NOT FOUND (404).
-     */
-    private final MockResponse PAGE_NOT_FOUND_RESPONSE = new MockResponse()
-      .setResponseCode(404)
-      .setHeader(
-        HttpHeaders.CONTENT_TYPE,
-        MediaType.APPLICATION_JSON_VALUE);
-
-    /**
-     * Response when the {@code VALID_BUILD_BOT_NAME_FUCHSIA} data is requested. Status OK (200).
-     * Responds with empty JSON.
-     */
-    private final MockResponse EMPTY_JSON_RESPONSE = new MockResponse()
-      .setResponseCode(200)
-      .setHeader(
-        HttpHeaders.CONTENT_TYPE,
-        MediaType.APPLICATION_JSON_VALUE)
-      .setBody(EMPTY_JSON);
-
     @Override
     public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
 
       /* Expected form of the request url: baseUrl/buildBot/builds/buildId?as_text=1 . */
       if (request.getPath().contains(VALID_MASTER)) {
           return LLVM_MASTER_RESPONSE;
-      }
-
-      if (request.getPath().contains(NOT_FOUND_BUILD_BOT_NAME)) {
-        return PAGE_NOT_FOUND_RESPONSE;
-      }
-
-      if (request.getPath().contains(EMPTY_JSON_BUILD_BOT_NAME)) {
-        return EMPTY_JSON_RESPONSE;
       }
 
       /*
@@ -196,7 +168,7 @@ public class GitHubClientTest {
    */
   @Test
   public void validResponseCausesUpdateCallToRepositoryWithValidArgument() {
-    client.run(VALID_MASTER, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
+    client.run(DELAY_ONE_SECOND);
 
     // Wait to check if the datastoreRepository::createRevisionEntry was called
     // because it takes time to get a response from server.
@@ -212,7 +184,7 @@ public class GitHubClientTest {
    */
   @Test
   public void serverErrorDoesNotCauseToRepository() throws Exception {
-    client.run(NOT_FOUND_BUILD_BOT_NAME, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
+    client.run(DELAY_ONE_SECOND);
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 3;
     Mockito.verify(datastoreRepository, Mockito.after(delay).never()).createRevisionEntry(Mockito.any());
   }
@@ -223,7 +195,7 @@ public class GitHubClientTest {
    */
   @Test
   public void emptyJsonResponseDoesNotCauseCallToRepository() throws Exception {
-    client.run(EMPTY_JSON_BUILD_BOT_NAME, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
+    client.run(DELAY_ONE_SECOND);
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 3;
     Mockito.verify(datastoreRepository, Mockito.after(delay).never()).createRevisionEntry(Mockito.any());
   }
@@ -233,7 +205,7 @@ public class GitHubClientTest {
    */
   @Test
   public void twoValidResponsesCauseTwoCallsToRepository() throws Exception {
-    client.run(VALID_MASTER, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
+    client.run(DELAY_ONE_SECOND);
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 5;
     Mockito.verify(datastoreRepository, Mockito.timeout(delay).atLeast(2)).createRevisionEntry(Mockito.any());
   }
