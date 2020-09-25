@@ -19,7 +19,7 @@ public class DashboardApplication {
   public static void main(String[] args) {
     SpringApplication.run(DashboardApplication.class, args);
 
-    List<BuildBotSetUpData> buildBotToRun = BuildBotSetUpReader.read();
+    List<BuildBotSetUpData> buildBotToRun = new BuildBotSetUpReader().read();
     if (buildBotToRun == null) {
       throw new IllegalArgumentException("List of BuildBots to run can't be null. Check the config file.");
     }

@@ -16,8 +16,9 @@ public class BuildBotSetUpReaderTest {
   // Expected: a list of two properly parsed BuildBot.
   @Test
   public void parsesGivenConfigFileProperlyIntoBuildBotSetUpData() {
-    BuildBotSetUpReader.setJsonPath("src/test/resources/jsons/reader/input_just_json.txt");
-    List<BuildBotSetUpData> result = BuildBotSetUpReader.read();
+    String filePath = "src/test/resources/jsons/reader/input_just_json.txt";
+    BuildBotSetUpReader reader = new BuildBotSetUpReader(filePath);
+    List<BuildBotSetUpData> result = reader.read();
     BuildBotSetUpData botA = result.get(0);
     BuildBotSetUpData botB = result.get(1);
 

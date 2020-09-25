@@ -11,11 +11,15 @@ import org.springframework.lang.NonNull;
 
 public class BuildBotSetUpReader {
   /** Path to the config file with the initial BuildBot data. */
-  private static String filePath = "src/main/resources/static/buildbots.txt";
+  private String filePath;
 
-  private BuildBotSetUpReader() {}
+  public BuildBotSetUpReader(String filePath) {
+    this.filePath = filePath;
+  }
 
-
+  public BuildBotSetUpReader() {
+    this("src/main/resources/static/buildbots.txt");
+  }
   /**
    * Deserializes config file.
    *
@@ -24,7 +28,7 @@ public class BuildBotSetUpReader {
    * @return list of data that is needed for initializing and running instances of
    *          {@link com.google.graphgeckos.dashboard.fetchers.buildbot.BuildBotClient}.
    */
-  private static List<BuildBotSetUpData> deserialize(String info) {
+  private List<BuildBotSetUpData> deserialize(String info) {
     List<BuildBotSetUpData> bots = new ArrayList<>();
     String[] splited = info.split(System.lineSeparator());
     if (splited.length < 3 || splited.length % 3 != 0) {
@@ -43,7 +47,7 @@ public class BuildBotSetUpReader {
    *
    * @return a list of data for initializing BuildBot fetchers.
    */
-  public static List<BuildBotSetUpData> read() {
+  public List<BuildBotSetUpData> read() {
     try {
       return deserialize(Files.lines(Paths.get(filePath)).collect(Collectors.joining(System.lineSeparator())));
     } catch (IOException e) {
@@ -52,8 +56,8 @@ public class BuildBotSetUpReader {
     }
   }
 
-  public static void setJsonPath(@NonNull String filePath) {
-    BuildBotSetUpReader.filePath = Preconditions.checkNotNull(filePath);
+  public void setJsonPath(@NonNull String filePath) {
+    this.filePath = Preconditions.checkNotNull(filePath);
   }
 
 }
