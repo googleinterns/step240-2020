@@ -55,8 +55,7 @@ public class GitHubClientTest {
 
   private final String VALID_MASTER = "input_llvm_master_json";
 
-  private GitHubJsonTestInfo BUILD_BOT_CLANG = new GitHubJsonTestInfo(VALID_MASTER);
-  private GitHubJsonTestInfo BUILD_BOT_FUCHSIA = new GitHubJsonTestInfo(VALID_BUILD_BOT_NAME_FUCHSIA);
+  private GitHubJsonTestInfo LLVM_MASTER = new GitHubJsonTestInfo(VALID_MASTER);
 
   private final String EMPTY_JSON = "";
 
@@ -75,23 +74,12 @@ public class GitHubClientTest {
      * Response when the {@code VALID_MASTER} data is requested. Status OK(200),
      * Responds with the original (taken from the API) clang-x86_64-debian-fast JSON.
      */
-    private final MockResponse CLANG_VALID_RESPONSE = new MockResponse()
+    private final MockResponse LLVM_MASTER_RESPONSE = new MockResponse()
       .setResponseCode(200)
       .setHeader(
         HttpHeaders.CONTENT_TYPE,
         MediaType.APPLICATION_JSON_VALUE)
-      .setBody(BUILD_BOT_CLANG.getContent());
-
-    /**
-     * Response when the {@code VALID_BUILD_BOT_NAME_FUCHSIA} data is requested. Status OK (200),
-     * Responds with the original (taken from the API) fuchsia-x86_64-linux JSON.
-     */
-    private final MockResponse FUCHSIA_VALID_RESPONSE = new MockResponse()
-      .setResponseCode(200)
-      .setHeader(
-        HttpHeaders.CONTENT_TYPE,
-        MediaType.APPLICATION_JSON_VALUE)
-      .setBody(BUILD_BOT_FUCHSIA.getContent());
+      .setBody(LLVM_MASTER.getContent());
 
     /**
      * Response when the {@code VALID_BUILD_BOT_NAME_FUCHSIA} data is requested. Status NOT FOUND (404).
@@ -118,10 +106,7 @@ public class GitHubClientTest {
 
       /* Expected form of the request url: baseUrl/buildBot/builds/buildId?as_text=1 . */
       if (request.getPath().contains(VALID_MASTER)) {
-        if (request.getPath().contains(Long.toString(INITIAL_BUILD_ID))) {
-          return CLANG_VALID_RESPONSE;
-        }
-        return FUCHSIA_VALID_RESPONSE;
+          return LLVM_MASTER_RESPONSE;
       }
 
       if (request.getPath().contains(NOT_FOUND_BUILD_BOT_NAME)) {
@@ -136,7 +121,7 @@ public class GitHubClientTest {
       Handles requests to the defined Build Bots only to verify that
       the client performs requests of the expected form.
       */
-      throw new IllegalStateException("Unknown build bot name");
+      throw new IllegalStateException("Unknown Github Link");
     }
 
   };
@@ -150,18 +135,16 @@ public class GitHubClientTest {
     /**
      * Expected output fields. See {@link com.google.graphgeckos.dashboard.datatypes.GitHubData} to learn more.
      */
+    private String branch;
     private String commitHash;
-    private Timestamp timestamp;
-    private String name;
-    private BuilderStatus status;
-    private List<Log> logs;
+    private String timestamp;
+    private String repositoryLink;
 
     public GitHubDataMatcher(GitHubJsonTestInfo expected) {
       this.commitHash = expected.getCommitHash();
       this.timestamp = expected.getTimestamp();
-      this.name = expected.getName();
-      this.status = expected.getStatus();
-      this.logs = expected.getLogs();
+      this.branch = expected.getBranch();
+      this.repositoryLink = expected.getRepositoryLink();
     }
 
     /**
@@ -174,10 +157,9 @@ public class GitHubClientTest {
     @Override
     public boolean matches(GitHubData data) {
       return data.getCommitHash().equals(commitHash)
-        && data.getStatus().equals(status)
-        && data.getName().equals(name)
         && data.getTimestamp().equals(timestamp)
-        && data.getLogs().equals(logs);
+        && data.getBranch().equals(branch)
+        && data.getRepositoryLink().equals(repositoryLink);
     }
 
   }
@@ -221,7 +203,7 @@ public class GitHubClientTest {
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 3;
     Mockito.verify(datastoreRepository, Mockito.after(delay).atLeast(1))
       .createRevisionEntry(
-        Mockito.argThat(new GitHubDataMatcher(BUILD_BOT_CLANG)));
+        Mockito.argThat(new GitHubDataMatcher(LLVM_MASTER)));
   }
 
   /**
