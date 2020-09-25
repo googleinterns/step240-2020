@@ -133,6 +133,9 @@ public class BuildInfo {
     this.builders = new ArrayList<>(builders);
   }
 
+  /**
+   * Adds a new builder to the builder list and recomputes the revision status.
+   */
   public void addBuilder(@NonNull BuildBotData update) {
     builders.add(update);
 
