@@ -33,12 +33,12 @@ public class GitHubClient {
   @Autowired
   private DatastoreRepository datastoreRepository;
 
-  private String baseUrl;
+  private String url;
 
   private static final Logger logger = Logger.getLogger(GitHubClient.class.getName());
 
   private GitHubClient(@NonNull String baseUrl) {
-    this.baseUrl = Preconditions.checkNotNull(baseUrl);
+    this.url = Preconditions.checkNotNull(baseUrl);
   }
 
   public GitHubClient() {
@@ -48,14 +48,15 @@ public class GitHubClient {
   public void run(@NonNull long delay) {
 
     logger.info(String.format("GitHub: started fetching from the base url: %s",
-                              baseUrl));     
-    WebClient.builder().baseUrl(baseUrl)
+                              url));
+    WebClient.builder().baseUrl(url)
       .defaultHeader(HttpHeaders.CONTENT_TYPE, "application/json")
       .build()
       .get()
+      .uri(url)
       .accept(MediaType.APPLICATION_JSON)
       .retrieve()
-      .bodyToFlux(GitHubData.class)
+      .bodyToMono(GitHubData.class)
       .delaySubscription(Duration.ofSeconds(delay))
       .onErrorResume(e -> {
         logger.info("Ignoring error: " + e.getMessage());
@@ -68,23 +69,15 @@ public class GitHubClient {
             String.format("GitHub: Error occurred, waiting for %d seconds", delay));
           return;
         }
-
-        logger.info(String.format("GitHub: trying to deserialize valid JSON"));
-        try {
-          //GitHubData gitHubData = new ObjectMapper().readValue(response, GitHubData.class);
-          datastoreRepository.createRevisionEntry(response);
-        } catch (Exception e) {
-          logger.info(String.format("GitHub: can't deserialize JSON"));
-          e.printStackTrace();
-        }
+        datastoreRepository.createRevisionEntry(response);
         logger.info(
                String.format(
                  "GitHub: Performing re-request in %d seconds", delay));
       });
   }
 
-  public void setBaseUrl(String baseUrl) {
-    this.baseUrl = baseUrl;
+  public void setBaseUrl(String url) {
+    this.url = url;
   }
 
 }
