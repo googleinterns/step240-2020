@@ -142,7 +142,7 @@ public class BuildInfo {
    * If there is no builder data, or all builder data are lost, the status will be {@code lost}.
    */
   void reanalyseStatus() {
-    boolean allPassed = false;
+    boolean hasPassed = false;
   
     for (BuildBotData builder : builders) {
       if (builder.getStatus() == BuilderStatus.FAILED) {
@@ -150,11 +150,11 @@ public class BuildInfo {
 
         return;
       } else if (builder.getStatus() == BuilderStatus.PASSED) {
-        allPassed = true;
+        hasPassed = true;
       }
     }
   
-    if (allPassed) {
+    if (hasPassed) {
       this.status = RevisionStatus.passed;
     } else {
       this.status = RevisionStatus.lost;
