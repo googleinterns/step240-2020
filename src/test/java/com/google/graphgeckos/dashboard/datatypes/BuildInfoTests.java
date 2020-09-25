@@ -43,8 +43,6 @@ public class BuildInfoTests {
     dummy.addBuilder(getDummyUpdate(BuilderStatus.PASSED));
     dummy.addBuilder(getDummyUpdate(BuilderStatus.PASSED));
 
-    dummy.reanalyseStatus();
-
     assertEquals(RevisionStatus.passed, dummy.getStatus());
   }
 
@@ -56,8 +54,6 @@ public class BuildInfoTests {
     dummy.addBuilder(getDummyUpdate(BuilderStatus.PASSED));
     dummy.addBuilder(getDummyUpdate(BuilderStatus.LOST));
 
-    dummy.reanalyseStatus();
-
     assertEquals(RevisionStatus.passed, dummy.getStatus());
   }
 
@@ -67,8 +63,6 @@ public class BuildInfoTests {
 
     dummy.addBuilder(getDummyUpdate(BuilderStatus.LOST));
     dummy.addBuilder(getDummyUpdate(BuilderStatus.LOST));
-
-    dummy.reanalyseStatus();
 
     assertEquals(RevisionStatus.lost, dummy.getStatus());
   }
@@ -81,8 +75,6 @@ public class BuildInfoTests {
     dummy.addBuilder(getDummyUpdate(BuilderStatus.FAILED));
     dummy.addBuilder(getDummyUpdate(BuilderStatus.PASSED));
 
-    dummy.reanalyseStatus();
-
     assertEquals(RevisionStatus.failed, dummy.getStatus());
   }
 
@@ -92,8 +84,6 @@ public class BuildInfoTests {
 
     dummy.addBuilder(getDummyUpdate(BuilderStatus.FAILED));
     dummy.addBuilder(getDummyUpdate(BuilderStatus.FAILED));
-
-    dummy.reanalyseStatus();
 
     assertEquals(RevisionStatus.failed, dummy.getStatus());
   }
@@ -106,8 +96,6 @@ public class BuildInfoTests {
     dummy.addBuilder(getDummyUpdate(BuilderStatus.PASSED));
     dummy.addBuilder(getDummyUpdate(BuilderStatus.PASSED));
     dummy.addBuilder(getDummyUpdate(BuilderStatus.LOST));
-
-    dummy.reanalyseStatus();
 
     assertEquals(RevisionStatus.failed, dummy.getStatus());
   }
