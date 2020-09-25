@@ -54,7 +54,12 @@ public class GitHubClientTest {
 
   private GitHubJsonTestInfo LLVM_MASTER = new GitHubJsonTestInfo(VALID_MASTER);
 
+  private final String VALID_GITHUB_URL = "valid-master-url";
+  private final String NOT_FOUND_GITHUB_URL = "server-will-respond-with-404";
+  private final String EMPTY_JSON_GITHUB_URL = "server-will-respond-with-empty-json";
   private final String EMPTY_JSON = "";
+
+  String baseUrl;
 
   /**
    * Request frequency.
@@ -69,7 +74,6 @@ public class GitHubClientTest {
 
     /**
      * Response when the {@code VALID_MASTER} data is requested. Status OK(200),
-     * Responds with the original (taken from the API) clang-x86_64-debian-fast JSON.
      */
     private final MockResponse LLVM_MASTER_RESPONSE = new MockResponse()
       .setResponseCode(200)
@@ -78,9 +82,38 @@ public class GitHubClientTest {
         MediaType.APPLICATION_JSON_VALUE)
       .setBody(LLVM_MASTER.getContent());
 
+    /**
+     * Status NOT FOUND (404).
+     */
+    private final MockResponse PAGE_NOT_FOUND_RESPONSE = new MockResponse()
+      .setResponseCode(404)
+      .setHeader(
+        HttpHeaders.CONTENT_TYPE,
+        MediaType.APPLICATION_JSON_VALUE);
+
+    /**
+     * Status OK (200). Responds with empty JSON.
+     */
+    private final MockResponse EMPTY_JSON_RESPONSE = new MockResponse()
+      .setResponseCode(200)
+      .setHeader(
+        HttpHeaders.CONTENT_TYPE,
+        MediaType.APPLICATION_JSON_VALUE)
+      .setBody(EMPTY_JSON);
+
     @Override
     public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
-      return LLVM_MASTER_RESPONSE;
+      if (request.getPath().contains(VALID_GITHUB_URL)) {
+        return LLVM_MASTER_RESPONSE;
+      }
+      if (request.getPath().contains(NOT_FOUND_GITHUB_URL)) {
+        return PAGE_NOT_FOUND_RESPONSE;
+      }
+      if (request.getPath().contains(EMPTY_JSON_GITHUB_URL)) {
+        return EMPTY_JSON_RESPONSE;
+      }
+
+      throw new IllegalArgumentException();
     }
 
   };
@@ -132,8 +165,7 @@ public class GitHubClientTest {
 
     mockWebServer.start();
     mockWebServer.setDispatcher(dispatcher);
-    String url = "http://" + mockWebServer.getHostName() + ":" + mockWebServer.getPort();
-    client.setUrl(url);
+    baseUrl = "http://" + mockWebServer.getHostName() + ":" + mockWebServer.getPort();
   }
 
   @After
@@ -155,6 +187,7 @@ public class GitHubClientTest {
    */
   @Test
   public void validResponseCausesUpdateCallToRepositoryWithValidArgument() {
+    client.setUrl(baseUrl + VALID_GITHUB_URL);
     client.run(DELAY_ONE_SECOND);
 
     // Wait to check if the datastoreRepository::createRevisionEntry was called
@@ -171,6 +204,7 @@ public class GitHubClientTest {
    */
   @Test
   public void serverErrorDoesNotCauseToRepository() throws Exception {
+    client.setUrl(baseUrl + NOT_FOUND_GITHUB_URL);
     client.run(DELAY_ONE_SECOND);
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 3;
     Mockito.verify(datastoreRepository, Mockito.after(delay).never()).createRevisionEntry(Mockito.any());
@@ -182,6 +216,7 @@ public class GitHubClientTest {
    */
   @Test
   public void emptyJsonResponseDoesNotCauseCallToRepository() throws Exception {
+    client.setUrl(baseUrl + EMPTY_JSON_GITHUB_URL);
     client.run(DELAY_ONE_SECOND);
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 3;
     Mockito.verify(datastoreRepository, Mockito.after(delay).never()).createRevisionEntry(Mockito.any());
@@ -192,6 +227,7 @@ public class GitHubClientTest {
    */
   @Test
   public void twoValidResponsesCauseTwoCallsToRepository() throws Exception {
+    client.setUrl(baseUrl + VALID_GITHUB_URL);
     client.run(DELAY_ONE_SECOND);
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 5;
     Mockito.verify(datastoreRepository, Mockito.timeout(delay).atLeast(2)).createRevisionEntry(Mockito.any());
