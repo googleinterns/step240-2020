@@ -94,12 +94,17 @@ const Tray = (props) => {
   const [selectedBuilder, selectBuilder] = React.useState(0);
   const builder = props.data.builders[selectedBuilder];
 
+  let builderName = "";
+  if (builder !== undefined) {
+    builderName = builder.name;
+  }
+
   if (props.isOpen !== true) { return null };
   return (
     <div className='snapshot-tray'>
       <span className='tray-timespan'>{props.data.timestamp}</span>
       <div className='tray-currentbot'>
-        <span className='bot-display'>{builder.name}</span>
+        <span className='bot-display'>{builderName}</span>
       </div>
       <BuilderGrid onClick={selectBuilder} builders={props.data.builders}/>
       <BuilderDataTable buildSteps={builder.buildSteps}/>
