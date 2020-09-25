@@ -68,6 +68,13 @@ public class BuildInfo {
   private List<BuildBotData> builders;
 
   /**
+   * The global compilation status of the revision.
+   */
+  @Unindexed
+  @Field(name = "status")
+  private RevisionStatus status;
+
+  /**
    * Used by Spring GCP.
    */
   public BuildInfo() {}
@@ -82,6 +89,7 @@ public class BuildInfo {
     this.timestamp = Timestamp.parseTimestamp(creationData.getTimestamp());
     this.branch = creationData.getBranch();
     this.builders = new ArrayList<>();
+    this.status = RevisionStatus.lost;
   }
 
   @NonNull
@@ -104,6 +112,11 @@ public class BuildInfo {
     return builders;
   }
 
+  @NonNull
+  public RevisionStatus getStatus() {
+    return status;
+  }
+
   public void setCommitHash(@NonNull String commitHash) {
     this.commitHash = commitHash;
   }
@@ -120,8 +133,37 @@ public class BuildInfo {
     this.builders = new ArrayList<>(builders);
   }
 
+  /**
+   * Adds a new builder to the builder list and recomputes the revision status.
+   */
   public void addBuilder(@NonNull BuildBotData update) {
     builders.add(update);
+
+    reanalyseStatus();
+  }
+
+  /**
+   * Updates the {@code status} field according to all the aggregated builder statuses.
+   * If there is no builder data, or all builder data are lost, the status will be {@code lost}.
+   */
+  private void reanalyseStatus() {
+    boolean hasPassed = false;
+  
+    for (BuildBotData builder : builders) {
+      if (builder.getStatus() == BuilderStatus.FAILED) {
+        this.status = RevisionStatus.failed;
+
+        return;
+      } else if (builder.getStatus() == BuilderStatus.PASSED) {
+        hasPassed = true;
+      }
+    }
+  
+    if (hasPassed) {
+      this.status = RevisionStatus.passed;
+    } else {
+      this.status = RevisionStatus.lost;
+    }
   }
 
   @Override

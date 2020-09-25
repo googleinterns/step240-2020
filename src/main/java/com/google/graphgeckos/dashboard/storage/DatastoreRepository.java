@@ -118,6 +118,8 @@ public class DatastoreRepository implements DataRepository {
       return false;
     }
 
+    associatedEntity.addBuilder(updateData);
+
     try {
       storage.save(associatedEntity);
     } catch (DatastoreException e) {
