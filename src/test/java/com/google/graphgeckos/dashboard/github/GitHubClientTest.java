@@ -14,10 +14,7 @@
 
 package com.google.graphgeckos.dashboard.github;
 
-import com.google.cloud.Timestamp;
 import com.google.graphgeckos.dashboard.datatypes.GitHubData;
-import com.google.graphgeckos.dashboard.datatypes.BuilderStatus;
-import com.google.graphgeckos.dashboard.datatypes.Log;
 import com.google.graphgeckos.dashboard.fetchers.github.GitHubClient;
 import com.google.graphgeckos.dashboard.storage.DatastoreRepository;
 import okhttp3.mockwebserver.Dispatcher;
@@ -83,17 +80,7 @@ public class GitHubClientTest {
 
     @Override
     public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
-
-      /* Expected form of the request url: baseUrl/buildBot/builds/buildId?as_text=1 . */
-      if (request.getPath().contains(VALID_MASTER)) {
-          return LLVM_MASTER_RESPONSE;
-      }
-
-      /*
-      Handles requests to the defined Build Bots only to verify that
-      the client performs requests of the expected form.
-      */
-      throw new IllegalStateException("Unknown Github Link");
+      return LLVM_MASTER_RESPONSE;
     }
 
   };
@@ -145,8 +132,8 @@ public class GitHubClientTest {
 
     mockWebServer.start();
     mockWebServer.setDispatcher(dispatcher);
-    String baseUrl = "http://" + mockWebServer.getHostName() + ":" + mockWebServer.getPort();
-    client.setBaseUrl(baseUrl);
+    String url = "http://" + mockWebServer.getHostName() + ":" + mockWebServer.getPort();
+    client.setUrl(url);
   }
 
   @After

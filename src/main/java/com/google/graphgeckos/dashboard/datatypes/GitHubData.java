@@ -47,9 +47,10 @@ public class GitHubData {
   }
 
   // Properties for the GitHubClient
-  @JsonProperty("author")
-  private void unPackAuthor(Map<String, ?> author) {
-    this.timestamp = author.get("date").toString();
+  @JsonProperty("commit")
+  private void unpackCommit(Map<String, ?> commit) {
+    Map<?,?> author = (Map<?,?>) commit.get("author");
+    this.timestamp = (String) author.get("date");
   }
   
   @JsonProperty("sha")
@@ -59,7 +60,7 @@ public class GitHubData {
  
   /**
     * Extracts link to the working repository (html_url field value) from the data of the repository field.
-    * @param repository representation of the repository field of the GitHub API request json.
+    * @param url representation of the repository field of the GitHub API request json.
     */
   @JsonProperty("html_url")
   private void extractRepositoryLink(String url) {
