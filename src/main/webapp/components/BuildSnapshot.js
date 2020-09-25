@@ -99,8 +99,11 @@ const Tray = (props) => {
   const builder = props.data.builders[selectedBuilder];
 
   let builderName = "";
+  let buildSteps = [];
+  
   if (builder !== undefined) {
     builderName = builder.name;
+    buildSteps = builder.buildSteps;
   }
 
   if (props.isOpen !== true) { return null };
@@ -111,7 +114,7 @@ const Tray = (props) => {
         <span className='bot-display'>{builderName}</span>
       </div>
       <BuilderGrid onClick={selectBuilder} builders={props.data.builders}/>
-      <BuilderDataTable buildSteps={builder.buildSteps}/>
+      <BuilderDataTable buildSteps={buildSteps}/>
     </div>
   );
 }
