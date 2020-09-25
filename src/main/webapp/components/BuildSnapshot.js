@@ -26,6 +26,7 @@ import toggleIcon from './resources/play.svg';
  * @param {string} props.buildData[].commitHash - Commit hash.
  * @param {string} props.buildData[].repository - URL to the GitHub repository.
  * @param {string} props.buildData[].status - The status of the build.
+ *    Either 'passed', 'failed' or 'lost'.
  * @param {string} props.buildData[].timestamp - Timestamp of commit push.
  */
 export const BuildSnapshot = (props) => {
@@ -40,8 +41,11 @@ export const BuildSnapshot = (props) => {
   const headerData = {commitHash, description, repository, status};
   const trayData = {builders, timestamp};
 
+  // Set background based on build status.
+  const snapshotClassName = 'build-snapshot ' + status;
+
   return (
-    <div className='build-snapshot'>
+    <div className={snapshotClassName}>
       <Header isOpen={isOpen} onClick={setIsOpen} data={headerData}/>
       <Tray isOpen={isOpen} data={trayData}/>
     </div>
@@ -73,7 +77,7 @@ const Header = (props) => {
       <span className='header-hash'>{props.data.commitHash}</span>
       <span className='header-description'>{props.data.description}</span>
       <span className='failure-group'>Group</span>
-      <span className='header-status'>{props.data.status}</span>
+      <span className='header-status'>{props.data.status.toUpperCase()}</span>
     </div>
   );
 }

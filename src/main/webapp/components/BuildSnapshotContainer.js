@@ -21,7 +21,7 @@ import {BuildSnapshot} from "./BuildSnapshot";
  * @param {*} props input property containing an array of build data to be
  * rendered through BuildSnapshot.
  */
-export const BuildSnapshotContainer = React.memo((props) =>
+export const BuildSnapshotContainer = React.memo(_ =>
   {
     // Number of entries to be pulled.
     // TODO: Determine true value for number of entries.

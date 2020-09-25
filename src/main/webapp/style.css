@@ -21,6 +21,7 @@
   --background: #0c0d25;
   --button-size: .3125rem;
   --failed: #dc4f4f;
+  --lost: #979d95;
   --passed: #4fdc7f;
   --primary: white;
   font-size: 16px;
@@ -79,12 +80,18 @@ ul {
   font-size: 1rem;
 }
 
+/* Styling rules based on build status */
+
 .passed {
-  background-color: var(--passed);
+  background: var(--passed);
 }
 
 .failed {
-  background-color: var(--failed);
+  background: var(--failed);
+}
+
+.lost {
+  background: var(--lost);
 }
 
 #build-snapshot-container {
@@ -92,6 +99,7 @@ ul {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  padding: 1rem 0;
 }
 
 .snapshot-header {
@@ -146,6 +154,7 @@ ul {
 .data-table {
   border-bottom-right-radius: 0.75rem;
   border-collapse: collapse;
+  height: 100%;
   overflow: hidden;
   text-align: center;
 }
@@ -193,7 +202,6 @@ ul {
 
 /* Message Element in BuildSnapshot Container */
 .loader {
-  padding: 1rem 0;
   text-align: center;
 }
 

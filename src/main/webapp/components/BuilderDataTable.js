@@ -40,8 +40,8 @@ export const BuilderDataTable = props => {
         <tr>{HEADERS.map((header, idx) => <th key={idx}>{header}</th>)}</tr>
       </thead>
       <tbody>
-        {buildSteps.map(datapoint => 
-          <tr>
+        {buildSteps.map((datapoint, idx) =>
+          <tr key={idx}>
             {BUILD_STEP_FIELDS.map((field, idx) => <td key={idx}>{datapoint[field]}</td>)}
           </tr>
         )}
