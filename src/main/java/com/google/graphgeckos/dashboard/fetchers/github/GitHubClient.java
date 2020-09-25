@@ -27,14 +27,12 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.logging.Logger;
 
-/** A (external) BuildBot API json data fetcher. */
 public class GitHubClient {
 
   /** Provides access to the storage. */
   @Autowired
   private DatastoreRepository datastoreRepository;
 
-  /** Base url of the BuildBot API, LLVM BuildBot API base url is "https://api.github.com/repos/llvm/llvm-project/commits/master" */
   private String baseUrl;
 
   private static final Logger logger = Logger.getLogger(GitHubClient.class.getName());
@@ -47,32 +45,17 @@ public class GitHubClient {
     this("https://api.github.com/repos/llvm/llvm-project/commits/master");
   }
 
-  /**
-   * Starts fetching process. Fetches data every {@code delay} seconds from the url:
-   * {@code baseUrl}/{@code buildBot}/builds/{@code buildId}?as_text=1.
-   * E.g with buildBot = "clang-x86_64-debian-fast" and buildId = 1000,
-   * baseUrl = "http://lab.llvm.org:8011/json/builders" the request url will be
-   * http://lab.llvm.org:8011/json/builders/clang-x86_64-debian-fast/builds/1000?as_text=1 .
-   * Adds valid fetched data in the form of {@link BuildBotData} to the storage and tries
-   * to fetch an entry with the next buildId after waiting for {@code delay} seconds.
-   * If the fetched data is empty (invalid) waits for {@code delay} seconds and tries
-   * to make the same request.
-   *
-   * @param buildBot name of the BuildBot as it is in the API (e.g "clang-x86_64-debian-fast")
-   * @param initialBuildId the id of the BuildBot's build from where to start fetching data
-   */
   public void run(@NonNull long delay) {
 
     logger.info(String.format("GitHub: started fetching from the base url: %s",
-                              baseUrl));
+                              baseUrl));     
     WebClient.builder().baseUrl(baseUrl)
       .defaultHeader(HttpHeaders.CONTENT_TYPE, "application/json")
       .build()
       .get()
-      .uri("/")
       .accept(MediaType.APPLICATION_JSON)
       .retrieve()
-      .bodyToMono(GitHubData.class)
+      .bodyToFlux(GitHubData.class)
       .delaySubscription(Duration.ofSeconds(delay))
       .onErrorResume(e -> {
         logger.info("Ignoring error: " + e.getMessage());
@@ -85,6 +68,7 @@ public class GitHubClient {
             String.format("GitHub: Error occurred, waiting for %d seconds", delay));
           return;
         }
+
         logger.info(String.format("GitHub: trying to deserialize valid JSON"));
         try {
           //GitHubData gitHubData = new ObjectMapper().readValue(response, GitHubData.class);
