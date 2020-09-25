@@ -16,6 +16,8 @@ package com.google.graphgeckos.dashboard.datatypes;
 
 /**
  * Represents global revision statuses.
+ * 
+ * TODO: change to upperCase here and on the receiving front end part
  */
 public enum RevisionStatus {
   failed,
