@@ -16,20 +16,51 @@ public class GitHubData {
 
   private String repositoryLink;
 
-  @JsonProperty("author")
-  private void unPackAuthor(Map<String, ?> author) {
-    this.timestamp = author.get("date").toString();
-  }
-
-  @JsonProperty("sha")
-  private void unpackCommitHash(String sha) {
-    this.commitHash = sha;
+  /**
+   * Extracts commit id (also known as commit hash) and timestamp nested fields from the data of the head_commit
+   * field.
+   * @param headCommit representation of the head_commit field of the GitHub API request json.
+   */
+  @JsonProperty("head_commit")
+  private void unpackHeadCommit(Map<String, Object> headCommit) {
+    commitHash = headCommit.get("id").toString();
+    timestamp = headCommit.get("timestamp").toString();
   }
 
   /**
    * Extracts link to the working repository (html_url field value) from the data of the repository field.
    * @param repository representation of the repository field of the GitHub API request json.
    */
+  @JsonProperty("repository")
+  private void extractRepositoryLink(Map<String, Object> repository) {
+    repositoryLink = repository.get("html_url").toString();
+  }
+
+  /**
+   * Extracts the name of the branch from the reference.
+   * @param ref Git reference.
+   */
+  @JsonProperty("ref")
+  private void extractBranch(String ref) {
+    String[] refComponents = ref.split("/");
+    branch = refComponents[refComponents.length - 1];
+  }
+
+  // Properties for the GitHubClient
+  @JsonProperty("author")
+  private void unPackAuthor(Map<String, ?> author) {
+    this.timestamp = author.get("date").toString();
+  }
+  
+  @JsonProperty("sha")
+  private void unpackCommitHash(String sha) {
+    this.commitHash = sha;
+  }
+ 
+  /**
+    * Extracts link to the working repository (html_url field value) from the data of the repository field.
+    * @param repository representation of the repository field of the GitHub API request json.
+    */
   @JsonProperty("html_url")
   private void extractRepositoryLink(String url) {
     repositoryLink = url;
