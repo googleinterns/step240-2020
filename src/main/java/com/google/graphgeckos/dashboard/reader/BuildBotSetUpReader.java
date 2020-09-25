@@ -36,7 +36,7 @@ public class BuildBotSetUpReader {
    */
   public static List<BuildBotSetUpData> read() {
     try {
-      return deserialize(Files.lines(Paths.get(filePath)).collect(Collectors.joining("\n")));
+      return deserialize(Files.lines(Paths.get(filePath)).collect(Collectors.joining(System.lineSeparator())));
     } catch (IOException e) {
       e.printStackTrace();
       return null;
