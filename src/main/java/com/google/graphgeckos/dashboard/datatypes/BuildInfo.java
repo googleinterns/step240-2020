@@ -68,6 +68,11 @@ public class BuildInfo {
   private List<BuildBotData> builders;
 
   /**
+   * The global compilation status of the revision.
+   */
+  private RevisionStatus status;
+
+  /**
    * Used by Spring GCP.
    */
   public BuildInfo() {}
@@ -82,6 +87,7 @@ public class BuildInfo {
     this.timestamp = Timestamp.parseTimestamp(creationData.getTimestamp());
     this.branch = creationData.getBranch();
     this.builders = new ArrayList<>();
+    this.status = analyseRevision();
   }
 
   @NonNull
@@ -104,6 +110,11 @@ public class BuildInfo {
     return builders;
   }
 
+  @NonNull
+  public RevisionStatus getStatus() {
+    return status;
+  }
+
   public void setCommitHash(@NonNull String commitHash) {
     this.commitHash = commitHash;
   }
@@ -122,6 +133,24 @@ public class BuildInfo {
 
   public void addBuilder(@NonNull BuildBotData update) {
     builders.add(update);
+  }
+
+  private RevisionStatus analyseRevision() {
+    boolean allPassed = false;
+  
+    for (BuildBotData builder : builders) {
+      if (builder.getStatus() == BuilderStatus.FAILED) {
+        return RevisionStatus.failed;
+      } else if (builder.getStatus() == BuilderStatus.PASSED) {
+        allPassed = true;
+      }
+    }
+  
+    if (allPassed) {
+      return RevisionStatus.passed;
+    } else {
+      return RevisionStatus.lost;
+    }
   }
 
   @Override
