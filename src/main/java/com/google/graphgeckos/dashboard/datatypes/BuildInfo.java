@@ -135,13 +135,15 @@ public class BuildInfo {
 
   public void addBuilder(@NonNull BuildBotData update) {
     builders.add(update);
+
+    reanalyseStatus();
   }
 
   /**
    * Updates the {@code status} field according to all the aggregated builder statuses.
    * If there is no builder data, or all builder data are lost, the status will be {@code lost}.
    */
-  void reanalyseStatus() {
+  private void reanalyseStatus() {
     boolean hasPassed = false;
   
     for (BuildBotData builder : builders) {
