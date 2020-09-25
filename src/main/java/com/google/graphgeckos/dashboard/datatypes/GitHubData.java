@@ -8,7 +8,7 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GitHubData {
 
-  private String branch;
+  private String branch = "master";
 
   private String commitHash;
 
@@ -44,6 +44,27 @@ public class GitHubData {
   private void extractBranch(String ref) {
     String[] refComponents = ref.split("/");
     branch = refComponents[refComponents.length - 1];
+  }
+
+  // Properties for the GitHubClient
+  @JsonProperty("commit")
+  private void unpackCommit(Map<String, ?> commit) {
+    Map<?,?> author = (Map<?,?>) commit.get("author");
+    this.timestamp = (String) author.get("date");
+  }
+  
+  @JsonProperty("sha")
+  private void unpackCommitHash(String sha) {
+    this.commitHash = sha;
+  }
+ 
+  /**
+    * Extracts link to the working repository (html_url field value) from the data of the repository field.
+    * @param url representation of the repository field of the GitHub API request json.
+    */
+  @JsonProperty("html_url")
+  private void extractRepositoryLink(String url) {
+    repositoryLink = url;
   }
 
   public GitHubData() {}
