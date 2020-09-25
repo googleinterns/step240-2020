@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.graphgeckos.dashboard.buildbot;
+package com.google.graphgeckos.dashboard.github;
 
 import com.google.cloud.Timestamp;
-import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
+import com.google.graphgeckos.dashboard.datatypes.GitHubData;
 import com.google.graphgeckos.dashboard.datatypes.BuilderStatus;
 import com.google.graphgeckos.dashboard.datatypes.Log;
-import com.google.graphgeckos.dashboard.fetchers.buildbot.BuildBotClient;
+import com.google.graphgeckos.dashboard.fetchers.buildbot.GitHubClient;
 import com.google.graphgeckos.dashboard.storage.DatastoreRepository;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
@@ -40,7 +40,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BuildBotClientTest {
+public class GitHubClientTest {
 
   private MockWebServer mockWebServer = new MockWebServer();
 
@@ -48,20 +48,15 @@ public class BuildBotClientTest {
    * Tested BuildBot API fetcher.
    */
   @InjectMocks
-  BuildBotClient client = new BuildBotClient("ddd");
+  GitHubClient client = new GitHubClient();
 
   @Mock
   DatastoreRepository datastoreRepository;
 
-  private final String VALID_BUILD_BOT_NAME_CLANG = "clang-x86_64-debian-fast";
-  private final String VALID_BUILD_BOT_NAME_FUCHSIA = "fuchsia-x86_64-linux";
-  private final String NOT_FOUND_BUILD_BOT_NAME = "server-will-respond-with-404";
-  private final String EMPTY_JSON_BUILD_BOT_NAME = "server-will-respond-with-empty-json";
+  private final String VALID_MASTER = "input_llvm_master_json";
 
-  private final long INITIAL_BUILD_ID = 36624;
-  private final long NEXT_BUILD_ID = INITIAL_BUILD_ID + 1;
-  private BuildBotClientTestInfo BUILD_BOT_CLANG = new BuildBotClientTestInfo(VALID_BUILD_BOT_NAME_CLANG);
-  private BuildBotClientTestInfo BUILD_BOT_FUCHSIA = new BuildBotClientTestInfo(VALID_BUILD_BOT_NAME_FUCHSIA);
+  private GitHubJsonTestInfo BUILD_BOT_CLANG = new GitHubJsonTestInfo(VALID_MASTER);
+  private GitHubJsonTestInfo BUILD_BOT_FUCHSIA = new GitHubJsonTestInfo(VALID_BUILD_BOT_NAME_FUCHSIA);
 
   private final String EMPTY_JSON = "";
 
@@ -77,7 +72,7 @@ public class BuildBotClientTest {
   Dispatcher dispatcher = new Dispatcher() {
 
     /**
-     * Response when the {@code VALID_BUILD_BOT_NAME_CLANG} data is requested. Status OK(200),
+     * Response when the {@code VALID_MASTER} data is requested. Status OK(200),
      * Responds with the original (taken from the API) clang-x86_64-debian-fast JSON.
      */
     private final MockResponse CLANG_VALID_RESPONSE = new MockResponse()
@@ -122,7 +117,7 @@ public class BuildBotClientTest {
     public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
 
       /* Expected form of the request url: baseUrl/buildBot/builds/buildId?as_text=1 . */
-      if (request.getPath().contains(VALID_BUILD_BOT_NAME_CLANG)) {
+      if (request.getPath().contains(VALID_MASTER)) {
         if (request.getPath().contains(Long.toString(INITIAL_BUILD_ID))) {
           return CLANG_VALID_RESPONSE;
         }
@@ -150,10 +145,10 @@ public class BuildBotClientTest {
    * Compares objects, stubbed from the {@link DatastoreRepository::createRevisionEntry},
    * with the corresponding expected values.
    */
-  static class GitHubDataMatcher implements ArgumentMatcher<BuildBotData> {
+  static class GitHubDataMatcher implements ArgumentMatcher<GitHubData> {
 
     /**
-     * Expected output fields. See {@link com.google.graphgeckos.dashboard.datatypes.BuildBotData} to learn more.
+     * Expected output fields. See {@link com.google.graphgeckos.dashboard.datatypes.GitHubData} to learn more.
      */
     private String commitHash;
     private Timestamp timestamp;
@@ -161,7 +156,7 @@ public class BuildBotClientTest {
     private BuilderStatus status;
     private List<Log> logs;
 
-    public GitHubDataMatcher(BuildBotClientTestInfo expected) {
+    public GitHubDataMatcher(GitHubJsonTestInfo expected) {
       this.commitHash = expected.getCommitHash();
       this.timestamp = expected.getTimestamp();
       this.name = expected.getName();
@@ -170,14 +165,14 @@ public class BuildBotClientTest {
     }
 
     /**
-     * Checks if an instance of the {@link BuildBotData} provided by the tested {@code client}
+     * Checks if an instance of the {@link GitHubData} provided by the tested {@code client}
      * as an argument when calling {@link DatastoreRepository::createRevisionEntry}.
      *
-     * @param data instance of the {@link BuildBotData} to inspect
-     * @return true if the {@code data} is valid {@see BuildBotData::isValid}.
+     * @param data instance of the {@link GitHubData} to inspect
+     * @return true if the {@code data} is valid {@see GitHubData::isValid}.
      */
     @Override
-    public boolean matches(BuildBotData data) {
+    public boolean matches(GitHubData data) {
       return data.getCommitHash().equals(commitHash)
         && data.getStatus().equals(status)
         && data.getName().equals(name)
@@ -210,7 +205,7 @@ public class BuildBotClientTest {
   }
 
   /**
-   * Should add fetched data in the form of {@link BuildBotData} POJO
+   * Should add fetched data in the form of {@link GitHubData} POJO
    * to the storage via an instance of {@link DatastoreRepository}.
    * <p>
    * Given: valid build bot name, build id and delay.
@@ -219,7 +214,7 @@ public class BuildBotClientTest {
    */
   @Test
   public void validResponseCausesUpdateCallToRepositoryWithValidArgument() {
-    client.run(VALID_BUILD_BOT_NAME_CLANG, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
+    client.run(VALID_MASTER, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
 
     // Wait to check if the datastoreRepository::createRevisionEntry was called
     // because it takes time to get a response from server.
@@ -256,7 +251,7 @@ public class BuildBotClientTest {
    */
   @Test
   public void twoValidResponsesCauseTwoCallsToRepository() throws Exception {
-    client.run(VALID_BUILD_BOT_NAME_CLANG, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
+    client.run(VALID_MASTER, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 5;
     Mockito.verify(datastoreRepository, Mockito.timeout(delay).atLeast(2)).createRevisionEntry(Mockito.any());
   }
