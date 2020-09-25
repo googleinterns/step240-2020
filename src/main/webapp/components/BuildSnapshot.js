@@ -42,7 +42,7 @@ export const BuildSnapshot = (props) => {
   const trayData = {builders, timestamp};
 
   // Set background based on build status.
-  const snapshotClassName = 'build-snapshot'.concat(' ' + status);
+  const snapshotClassName = 'build-snapshot ' + status;
 
   return (
     <div className={snapshotClassName}>
