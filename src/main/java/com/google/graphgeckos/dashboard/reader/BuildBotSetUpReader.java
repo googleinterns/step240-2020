@@ -15,6 +15,15 @@ public class BuildBotSetUpReader {
 
   private BuildBotSetUpReader() {}
 
+
+  /**
+   * Deserializes config file.
+   *
+   * @param info is a config file. Values in each BuildBot info block come in the following order:
+   *             name of the BuildBot, initial id, delay in seconds
+   * @return list of data that is needed for initializing and running instances of
+   *          {@link com.google.graphgeckos.dashboard.fetchers.buildbot.BuildBotClient}.
+   */
   private static List<BuildBotSetUpData> deserialize(String info) {
     List<BuildBotSetUpData> bots = new ArrayList<>();
     String[] splited = info.split(System.lineSeparator());
