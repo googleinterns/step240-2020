@@ -103,10 +103,15 @@ const Tray = (props) => {
     builderName = builder.name;
   }
 
+  const {timestamp} = props.data;
+  if (timestamp !== undefined) {
+    seconds = timestamp.seconds;
+  }
+
   if (props.isOpen !== true) { return null };
   return (
     <div className='snapshot-tray'>
-      <span className='tray-timespan'>{props.data.timestamp}</span>
+      <span className='tray-timespan'>{seconds}</span>
       <div className='tray-currentbot'>
         <span className='bot-display'>{builderName}</span>
       </div>
