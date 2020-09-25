@@ -107,6 +107,7 @@ const Tray = (props) => {
   }
 
   const {timestamp} = props.data;
+  let seconds = '';
   if (timestamp !== undefined) {
     seconds = timestamp.seconds;
   }
