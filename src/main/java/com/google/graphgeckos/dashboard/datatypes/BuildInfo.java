@@ -70,6 +70,8 @@ public class BuildInfo {
   /**
    * The global compilation status of the revision.
    */
+  @Unindexed
+  @Field(name = "status")
   private RevisionStatus status;
 
   /**
@@ -87,7 +89,7 @@ public class BuildInfo {
     this.timestamp = Timestamp.parseTimestamp(creationData.getTimestamp());
     this.branch = creationData.getBranch();
     this.builders = new ArrayList<>();
-    this.status = analyseRevision();
+    this.status = RevisionStatus.lost;
   }
 
   @NonNull
@@ -135,21 +137,27 @@ public class BuildInfo {
     builders.add(update);
   }
 
-  private RevisionStatus analyseRevision() {
+  /**
+   * Updates the {@code status} field according to all the aggregated builder statuses.
+   * If there is no builder data, or all builder data are lost, the status will be {@code lost}.
+   */
+  void reanalyseStatus() {
     boolean allPassed = false;
   
     for (BuildBotData builder : builders) {
       if (builder.getStatus() == BuilderStatus.FAILED) {
-        return RevisionStatus.failed;
+        this.status = RevisionStatus.failed;
+
+        return;
       } else if (builder.getStatus() == BuilderStatus.PASSED) {
         allPassed = true;
       }
     }
   
     if (allPassed) {
-      return RevisionStatus.passed;
+      this.status = RevisionStatus.passed;
     } else {
-      return RevisionStatus.lost;
+      this.status = RevisionStatus.lost;
     }
   }
 
