@@ -28,7 +28,7 @@ public class BuildBotSetUpReader {
     List<BuildBotSetUpData> bots = new ArrayList<>();
     String[] splited = info.split(System.lineSeparator());
     if (splited.length < 3 || splited.length % 3 != 0) {
-      throw new IllegalArgumentException("Every buildbot has a name, an initial id and a delay");
+      throw new IllegalArgumentException("Every buildbot needs a name, an initial id and a delay on separate lines");
     }
 
     for (int i = 0; i < splited.length - 2; i += 3) {
