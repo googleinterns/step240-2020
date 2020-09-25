@@ -57,10 +57,11 @@ public class BuildBotData {
   private String name;
 
   /**
-   * The logs of each compilation stage, stored as described by {@link Log}.
+   * Step data for each individual stage of compilation. See {@link
+   *      com.google.graphgeckos.dashboard.storage.BuildStep BuildStep}
    */
-  @Field(name = "logs")
-  private List<Log> logs = new ArrayList<>();
+  @Field(name = "steps")
+  private List<BuildStep> buildSteps = new ArrayList<>();
 
   /**
    * Builder compilation status, as described by {@link BuilderStatus}.
@@ -73,10 +74,10 @@ public class BuildBotData {
    */
   public BuildBotData() {}
 
-  public BuildBotData(String commitHash, String name, List<Log> logs, BuilderStatus status) {
+  public BuildBotData(String commitHash, String name, List<BuildStep> buildSteps, BuilderStatus status) {
     this.commitHash = commitHash;
     this.name = name;
-    this.logs.addAll(logs);
+    this.buildSteps.addAll(buildSteps);
     this.status = status;
   }
 
@@ -125,15 +126,42 @@ public class BuildBotData {
   }
 
   /**
-   * Unpacks logs represented as list of lists of two strings,
-   * where the first one is a type of the log and the second one
-   * is a link to the log.
+   * Unpacks the build steps represented as JSON
    *
-   * @param logs Representation of the json component, where the logs are located
+   * @param steps Representation of component where the steps are found.
    */
-  @JsonProperty("logs")
-  private void unpackLogs(List<List<String>> logs) {
-    logs.forEach(x -> this.logs.add(new Log(x.get(0), x.get(1))));
+  @JsonProperty("steps")
+  private void unpackSteps(List<Map<String, ?>> steps) {
+    for(Map<String, ?> step : steps) {
+
+      int stepNumber = (int) step.get("step_number");
+
+      List<?> textList = (List<?>) step.get("text");
+      String text = "";
+      
+      // Flatten textList to String
+      StringBuilder sb = new StringBuilder();
+      textList.forEach(t -> sb.append(t).append(' '));
+      text = sb.toString();
+
+      String name = step.get("name").toString();
+
+      boolean isFinished = (boolean) step.get("isFinished");
+
+      boolean isStarted = (boolean) step.get("isStarted");
+
+      List<Log> logs = new ArrayList<Log>();
+      List<?> rawLogs = (List<?>) step.get("logs");
+
+      rawLogs.forEach(rawLog -> {
+        List<?> log = (List<?>) rawLog;
+        logs.add(new Log(log.get(0).toString(), log.get(1).toString()));
+      });
+
+      this.buildSteps.add(new BuildStep(
+        stepNumber, name, text, isFinished, isStarted, logs
+      ));
+    }
   }
 
   @NonNull
@@ -142,8 +170,8 @@ public class BuildBotData {
   }
 
   @NonNull
-  public List<Log> getLogs() {
-    return logs;
+  public List<BuildStep> getSteps() {
+    return buildSteps;
   }
 
   @NonNull
@@ -165,8 +193,8 @@ public class BuildBotData {
     this.name = name;
   }
 
-  public void setLogs(@NonNull List<Log> logs) {
-    this.logs = new ArrayList<>(logs);
+  public void setSteps(@NonNull List<BuildStep> buildSteps) {
+    this.buildSteps = new ArrayList<>(buildSteps);
   }
 
   public void setStatus(@NonNull BuilderStatus status) {
@@ -192,7 +220,7 @@ public class BuildBotData {
 
     BuildBotData other = (BuildBotData) o;
     return timestamp.equals(other.timestamp) && name.equals(other.name) &&
-           logs.equals(other.logs) && status.equals(other.status);
+           buildSteps.equals(other.buildSteps) && status.equals(other.status);
   }
 
 }
