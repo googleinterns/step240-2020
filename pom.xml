@@ -3,6 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
@@ -12,7 +13,7 @@
 
   <groupId>com.google.graphgeckos</groupId>
   <artifactId>step240</artifactId>
-  <version>2020-1.0</version>
+  <version>0.1-SNAPSHOT</version>
   <name>step240</name>
   <description>Demo project for Spring Boot</description>
 
