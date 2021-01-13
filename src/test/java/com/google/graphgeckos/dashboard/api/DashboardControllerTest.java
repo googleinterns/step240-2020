@@ -105,7 +105,7 @@ public class DashboardControllerTest {
       .willReturn(Collections.emptyList());
 
     ResultActions result = mvc.perform(
-      MockMvcRequestBuilders.get("/builders/number={number}/offset={offset}",
+      MockMvcRequestBuilders.get("/builders/entries={entries}/offset={offset}",
         ZERO_ENTRIES, OFFSET_ZERO)
         .accept(MediaType.APPLICATION_JSON));
 
@@ -133,7 +133,7 @@ public class DashboardControllerTest {
       .willReturn(Collections.singletonList(BUILD_INFO));
 
     ResultActions result = mvc.perform(
-        MockMvcRequestBuilders.get("/builders/number={number}/offset={offset}",
+        MockMvcRequestBuilders.get("/builders/entries={entries}/offset={offset}",
           ONE_ENTRIES, OFFSET_ZERO)
        .accept(MediaType.APPLICATION_JSON));
 
@@ -162,7 +162,7 @@ public class DashboardControllerTest {
       .willThrow(new IllegalArgumentException());
 
     mvc.perform(
-      MockMvcRequestBuilders.get("/builders/number={number}/offset={offset}",
+      MockMvcRequestBuilders.get("/builders/entries={entries}/offset={offset}",
         MINUS_ONE_ENTRIES, OFFSET_ZERO)
         .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isBadRequest());
