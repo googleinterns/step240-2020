@@ -63,9 +63,8 @@ public interface DataRepository {
    * @return a list containing at most {@code number} entries starting from the latest
    *     entry - {@code offset}. If the database has not enough entries for the requested
    *     {@code offset} and {@code number}, returns all the available entries from that range.
-   * @throws IllegalArgumentException if either number or offset are < 0
    */
-  List<BuildInfo> getLastRevisionEntries(int number, int offset) throws IllegalArgumentException;
+  List<BuildInfo> getLastRevisionEntries(int number, int offset);
 
   /**
    * Queries the database for a given entry, that has the primary key set
@@ -75,15 +74,13 @@ public interface DataRepository {
    * @return null if no object was found, else a BuildInfo instance of the database entry
    *     associated to that commitHash.
    */
-  BuildInfo getRevisionEntry(String commitHash) throws IllegalArgumentException;
+  BuildInfo getRevisionEntry(String commitHash);
 
   /**
    * Queries the database for the last known index for a specific buildbot. Used by the fetchers.
    *
    * @param buildbotName the name of the buildbot to search for
    * @return the last known revision index for which there is information in the database.
-   * @throws IllegalArgumentException if {@code buildbotName} is null
-   * @throws BuildbotNotFound if there is no "index" entry related to the name provided
    */
   int getBuildbotIndex(String buildbotName);
 
@@ -93,10 +90,6 @@ public interface DataRepository {
    *
    * @param buildbotName the name of the buildbot to update
    * @param newValue the new index value
-   * @throws IllegalArgumentException if {@code buildbotName} is null or there is no "index" entry
-   *      with that key
-   * @throws IndexOutOfBoundsException if newValue is lower or equal than the previous
-   *      recorded value
    */
   void setBuildbotIndex(String buildbotName, int newValue);
 
@@ -107,9 +100,6 @@ public interface DataRepository {
    *
    * @param name the name of the buildbot to register
    * @param value the starting index value of the buildbot
-   * @throws IllegalArgumentException if {@code name} is null
-   * @throws IndexOutOfBoundsException if value is negative when creating a new entry, or if value
-   *      is lower or equal than the previous recorded value
    */
   void registerNewBuildbot(String buildbotName, int value);
 }
