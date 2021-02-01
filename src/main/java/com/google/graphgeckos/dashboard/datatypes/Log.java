@@ -17,9 +17,7 @@ package com.google.graphgeckos.dashboard.datatypes;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Field;
 
-/**
- * Contains the log information from a single compilation stage from a given build bot.
- */
+/** Contains the log information from a single compilation stage from a given build bot. */
 @Entity(name = "buildLog")
 public class Log {
 
@@ -31,9 +29,7 @@ public class Log {
   @Field(name = "link")
   private String link;
 
-  /**
-   * Used only by Spring GCP.
-   */
+  /** Used only by Spring GCP. */
   public Log() {}
 
   public Log(String type, String link) {
@@ -66,5 +62,4 @@ public class Log {
     Log other = (Log) o;
     return type.equals(other.type) && link.equals(other.link);
   }
-
 }

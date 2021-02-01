@@ -14,24 +14,22 @@
 
 package com.google.graphgeckos.dashboard.fetchers.github;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.util.Preconditions;
 import com.google.graphgeckos.dashboard.datatypes.GitHubData;
 import com.google.graphgeckos.dashboard.storage.DatastoreRepository;
+import java.time.Duration;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.lang.NonNull;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import java.time.Duration;
-import java.util.logging.Logger;
 
 public class GitHubClient {
 
   /** Provides access to the storage. */
-  @Autowired
-  private DatastoreRepository datastoreRepository;
+  @Autowired private DatastoreRepository datastoreRepository;
 
   private String url;
 
@@ -47,37 +45,35 @@ public class GitHubClient {
 
   public void run(@NonNull long delay) {
 
-    logger.info(String.format("GitHub: started fetching from the base url: %s",
-                              url));
-    WebClient.builder().baseUrl(url)
-      .defaultHeader(HttpHeaders.CONTENT_TYPE, "application/json")
-      .build()
-      .get()
-      .uri(url)
-      .accept(MediaType.APPLICATION_JSON)
-      .retrieve()
-      .bodyToMono(GitHubData.class)
-      .delaySubscription(Duration.ofSeconds(delay))
-      .onErrorResume(e -> {
-        logger.info("Ignoring error: " + e.getMessage());
-        return Mono.empty();
-      })
-      .repeat()
-      .subscribe(response -> {
-        if (response == null) {
-          logger.info(
-            String.format("GitHub: Error occurred, waiting for %d seconds", delay));
-          return;
-        }
-        datastoreRepository.createRevisionEntry(response);
-        logger.info(
-               String.format(
-                 "GitHub: Performing re-request in %d seconds", delay));
-      });
+    logger.info(String.format("GitHub: started fetching from the base url: %s", url));
+    WebClient.builder()
+        .baseUrl(url)
+        .defaultHeader(HttpHeaders.CONTENT_TYPE, "application/json")
+        .build()
+        .get()
+        .uri(url)
+        .accept(MediaType.APPLICATION_JSON)
+        .retrieve()
+        .bodyToMono(GitHubData.class)
+        .delaySubscription(Duration.ofSeconds(delay))
+        .onErrorResume(
+            e -> {
+              logger.info("Ignoring error: " + e.getMessage());
+              return Mono.empty();
+            })
+        .repeat()
+        .subscribe(
+            response -> {
+              if (response == null) {
+                logger.info(String.format("GitHub: Error occurred, waiting for %d seconds", delay));
+                return;
+              }
+              datastoreRepository.createRevisionEntry(response);
+              logger.info(String.format("GitHub: Performing re-request in %d seconds", delay));
+            });
   }
 
   public void setUrl(String url) {
     this.url = url;
   }
-
 }

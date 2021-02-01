@@ -20,11 +20,11 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
-import com.google.cloud.datastore.testing.LocalDatastoreHelper;
 import com.google.cloud.Timestamp;
+import com.google.cloud.datastore.testing.LocalDatastoreHelper;
+import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
 import com.google.graphgeckos.dashboard.datatypes.BuildInfo;
 import com.google.graphgeckos.dashboard.datatypes.BuilderStatus;
-import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
 import com.google.graphgeckos.dashboard.datatypes.GitHubData;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,9 +33,8 @@ import org.junit.After;
 import org.junit.Test;
 
 public class DatastoreRepositoryTests {
-  private LocalDatastoreHelper emulator = LocalDatastoreHelper.newBuilder().setConsistency(1.0)
-                                                                           .setStoreOnDisk(false)
-                                                                           .build();
+  private LocalDatastoreHelper emulator =
+      LocalDatastoreHelper.newBuilder().setConsistency(1.0).setStoreOnDisk(false).build();
 
   public DatastoreRepositoryTests() throws IOException, InterruptedException {
     emulator.start();
@@ -59,10 +58,10 @@ public class DatastoreRepositoryTests {
   }
 
   @Test
-  public void testValidAddition() throws IOException, InterruptedException{
+  public void testValidAddition() throws IOException, InterruptedException {
     DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
     Timestamp time = Timestamp.ofTimeMicroseconds(0);
-    
+
     assertTrue(storage.createRevisionEntry(getDummyGitData("1", time)));
     assertEquals(getDummyEntity("1", time), (storage.getRevisionEntry("1")));
   }
@@ -90,40 +89,52 @@ public class DatastoreRepositoryTests {
     assertNull(storage.getRevisionEntry("1"));
   }
 
-  /**
-   * Tests the behaviour of add/update/get/delete requests on null data.
-   */
+  /** Tests the behaviour of add/update/get/delete requests on null data. */
   @Test
   public void testRequestsNullData() throws IOException, InterruptedException {
     DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
 
-    assertThrows(NullPointerException.class, () -> {
-      storage.createRevisionEntry(null);
-    });
+    assertThrows(
+        NullPointerException.class,
+        () -> {
+          storage.createRevisionEntry(null);
+        });
 
-    assertThrows(NullPointerException.class, () -> {
-      storage.getRevisionEntry(null);
-    });
+    assertThrows(
+        NullPointerException.class,
+        () -> {
+          storage.getRevisionEntry(null);
+        });
 
-    assertThrows(NullPointerException.class, () -> {
-      storage.updateRevisionEntry(null);
-    });
+    assertThrows(
+        NullPointerException.class,
+        () -> {
+          storage.updateRevisionEntry(null);
+        });
 
-    assertThrows(NullPointerException.class, () -> {
-      storage.deleteRevisionEntry(null);
-    });
+    assertThrows(
+        NullPointerException.class,
+        () -> {
+          storage.deleteRevisionEntry(null);
+        });
 
-    assertThrows(NullPointerException.class, () -> {
-      storage.getBuildbotIndex(null);
-    });
+    assertThrows(
+        NullPointerException.class,
+        () -> {
+          storage.getBuildbotIndex(null);
+        });
 
-    assertThrows(NullPointerException.class, () -> {
-      storage.setBuildbotIndex(null, 0);
-    });
+    assertThrows(
+        NullPointerException.class,
+        () -> {
+          storage.setBuildbotIndex(null, 0);
+        });
 
-    assertThrows(NullPointerException.class, () -> {
-      storage.registerNewBuildbot(null, 0);
-    });
+    assertThrows(
+        NullPointerException.class,
+        () -> {
+          storage.registerNewBuildbot(null, 0);
+        });
   }
 
   @Test
@@ -156,9 +167,7 @@ public class DatastoreRepositoryTests {
     assertTrue(storage.deleteRevisionEntry("1"));
   }
 
-  /**
-   * Test possible cases of the getLastRevisions query.
-   */
+  /** Test possible cases of the getLastRevisions query. */
   @Test
   public void testGetLastRevisionsRegularQuery() throws IOException, InterruptedException {
     DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
@@ -219,7 +228,7 @@ public class DatastoreRepositoryTests {
     assertTrue(storage.createRevisionEntry(getDummyGitData("5", time5)));
 
     assertTrue(storage.deleteRevisionEntry("3"));
-  
+
     List<BuildInfo> results = storage.getLastRevisionEntries(3, 2);
 
     assertEquals(results.size(), 2);
@@ -234,7 +243,7 @@ public class DatastoreRepositoryTests {
     storage.registerNewBuildbot("tester", 1);
 
     storage.setBuildbotIndex("tester", 1000);
-    
+
     assertEquals(1000, storage.getBuildbotIndex("tester"));
   }
 
@@ -242,9 +251,11 @@ public class DatastoreRepositoryTests {
   public void testInvalidGetIndexRequest() throws IOException, InterruptedException {
     DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
 
-    assertThrows(BuildbotNotFoundException.class, () -> {
-      storage.getBuildbotIndex("tester");
-    });
+    assertThrows(
+        BuildbotNotFoundException.class,
+        () -> {
+          storage.getBuildbotIndex("tester");
+        });
   }
 
   @Test
@@ -255,13 +266,17 @@ public class DatastoreRepositoryTests {
 
     storage.setBuildbotIndex("tester", 1000);
 
-    assertThrows(IllegalArgumentException.class, () -> {
-      storage.setBuildbotIndex("tester", 1);
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          storage.setBuildbotIndex("tester", 1);
+        });
 
-    assertThrows(IllegalArgumentException.class, () -> {
-      storage.setBuildbotIndex("tester", 1000);
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          storage.setBuildbotIndex("tester", 1000);
+        });
   }
 
   @Test
@@ -301,17 +316,21 @@ public class DatastoreRepositoryTests {
 
     storage.registerNewBuildbot("tester", 3);
 
-    assertThrows(IllegalArgumentException.class, () -> {
-      storage.registerNewBuildbot("tester", 1);
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          storage.registerNewBuildbot("tester", 1);
+        });
   }
 
   @Test
   public void testFirstRegistrationNegative() throws IOException, InterruptedException {
     DatastoreRepository storage = new DatastoreRepository(emulator.getOptions().getService());
 
-    assertThrows(IllegalArgumentException.class, () -> {
-      storage.registerNewBuildbot("tester", -1);
-    });
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          storage.registerNewBuildbot("tester", -1);
+        });
   }
 }

@@ -24,65 +24,47 @@ import org.springframework.data.annotation.Id;
 import org.springframework.lang.NonNull;
 
 /**
- * This class encapsulates all the information gathered about a specific revision.
- * Information included: 
- *    * commit hash
- *    * timestamp
- *    * branch
- *    * information from builders:
- *          - builder name
- *          - compile logs
- *          - compilation status
+ * This class encapsulates all the information gathered about a specific revision. Information
+ * included: * commit hash * timestamp * branch * information from builders: - builder name -
+ * compile logs - compilation status
  *
- * This class is used to facilitate Datastore I/O operations through Spring Cloud API,
- * and to transfer the data from the DataRepository to the REST API component.
+ * <p>This class is used to facilitate Datastore I/O operations through Spring Cloud API, and to
+ * transfer the data from the DataRepository to the REST API component.
  */
 @Entity(name = "revision")
 public class BuildInfo {
 
-  /**
-   * The commit hash of the associated revision.
-   */
+  /** The commit hash of the associated revision. */
   @Id
   @Field(name = "commitHash")
   private String commitHash;
 
-  /**
-   * Timestamp when the commit was pushed.
-   */
+  /** Timestamp when the commit was pushed. */
   @Field(name = "timestamp")
   private Timestamp timestamp;
 
-  /**
-   * Branch where the commit was pushed.
-   */
+  /** Branch where the commit was pushed. */
   @Unindexed
   @Field(name = "branch")
   private String branch;
 
-  /**
-   * List of buildbots which attempted compilation and their results.
-   */
+  /** List of buildbots which attempted compilation and their results. */
   @Unindexed
   @Field(name = "builders")
   private List<BuildBotData> builders;
 
-  /**
-   * The global compilation status of the revision.
-   */
+  /** The global compilation status of the revision. */
   @Unindexed
   @Field(name = "status")
   private RevisionStatus status;
 
-  /**
-   * Used by Spring GCP.
-   */
+  /** Used by Spring GCP. */
   public BuildInfo() {}
 
   /**
-   * Converts a {@link GitHubData} object to a BuildInfo object.
-   * This is used for adding entries to the Google Cloud Datastore, from the Git commit
-   * information received, and leaving the {@code builders} field empty, for later updates.
+   * Converts a {@link GitHubData} object to a BuildInfo object. This is used for adding entries to
+   * the Google Cloud Datastore, from the Git commit information received, and leaving the {@code
+   * builders} field empty, for later updates.
    */
   public BuildInfo(GitHubData creationData) {
     this.commitHash = creationData.getCommitHash();
@@ -133,9 +115,7 @@ public class BuildInfo {
     this.builders = new ArrayList<>(builders);
   }
 
-  /**
-   * Adds a new builder to the builder list and recomputes the revision status.
-   */
+  /** Adds a new builder to the builder list and recomputes the revision status. */
   public void addBuilder(@NonNull BuildBotData update) {
     builders.add(update);
 
@@ -143,12 +123,12 @@ public class BuildInfo {
   }
 
   /**
-   * Updates the {@code status} field according to all the aggregated builder statuses.
-   * If there is no builder data, or all builder data are lost, the status will be {@code lost}.
+   * Updates the {@code status} field according to all the aggregated builder statuses. If there is
+   * no builder data, or all builder data are lost, the status will be {@code lost}.
    */
   private void reanalyseStatus() {
     boolean hasPassed = false;
-  
+
     for (BuildBotData builder : builders) {
       if (builder.getStatus() == BuilderStatus.FAILED) {
         this.status = RevisionStatus.failed;
@@ -158,7 +138,7 @@ public class BuildInfo {
         hasPassed = true;
       }
     }
-  
+
     if (hasPassed) {
       this.status = RevisionStatus.passed;
     } else {
@@ -180,5 +160,4 @@ public class BuildInfo {
     BuildInfo other = (BuildInfo) o;
     return commitHash.equals(other.commitHash) && timestamp.equals(other.timestamp);
   }
-
 }

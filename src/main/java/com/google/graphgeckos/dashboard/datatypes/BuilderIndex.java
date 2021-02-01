@@ -20,10 +20,10 @@ import org.springframework.cloud.gcp.data.datastore.core.mapping.Unindexed;
 import org.springframework.data.annotation.Id;
 
 /**
- * This class encapsulates the information needed to retain the last revision index
- * of a builder. Since builders do not compile all revisions sequentially, they maintain
- * an internal index of compiled revisions, which differs on a builder by builder basis.
- * Used as a Datastore entity inside DatastoreRepository.
+ * This class encapsulates the information needed to retain the last revision index of a builder.
+ * Since builders do not compile all revisions sequentially, they maintain an internal index of
+ * compiled revisions, which differs on a builder by builder basis. Used as a Datastore entity
+ * inside DatastoreRepository.
  */
 @Entity(name = "index")
 public class BuilderIndex {
@@ -35,7 +35,7 @@ public class BuilderIndex {
   @Field(name = "timestamp")
   private int index;
 
-  public BuilderIndex() { }
+  public BuilderIndex() {}
 
   public BuilderIndex(String name, int index) {
     this.name = name;
@@ -63,7 +63,7 @@ public class BuilderIndex {
     if (o == null || !(o instanceof BuilderIndex)) {
       return false;
     }
-    
+
     if (o == this) {
       return true;
     }

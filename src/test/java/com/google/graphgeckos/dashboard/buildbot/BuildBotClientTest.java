@@ -20,6 +20,8 @@ import com.google.graphgeckos.dashboard.datatypes.BuilderStatus;
 import com.google.graphgeckos.dashboard.datatypes.Log;
 import com.google.graphgeckos.dashboard.fetchers.buildbot.BuildBotClient;
 import com.google.graphgeckos.dashboard.storage.DatastoreRepository;
+import java.io.IOException;
+import java.util.List;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -31,27 +33,21 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import java.io.IOException;
-import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BuildBotClientTest {
 
   private MockWebServer mockWebServer = new MockWebServer();
 
-  /**
-   * Tested BuildBot API fetcher.
-   */
-  @InjectMocks
-  BuildBotClient client = new BuildBotClient("ddd");
+  /** Tested BuildBot API fetcher. */
+  @InjectMocks BuildBotClient client = new BuildBotClient("ddd");
 
-  @Mock
-  DatastoreRepository datastoreRepository;
+  @Mock DatastoreRepository datastoreRepository;
 
   private final String VALID_BUILD_BOT_NAME_CLANG = "clang-x86_64-debian-fast";
   private final String VALID_BUILD_BOT_NAME_FUCHSIA = "fuchsia-x86_64-linux";
@@ -60,102 +56,100 @@ public class BuildBotClientTest {
 
   private final long INITIAL_BUILD_ID = 36624;
   private final long NEXT_BUILD_ID = INITIAL_BUILD_ID + 1;
-  private BuildBotClientTestInfo BUILD_BOT_CLANG = new BuildBotClientTestInfo(VALID_BUILD_BOT_NAME_CLANG);
-  private BuildBotClientTestInfo BUILD_BOT_FUCHSIA = new BuildBotClientTestInfo(VALID_BUILD_BOT_NAME_FUCHSIA);
+  private BuildBotClientTestInfo BUILD_BOT_CLANG =
+      new BuildBotClientTestInfo(VALID_BUILD_BOT_NAME_CLANG);
+  private BuildBotClientTestInfo BUILD_BOT_FUCHSIA =
+      new BuildBotClientTestInfo(VALID_BUILD_BOT_NAME_FUCHSIA);
 
   private final String EMPTY_JSON = "";
 
-  /**
-   * Request frequency.
-   */
+  /** Request frequency. */
   private final long DELAY_ONE_SECOND = 1;
 
   /**
-   * Determines the behaviour of the mocked server depending on the
-   * provided name of the Build Bot.
+   * Determines the behaviour of the mocked server depending on the provided name of the Build Bot.
    */
-  Dispatcher dispatcher = new Dispatcher() {
+  Dispatcher dispatcher =
+      new Dispatcher() {
 
-    /**
-     * Response when the {@code VALID_BUILD_BOT_NAME_CLANG} data is requested. Status OK(200),
-     * Responds with the original (taken from the API) clang-x86_64-debian-fast JSON.
-     */
-    private final MockResponse CLANG_VALID_RESPONSE = new MockResponse()
-      .setResponseCode(200)
-      .setHeader(
-        HttpHeaders.CONTENT_TYPE,
-        MediaType.APPLICATION_JSON_VALUE)
-      .setBody(BUILD_BOT_CLANG.getContent());
+        /**
+         * Response when the {@code VALID_BUILD_BOT_NAME_CLANG} data is requested. Status OK(200),
+         * Responds with the original (taken from the API) clang-x86_64-debian-fast JSON.
+         */
+        private final MockResponse CLANG_VALID_RESPONSE =
+            new MockResponse()
+                .setResponseCode(200)
+                .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .setBody(BUILD_BOT_CLANG.getContent());
 
-    /**
-     * Response when the {@code VALID_BUILD_BOT_NAME_FUCHSIA} data is requested. Status OK (200),
-     * Responds with the original (taken from the API) fuchsia-x86_64-linux JSON.
-     */
-    private final MockResponse FUCHSIA_VALID_RESPONSE = new MockResponse()
-      .setResponseCode(200)
-      .setHeader(
-        HttpHeaders.CONTENT_TYPE,
-        MediaType.APPLICATION_JSON_VALUE)
-      .setBody(BUILD_BOT_FUCHSIA.getContent());
+        /**
+         * Response when the {@code VALID_BUILD_BOT_NAME_FUCHSIA} data is requested. Status OK
+         * (200), Responds with the original (taken from the API) fuchsia-x86_64-linux JSON.
+         */
+        private final MockResponse FUCHSIA_VALID_RESPONSE =
+            new MockResponse()
+                .setResponseCode(200)
+                .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .setBody(BUILD_BOT_FUCHSIA.getContent());
 
-    /**
-     * Response when the {@code VALID_BUILD_BOT_NAME_FUCHSIA} data is requested. Status NOT FOUND (404).
-     */
-    private final MockResponse PAGE_NOT_FOUND_RESPONSE = new MockResponse()
-      .setResponseCode(404)
-      .setHeader(
-        HttpHeaders.CONTENT_TYPE,
-        MediaType.APPLICATION_JSON_VALUE);
+        /**
+         * Response when the {@code VALID_BUILD_BOT_NAME_FUCHSIA} data is requested. Status NOT
+         * FOUND (404).
+         */
+        private final MockResponse PAGE_NOT_FOUND_RESPONSE =
+            new MockResponse()
+                .setResponseCode(404)
+                .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 
-    /**
-     * Response when the {@code VALID_BUILD_BOT_NAME_FUCHSIA} data is requested. Status OK (200).
-     * Responds with empty JSON.
-     */
-    private final MockResponse EMPTY_JSON_RESPONSE = new MockResponse()
-      .setResponseCode(200)
-      .setHeader(
-        HttpHeaders.CONTENT_TYPE,
-        MediaType.APPLICATION_JSON_VALUE)
-      .setBody(EMPTY_JSON);
+        /**
+         * Response when the {@code VALID_BUILD_BOT_NAME_FUCHSIA} data is requested. Status OK
+         * (200). Responds with empty JSON.
+         */
+        private final MockResponse EMPTY_JSON_RESPONSE =
+            new MockResponse()
+                .setResponseCode(200)
+                .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .setBody(EMPTY_JSON);
 
-    @Override
-    public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
+        @Override
+        public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
 
-      /* Expected form of the request url: baseUrl/buildBot/builds/buildId?as_text=1 . */
-      if (request.getPath().contains(VALID_BUILD_BOT_NAME_CLANG)) {
-        if (request.getPath().contains(Long.toString(INITIAL_BUILD_ID))) {
-          return CLANG_VALID_RESPONSE;
+          /* Expected form of the request url: baseUrl/buildBot/builds/buildId?as_text=1 . */
+          if (request.getPath().contains(VALID_BUILD_BOT_NAME_CLANG)) {
+            if (request.getPath().contains(Long.toString(INITIAL_BUILD_ID))) {
+              return CLANG_VALID_RESPONSE;
+            }
+            return FUCHSIA_VALID_RESPONSE;
+          }
+
+          if (request.getPath().contains(NOT_FOUND_BUILD_BOT_NAME)) {
+            return PAGE_NOT_FOUND_RESPONSE;
+          }
+
+          if (request.getPath().contains(EMPTY_JSON_BUILD_BOT_NAME)) {
+            return EMPTY_JSON_RESPONSE;
+          }
+
+          /*
+          Handles requests to the defined Build Bots only to verify that
+          the client performs requests of the expected form.
+          */
+          throw new IllegalStateException("Unknown build bot name");
         }
-        return FUCHSIA_VALID_RESPONSE;
-      }
-
-      if (request.getPath().contains(NOT_FOUND_BUILD_BOT_NAME)) {
-        return PAGE_NOT_FOUND_RESPONSE;
-      }
-
-      if (request.getPath().contains(EMPTY_JSON_BUILD_BOT_NAME)) {
-        return EMPTY_JSON_RESPONSE;
-      }
-
-      /*
-      Handles requests to the defined Build Bots only to verify that
-      the client performs requests of the expected form.
-      */
-      throw new IllegalStateException("Unknown build bot name");
-    }
-
-  };
+      };
 
   /**
-   * Compares objects, stubbed from the {@link DatastoreRepository::updateRevisionEntry},
-   * with the corresponding expected values.
+   * Compares objects, stubbed from the {@link DatastoreRepository::updateRevisionEntry}, with the
+   * corresponding expected values.
    */
   static class BuildBotDataMatcher implements ArgumentMatcher<BuildBotData> {
 
     /**
-     * Expected output fields. See {@link com.google.graphgeckos.dashboard.datatypes.BuildBotData} to learn more.
+     * Expected output fields. See {@link com.google.graphgeckos.dashboard.datatypes.BuildBotData}
+     * to learn more.
      */
     private String commitHash;
+
     private Timestamp timestamp;
     private String name;
     private BuilderStatus status;
@@ -170,8 +164,8 @@ public class BuildBotClientTest {
     }
 
     /**
-     * Checks if an instance of the {@link BuildBotData} provided by the tested {@code client}
-     * as an argument when calling {@link DatastoreRepository::updateRevisionEntry}.
+     * Checks if an instance of the {@link BuildBotData} provided by the tested {@code client} as an
+     * argument when calling {@link DatastoreRepository::updateRevisionEntry}.
      *
      * @param data instance of the {@link BuildBotData} to inspect
      * @return true if the {@code data} is valid {@see BuildBotData::isValid}.
@@ -179,17 +173,14 @@ public class BuildBotClientTest {
     @Override
     public boolean matches(BuildBotData data) {
       return data.getCommitHash().equals(commitHash)
-        && data.getStatus().equals(status)
-        && data.getName().equals(name)
-        && data.getTimestamp().equals(timestamp)
-        && data.getLogs().equals(logs);
+          && data.getStatus().equals(status)
+          && data.getName().equals(name)
+          && data.getTimestamp().equals(timestamp)
+          && data.getLogs().equals(logs);
     }
-
   }
 
-  /**
-   * Enables Mockito.
-   */
+  /** Enables Mockito. */
   @Before
   public void init() throws IOException {
     MockitoAnnotations.initMocks(this);
@@ -210,12 +201,12 @@ public class BuildBotClientTest {
   }
 
   /**
-   * Should add fetched data in the form of {@link BuildBotData} POJO
-   * to the storage via an instance of {@link DatastoreRepository}.
-   * <p>
-   * Given: valid build bot name, build id and delay.
-   * Expected behaviour: fetches JSON, turns JSON into a POJO,
-   * passes this object as an argument to {@link DatastoreRepository::updateEntry}.
+   * Should add fetched data in the form of {@link BuildBotData} POJO to the storage via an instance
+   * of {@link DatastoreRepository}.
+   *
+   * <p>Given: valid build bot name, build id and delay. Expected behaviour: fetches JSON, turns
+   * JSON into a POJO, passes this object as an argument to {@link
+   * DatastoreRepository::updateEntry}.
    */
   @Test
   public void validResponseCausesUpdateCallToRepositoryWithValidArgument() {
@@ -225,40 +216,39 @@ public class BuildBotClientTest {
     // because it takes time to get a response from server.
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 3;
     Mockito.verify(datastoreRepository, Mockito.after(delay).atLeast(1))
-      .updateRevisionEntry(
-        Mockito.argThat(new BuildBotDataMatcher(BUILD_BOT_CLANG)));
+        .updateRevisionEntry(Mockito.argThat(new BuildBotDataMatcher(BUILD_BOT_CLANG)));
   }
 
   /**
-   * Shouldn't attempt to access the storage via an instance of {@link DatastoreRepository}
-   * or throw Exception when server responds with 404 exception.
+   * Shouldn't attempt to access the storage via an instance of {@link DatastoreRepository} or throw
+   * Exception when server responds with 404 exception.
    */
   @Test
   public void serverErrorDoesNotCauseToRepository() throws Exception {
     client.run(NOT_FOUND_BUILD_BOT_NAME, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 3;
-    Mockito.verify(datastoreRepository, Mockito.after(delay).never()).updateRevisionEntry(Mockito.any());
+    Mockito.verify(datastoreRepository, Mockito.after(delay).never())
+        .updateRevisionEntry(Mockito.any());
   }
 
   /**
-   * Shouldn't attempt to access the storage via an instance of {@link DatastoreRepository}
-   * or throw exception when server responds with empty JSON.
+   * Shouldn't attempt to access the storage via an instance of {@link DatastoreRepository} or throw
+   * exception when server responds with empty JSON.
    */
   @Test
   public void emptyJsonResponseDoesNotCauseCallToRepository() throws Exception {
     client.run(EMPTY_JSON_BUILD_BOT_NAME, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 3;
-    Mockito.verify(datastoreRepository, Mockito.after(delay).never()).updateRevisionEntry(Mockito.any());
+    Mockito.verify(datastoreRepository, Mockito.after(delay).never())
+        .updateRevisionEntry(Mockito.any());
   }
 
-  /**
-   * Should access the storage at least twice when given enough time for more than one request.
-   */
+  /** Should access the storage at least twice when given enough time for more than one request. */
   @Test
   public void twoValidResponsesCauseTwoCallsToRepository() throws Exception {
     client.run(VALID_BUILD_BOT_NAME_CLANG, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 5;
-    Mockito.verify(datastoreRepository, Mockito.timeout(delay).atLeast(2)).updateRevisionEntry(Mockito.any());
+    Mockito.verify(datastoreRepository, Mockito.timeout(delay).atLeast(2))
+        .updateRevisionEntry(Mockito.any());
   }
-
 }

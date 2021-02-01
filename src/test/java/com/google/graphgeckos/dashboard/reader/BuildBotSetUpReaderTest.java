@@ -1,10 +1,9 @@
 package com.google.graphgeckos.dashboard.reader;
 
+import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
 
 @SpringBootTest
 public class BuildBotSetUpReaderTest {

@@ -12,18 +12,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class GitHubController {
 
   /** Provides access to the storage. */
-  @Autowired
-  private DatastoreRepository datastoreRepository;
+  @Autowired private DatastoreRepository datastoreRepository;
 
   /**
-   * Handles POST requests from the GitHub API. Setting GitHub Webhooks is required.
-   * Extracts required data from the json {@see CommitData} and adds it to the Storage.
+   * Handles POST requests from the GitHub API. Setting GitHub Webhooks is required. Extracts
+   * required data from the json {@see CommitData} and adds it to the Storage.
+   *
    * @param gitHubData json from the GitHub API.
    */
-  @RequestMapping(value = "/github-info", method = RequestMethod.POST, headers = {"content-type=application/json"})
+  @RequestMapping(
+      value = "/github-info",
+      method = RequestMethod.POST,
+      headers = {"content-type=application/json"})
   public GitHubData postGitHubInfo(@RequestBody GitHubData gitHubData) {
     datastoreRepository.createRevisionEntry(gitHubData);
     return gitHubData;
   }
-
 }

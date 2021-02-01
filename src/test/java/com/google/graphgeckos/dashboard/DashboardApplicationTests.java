@@ -4,5 +4,5 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class DashboardApplicationTests {
-  //TODO: add tests
+  // TODO: add tests
 }

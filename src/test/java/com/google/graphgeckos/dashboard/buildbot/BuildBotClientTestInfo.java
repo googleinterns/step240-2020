@@ -24,9 +24,11 @@ import java.util.List;
 public class BuildBotClientTestInfo extends AbstractJsonTestInfo {
 
   /**
-   * Expected output fields. See {@link com.google.graphgeckos.dashboard.datatypes.BuildBotData} to learn more.
+   * Expected output fields. See {@link com.google.graphgeckos.dashboard.datatypes.BuildBotData} to
+   * learn more.
    */
   private String commitHash;
+
   private Timestamp timestamp;
   private String name;
   private BuilderStatus status;
@@ -42,16 +44,15 @@ public class BuildBotClientTestInfo extends AbstractJsonTestInfo {
   }
 
   /**
-   * Values come in the following order: commitHash, timestamp, name, status, logs.
-   * Each log is represented by the two-string sequence, where a[i] is the type of a log and a[i + 1]
-   * is the link to a log. There can be no logs.
+   * Values come in the following order: commitHash, timestamp, name, status, logs. Each log is
+   * represented by the two-string sequence, where a[i] is the type of a log and a[i + 1] is the
+   * link to a log. There can be no logs.
    */
   @Override
   protected void assignExpectedValues(String[] expected) {
     if (expected.length < 4 || expected.length % 2 == 1) {
       throw new IllegalArgumentException(
-        String.format("Wrong file format, expected four lines, found %d", expected.length)
-      );
+          String.format("Wrong file format, expected four lines, found %d", expected.length));
     }
     commitHash = expected[0];
     timestamp = Timestamp.ofTimeMicroseconds(Long.parseLong(expected[1]));

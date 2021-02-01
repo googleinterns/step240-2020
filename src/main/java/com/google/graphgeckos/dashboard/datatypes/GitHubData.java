@@ -17,8 +17,9 @@ public class GitHubData {
   private String repositoryLink;
 
   /**
-   * Extracts commit id (also known as commit hash) and timestamp nested fields from the data of the head_commit
-   * field.
+   * Extracts commit id (also known as commit hash) and timestamp nested fields from the data of the
+   * head_commit field.
+   *
    * @param headCommit representation of the head_commit field of the GitHub API request json.
    */
   @JsonProperty("head_commit")
@@ -28,7 +29,9 @@ public class GitHubData {
   }
 
   /**
-   * Extracts link to the working repository (html_url field value) from the data of the repository field.
+   * Extracts link to the working repository (html_url field value) from the data of the repository
+   * field.
+   *
    * @param repository representation of the repository field of the GitHub API request json.
    */
   @JsonProperty("repository")
@@ -38,6 +41,7 @@ public class GitHubData {
 
   /**
    * Extracts the name of the branch from the reference.
+   *
    * @param ref Git reference.
    */
   @JsonProperty("ref")
@@ -49,19 +53,21 @@ public class GitHubData {
   // Properties for the GitHubClient
   @JsonProperty("commit")
   private void unpackCommit(Map<String, ?> commit) {
-    Map<?,?> author = (Map<?,?>) commit.get("author");
+    Map<?, ?> author = (Map<?, ?>) commit.get("author");
     this.timestamp = (String) author.get("date");
   }
-  
+
   @JsonProperty("sha")
   private void unpackCommitHash(String sha) {
     this.commitHash = sha;
   }
- 
+
   /**
-    * Extracts link to the working repository (html_url field value) from the data of the repository field.
-    * @param url representation of the repository field of the GitHub API request json.
-    */
+   * Extracts link to the working repository (html_url field value) from the data of the repository
+   * field.
+   *
+   * @param url representation of the repository field of the GitHub API request json.
+   */
   @JsonProperty("html_url")
   private void extractRepositoryLink(String url) {
     repositoryLink = url;
@@ -80,32 +86,23 @@ public class GitHubData {
     this.branch = branch;
   }
 
-  /**
-   * Returns name of the Git branch, where the tested changes were made.
-   */
+  /** Returns name of the Git branch, where the tested changes were made. */
   public String getBranch() {
     return branch;
   }
 
-  /**
-   * Returns Git commit hash of the last commit.
-   */
+  /** Returns Git commit hash of the last commit. */
   public String getCommitHash() {
     return commitHash;
   }
 
-  /**
-   * Returns time of when the commit was pushed.
-   */
+  /** Returns time of when the commit was pushed. */
   public String getTimestamp() {
     return timestamp;
   }
 
-  /**
-   * Returns link to the Git repository, where the last commit was made.
-   */
+  /** Returns link to the Git repository, where the last commit was made. */
   public String getRepositoryLink() {
     return repositoryLink;
   }
-
 }

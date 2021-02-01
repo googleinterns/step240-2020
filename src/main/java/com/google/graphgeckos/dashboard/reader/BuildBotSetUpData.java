@@ -26,7 +26,8 @@ public class BuildBotSetUpData {
       return false;
     }
     BuildBotSetUpData toCompare = (BuildBotSetUpData) o;
-    return name.equals(toCompare.name) && delay == toCompare.delay && initialId == toCompare.initialId;
+    return name.equals(toCompare.name)
+        && delay == toCompare.delay
+        && initialId == toCompare.initialId;
   }
-
 }

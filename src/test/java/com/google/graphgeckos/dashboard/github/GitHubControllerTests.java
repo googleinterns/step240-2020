@@ -26,11 +26,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 @AutoConfigureMockMvc
 public class GitHubControllerTests {
 
-  @Autowired
-  private MockMvc mvc;
+  @Autowired private MockMvc mvc;
 
-  @MockBean
-  private DatastoreRepository datastoreRepository;
+  @MockBean private DatastoreRepository datastoreRepository;
 
   @Before
   public void init() {
@@ -38,45 +36,52 @@ public class GitHubControllerTests {
   }
 
   private final GitHubJsonTestInfo JSON_WITHOUT_UNKNOWN_FIELDS =
-    new GitHubJsonTestInfo("no_unknown_fields_json");
+      new GitHubJsonTestInfo("no_unknown_fields_json");
   private final GitHubJsonTestInfo REAL_JSON = new GitHubJsonTestInfo("real_json");
 
   @Test
   public void jsonWithoutUnknownFieldsIsParsedCorrectly() throws Exception {
-    ResultActions result = mvc.perform(MockMvcRequestBuilders.post("/github-info")
-      .contentType("application/json")
-      .content(JSON_WITHOUT_UNKNOWN_FIELDS.getContent())
-      .accept(MediaType.APPLICATION_JSON));
+    ResultActions result =
+        mvc.perform(
+            MockMvcRequestBuilders.post("/github-info")
+                .contentType("application/json")
+                .content(JSON_WITHOUT_UNKNOWN_FIELDS.getContent())
+                .accept(MediaType.APPLICATION_JSON));
 
-    result.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-      .andExpect(jsonPath("branch").value(JSON_WITHOUT_UNKNOWN_FIELDS.getBranch()))
-      .andExpect(jsonPath("commitHash").value(JSON_WITHOUT_UNKNOWN_FIELDS.getCommitHash()))
-      .andExpect(jsonPath("timestamp").value(JSON_WITHOUT_UNKNOWN_FIELDS.getTimestamp()))
-      .andExpect(jsonPath("repositoryLink").value(JSON_WITHOUT_UNKNOWN_FIELDS.getRepositoryLink()));
+    result
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("branch").value(JSON_WITHOUT_UNKNOWN_FIELDS.getBranch()))
+        .andExpect(jsonPath("commitHash").value(JSON_WITHOUT_UNKNOWN_FIELDS.getCommitHash()))
+        .andExpect(jsonPath("timestamp").value(JSON_WITHOUT_UNKNOWN_FIELDS.getTimestamp()))
+        .andExpect(
+            jsonPath("repositoryLink").value(JSON_WITHOUT_UNKNOWN_FIELDS.getRepositoryLink()));
   }
 
   @Test
   public void realJsonIsParsedCorrectly() throws Exception {
-    ResultActions result = mvc.perform(MockMvcRequestBuilders.post("/github-info")
-      .contentType("application/json")
-      .content(REAL_JSON.getContent())
-      .accept(MediaType.APPLICATION_JSON));
+    ResultActions result =
+        mvc.perform(
+            MockMvcRequestBuilders.post("/github-info")
+                .contentType("application/json")
+                .content(REAL_JSON.getContent())
+                .accept(MediaType.APPLICATION_JSON));
 
-    result.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-      .andExpect(jsonPath("branch").value(REAL_JSON.getBranch()))
-      .andExpect(jsonPath("commitHash").value(REAL_JSON.getCommitHash()))
-      .andExpect(jsonPath("timestamp").value(REAL_JSON.getTimestamp()))
-      .andExpect(jsonPath("repositoryLink").value(REAL_JSON.getRepositoryLink()));
+    result
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("branch").value(REAL_JSON.getBranch()))
+        .andExpect(jsonPath("commitHash").value(REAL_JSON.getCommitHash()))
+        .andExpect(jsonPath("timestamp").value(REAL_JSON.getTimestamp()))
+        .andExpect(jsonPath("repositoryLink").value(REAL_JSON.getRepositoryLink()));
   }
 
   @Test
   public void controllerAttemptsToAddFetchedGitHubDataToTheStorage() throws Exception {
-    mvc.perform(MockMvcRequestBuilders.post("/github-info")
-       .contentType("application/json")
-       .content(REAL_JSON.getContent()));
-    
-    Mockito.verify(datastoreRepository, Mockito.times(1))
-           .createRevisionEntry(Mockito.any(GitHubData.class));
-  }
+    mvc.perform(
+        MockMvcRequestBuilders.post("/github-info")
+            .contentType("application/json")
+            .content(REAL_JSON.getContent()));
 
+    Mockito.verify(datastoreRepository, Mockito.times(1))
+        .createRevisionEntry(Mockito.any(GitHubData.class));
+  }
 }

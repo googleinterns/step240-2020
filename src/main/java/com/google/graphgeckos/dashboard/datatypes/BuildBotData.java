@@ -26,51 +26,40 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.lang.NonNull;
 
 /**
- * Contains the information retrieved from a single build bot. It is used as a member
- * of {@link BuildInfo}
+ * Contains the information retrieved from a single build bot. It is used as a member of {@link
+ * BuildInfo}
  */
 @Entity(name = "builder")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BuildBotData {
 
   /**
-   * The commit hash, it is fetched from the BuildBot API.
-   * This field is transient because it is only needed to
-   * determine which commit this data belongs to and put
-   * it in the right {@link BuildInfo} in the storage.
-   * Used in {@link com.google.graphgeckos.dashboard.storage.DatastoreRepository}.
+   * The commit hash, it is fetched from the BuildBot API. This field is transient because it is
+   * only needed to determine which commit this data belongs to and put it in the right {@link
+   * BuildInfo} in the storage. Used in {@link
+   * com.google.graphgeckos.dashboard.storage.DatastoreRepository}.
    */
   @Transient
   @Field(name = "commitHash")
   private String commitHash;
 
-  /** 
-   * The timestamp of the build. 
-   */
+  /** The timestamp of the build. */
   @Field(name = "timestamp")
   private Timestamp timestamp;
 
-  /**
-   * Name of the buildbot.
-   */
+  /** Name of the buildbot. */
   @Field(name = "name")
   private String name;
 
-  /**
-   * The logs of each compilation stage, stored as described by {@link Log}.
-   */
+  /** The logs of each compilation stage, stored as described by {@link Log}. */
   @Field(name = "logs")
   private List<Log> logs = new ArrayList<>();
 
-  /**
-   * Builder compilation status, as described by {@link BuilderStatus}.
-   */
+  /** Builder compilation status, as described by {@link BuilderStatus}. */
   @Field(name = "status")
   private BuilderStatus status = BuilderStatus.FAILED;
 
-  /**
-   * Only used by Spring GCP.
-   */
+  /** Only used by Spring GCP. */
   public BuildBotData() {}
 
   public BuildBotData(String commitHash, String name, List<Log> logs, BuilderStatus status) {
@@ -85,8 +74,8 @@ public class BuildBotData {
   }
 
   /**
-   * Extracts nested commitHash("revision"), branch("branch") and
-   * timestamp("when") fields from the json
+   * Extracts nested commitHash("revision"), branch("branch") and timestamp("when") fields from the
+   * json
    *
    * @param sourceStamp Representation of the json component, where the commitHash field is located
    */
@@ -99,11 +88,10 @@ public class BuildBotData {
   }
 
   /**
-   * Defines builder status based on a phrase provided in parsed json.
-   * If something failed or the phrase doesn't contain any of the key words
-   * ("failed", "successful", "lost"), then the buildbot is considered failed {@code FAILED}.
-   * If something is lost, then the buildbot is considered lost {@code LOST}.
-   * If  the buildbot is considered passed {@code PASSED}.
+   * Defines builder status based on a phrase provided in parsed json. If something failed or the
+   * phrase doesn't contain any of the key words ("failed", "successful", "lost"), then the buildbot
+   * is considered failed {@code FAILED}. If something is lost, then the buildbot is considered lost
+   * {@code LOST}. If the buildbot is considered passed {@code PASSED}.
    *
    * @param words Words of the "text" JSON field
    */
@@ -125,9 +113,8 @@ public class BuildBotData {
   }
 
   /**
-   * Unpacks logs represented as list of lists of two strings,
-   * where the first one is a type of the log and the second one
-   * is a link to the log.
+   * Unpacks logs represented as list of lists of two strings, where the first one is a type of the
+   * log and the second one is a link to the log.
    *
    * @param logs Representation of the json component, where the logs are located
    */
@@ -181,9 +168,7 @@ public class BuildBotData {
     this.timestamp = timestamp;
   }
 
-  /**
-   * Checks if all non-transient fields are equal between BuildBotData instances.
-   */
+  /** Checks if all non-transient fields are equal between BuildBotData instances. */
   @Override
   public boolean equals(Object o) {
     if (o == null || !(o instanceof BuildBotData)) {
@@ -191,8 +176,9 @@ public class BuildBotData {
     }
 
     BuildBotData other = (BuildBotData) o;
-    return timestamp.equals(other.timestamp) && name.equals(other.name) &&
-           logs.equals(other.logs) && status.equals(other.status);
+    return timestamp.equals(other.timestamp)
+        && name.equals(other.name)
+        && logs.equals(other.logs)
+        && status.equals(other.status);
   }
-
 }

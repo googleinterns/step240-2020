@@ -20,13 +20,13 @@ import com.google.graphgeckos.dashboard.datatypes.GitHubData;
 import java.util.List;
 
 /**
- * A storage component for creating/updating/deleting revision data, with the possibility
- * of querying entries in bulk, sorted by their timestamp.
+ * A storage component for creating/updating/deleting revision data, with the possibility of
+ * querying entries in bulk, sorted by their timestamp.
  */
 public interface DataRepository {
   /**
-   * Creates a new database entry of the "revision" type with the metadata of the revision.
-   * If there already is an entry with the same commit hash, ignores the request.
+   * Creates a new database entry of the "revision" type with the metadata of the revision. If there
+   * already is an entry with the same commit hash, ignores the request.
    *
    * @param entryData a ParsedGitData instance, must have a non-null "commitHash" field
    * @return true only if the operation completed successfully.
@@ -34,9 +34,9 @@ public interface DataRepository {
   boolean createRevisionEntry(GitHubData entryData);
 
   /**
-   * Updates an existing revision's database entry, with the individual information from
-   * a particular buildbot. If there is no entry associated with the provided commit hash,
-   * ignores the request.
+   * Updates an existing revision's database entry, with the individual information from a
+   * particular buildbot. If there is no entry associated with the provided commit hash, ignores the
+   * request.
    *
    * @param updateData a BuildBotData instance, must have a non-null "commitHash" field
    * @return true only if the operation completed successfully.
@@ -44,36 +44,36 @@ public interface DataRepository {
   boolean updateRevisionEntry(BuildBotData updateData);
 
   /**
-   * Deletes a revision's database entry, based on it's commit hash. Has no effect if there
-   * is no Entity associated to the commit hash.
+   * Deletes a revision's database entry, based on it's commit hash. Has no effect if there is no
+   * Entity associated to the commit hash.
    *
-   * @param commitHash the String representation of the commit hash of the revision data to
-   * be deleted
+   * @param commitHash the String representation of the commit hash of the revision data to be
+   *     deleted
    * @return true only if the operation completed successfully.
    */
   boolean deleteRevisionEntry(String commitHash);
 
   /**
-   * Queries the database for a specified amount of entries of type "revision", going down
-   * in chronological order, starting from an offset from the latest.
+   * Queries the database for a specified amount of entries of type "revision", going down in
+   * chronological order, starting from an offset from the latest.
    *
    * @param number the number of database entries to retrieve
-   * @param offset the offset from the latest database entry, for which to consider
-   *     the requested number of entries
-   * @return a list containing at most {@code number} entries starting from the latest
-   *     entry - {@code offset}. If the database has not enough entries for the requested
-   *     {@code offset} and {@code number}, returns all the available entries from that range.
+   * @param offset the offset from the latest database entry, for which to consider the requested
+   *     number of entries
+   * @return a list containing at most {@code number} entries starting from the latest entry -
+   *     {@code offset}. If the database has not enough entries for the requested {@code offset} and
+   *     {@code number}, returns all the available entries from that range.
    * @throws IllegalArgumentException if either number or offset are < 0
    */
   List<BuildInfo> getLastRevisionEntries(int number, int offset) throws IllegalArgumentException;
 
   /**
-   * Queries the database for a given entry, that has the primary key set
-   * to the provided commitHash.
+   * Queries the database for a given entry, that has the primary key set to the provided
+   * commitHash.
    *
    * @param commitHash the commitHash to search for
-   * @return null if no object was found, else a BuildInfo instance of the database entry
-   *     associated to that commitHash.
+   * @return null if no object was found, else a BuildInfo instance of the database entry associated
+   *     to that commitHash.
    */
   BuildInfo getRevisionEntry(String commitHash) throws IllegalArgumentException;
 
@@ -94,22 +94,22 @@ public interface DataRepository {
    * @param buildbotName the name of the buildbot to update
    * @param newValue the new index value
    * @throws IllegalArgumentException if {@code buildbotName} is null or there is no "index" entry
-   *      with that key
-   * @throws IndexOutOfBoundsException if newValue is lower or equal than the previous
-   *      recorded value
+   *     with that key
+   * @throws IndexOutOfBoundsException if newValue is lower or equal than the previous recorded
+   *     value
    */
   void setBuildbotIndex(String buildbotName, int newValue);
 
   /**
-   * Creates a new "index" entry if there is none with the same name in the database. This should
-   * be called once before setting the index for a buildbot that has no previous entry. If the
-   * value provided is larger than the previous value, the call updates the value.
+   * Creates a new "index" entry if there is none with the same name in the database. This should be
+   * called once before setting the index for a buildbot that has no previous entry. If the value
+   * provided is larger than the previous value, the call updates the value.
    *
    * @param name the name of the buildbot to register
    * @param value the starting index value of the buildbot
    * @throws IllegalArgumentException if {@code name} is null
    * @throws IndexOutOfBoundsException if value is negative when creating a new entry, or if value
-   *      is lower or equal than the previous recorded value
+   *     is lower or equal than the previous recorded value
    */
   void registerNewBuildbot(String buildbotName, int value);
 }

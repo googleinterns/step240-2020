@@ -39,26 +39,23 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
 /**
- * A DataRepository implementation backed up by Google Datastore.
- * Each database entry is modeled by the {@link #BuildInfo BuildInfo} class.
- * The relevant fields for the database are:
- *    - Kind: "revision"
- *    - Key: commit hash
+ * A DataRepository implementation backed up by Google Datastore. Each database entry is modeled by
+ * the {@link #BuildInfo BuildInfo} class. The relevant fields for the database are: - Kind:
+ * "revision" - Key: commit hash
  *
- * Useful links:
- * - https://googleapis.dev/java/google-cloud-datastore/latest/index.html
- * - https://googleapis.dev/java/spring-cloud-gcp/1.2.2.RELEASE/index.html
- * - https://cloud.google.com/datastore/docs/concepts/
- * - https://spring.io/projects/spring-cloud-gcp#overview
+ * <p>Useful links: - https://googleapis.dev/java/google-cloud-datastore/latest/index.html -
+ * https://googleapis.dev/java/spring-cloud-gcp/1.2.2.RELEASE/index.html -
+ * https://cloud.google.com/datastore/docs/concepts/ -
+ * https://spring.io/projects/spring-cloud-gcp#overview
  */
 @Repository
 public class DatastoreRepository implements DataRepository {
   private DatastoreTemplate storage;
 
   /**
-   * Constructs a DatastoreRepository which uses {@code underlyingStorage} as the database
-   * interface which ultimately handles the requests.
-   * 
+   * Constructs a DatastoreRepository which uses {@code underlyingStorage} as the database interface
+   * which ultimately handles the requests.
+   *
    * @throws NullPointerException if {@code underlyingStorage} is null
    */
   public DatastoreRepository(@NonNull Datastore underlyingStorage) {
@@ -157,7 +154,7 @@ public class DatastoreRepository implements DataRepository {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @throws IllegalArgumentException if either number or offset are < 0
    */
   @Override
@@ -165,12 +162,13 @@ public class DatastoreRepository implements DataRepository {
     checkArgument(number >= 0, "number must be >= 0");
     checkArgument(offset >= 0, "offset must be >= 0");
 
-    Query<Entity> query = Query.newEntityQueryBuilder()
-                               .setKind("revision")
-                               .setOrderBy(OrderBy.desc("timestamp"))
-                               .setOffset(offset)
-                               .setLimit(number)
-                               .build();
+    Query<Entity> query =
+        Query.newEntityQueryBuilder()
+            .setKind("revision")
+            .setOrderBy(OrderBy.desc("timestamp"))
+            .setOffset(offset)
+            .setLimit(number)
+            .build();
 
     List<BuildInfo> toBeReturned = new ArrayList<>();
     storage.query(query, BuildInfo.class).getIterable().forEach(toBeReturned::add);
@@ -212,9 +210,9 @@ public class DatastoreRepository implements DataRepository {
    * {@inheritDoc}
    *
    * @throws IllegalArgumentException if {@code buildbotName} is null or there is no "index" entry
-   *      with that key
-   * @throws IndexOutOfBoundsException if newValue is lower or equal than the previous
-   *      recorded value
+   *     with that key
+   * @throws IndexOutOfBoundsException if newValue is lower or equal than the previous recorded
+   *     value
    */
   @Override
   public void setBuildbotIndex(@NonNull String buildbotName, int newValue) {
@@ -224,8 +222,9 @@ public class DatastoreRepository implements DataRepository {
 
     checkNotNull(associatedEntity, "no associated entity with the provided name");
 
-    checkArgument(newValue > associatedEntity.getIndex(),
-                               "newValue cannot be lower or equal than the previous index");
+    checkArgument(
+        newValue > associatedEntity.getIndex(),
+        "newValue cannot be lower or equal than the previous index");
 
     associatedEntity.setIndex(newValue);
     storage.save(associatedEntity);
@@ -236,7 +235,7 @@ public class DatastoreRepository implements DataRepository {
    *
    * @throws IllegalArgumentException if {@code name} is null
    * @throws IndexOutOfBoundsException if value is negative when creating a new entry, or if value
-   *      is lower or equal than the previous recorded value
+   *     is lower or equal than the previous recorded value
    */
   @Override
   public void registerNewBuildbot(@NonNull String buildbotName, int value) {
@@ -245,11 +244,11 @@ public class DatastoreRepository implements DataRepository {
     BuilderIndex associatedEntity = storage.findById(buildbotName, BuilderIndex.class);
 
     if (associatedEntity != null) {
-      checkArgument(value >= associatedEntity.getIndex(),
-                                "value cannot be < than the previous known value");
+      checkArgument(
+          value >= associatedEntity.getIndex(), "value cannot be < than the previous known value");
     }
     checkArgument(value >= 0, "value cannot be negative");
-    
+
     BuilderIndex newEntity = new BuilderIndex(buildbotName, value);
     storage.save(newEntity);
   }
