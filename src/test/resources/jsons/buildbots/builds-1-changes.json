@@ -1,0 +1,12 @@
+{
+  "changes": [
+    {
+      "revision": "revision1",
+      "when_timestamp": 123  
+    },
+    {
+      "revision": "revision2",
+      "when_timestamp": 456  
+    }
+  ]
+}

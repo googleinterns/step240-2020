@@ -1,0 +1,12 @@
+{
+  "builds": [
+    {
+      "buildid": 1,
+      "state_string": "state"
+    },
+    {
+      "buildid": 2,
+      "state_string": "state"
+    }
+  ]
+}

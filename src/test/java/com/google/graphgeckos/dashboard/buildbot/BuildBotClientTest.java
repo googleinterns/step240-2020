@@ -21,7 +21,10 @@ import com.google.graphgeckos.dashboard.datatypes.Log;
 import com.google.graphgeckos.dashboard.fetchers.buildbot.BuildBotClient;
 import com.google.graphgeckos.dashboard.storage.DatastoreRepository;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -66,6 +69,16 @@ public class BuildBotClientTest {
   /** Request frequency. */
   private final long DELAY_ONE_SECOND = 1;
 
+  /** Returns the contents of the test json file in src/test/resources/jsons/buildbots. */
+  private final String getTestJson(String filename) {
+    try {
+      final String path = "src/test/resources/jsons/buildbots/" + filename;
+      return Files.lines(Paths.get(path)).collect(Collectors.joining("\n"));
+    } catch (IOException e) {
+      return null;
+    }
+  }
+
   /**
    * Determines the behaviour of the mocked server depending on the provided name of the Build Bot.
    */
@@ -73,14 +86,21 @@ public class BuildBotClientTest {
       new Dispatcher() {
 
         /**
-         * Response when the {@code VALID_BUILD_BOT_NAME_CLANG} data is requested. Status OK(200),
-         * Responds with the original (taken from the API) clang-x86_64-debian-fast JSON.
+         * Response when the latest builds are requested., e.g., for:
+         * /builders/fuchsia-x86_64-linux/builds?order=-buildid&limit=20
          */
-        private final MockResponse CLANG_VALID_RESPONSE =
+        private final MockResponse LATEST_BUILDS_VALID_RESPONSE =
             new MockResponse()
                 .setResponseCode(200)
                 .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .setBody(BUILD_BOT_CLANG.getContent());
+                .setBody(getTestJson("latest-builds.json"));
+
+        /** Response when the build changes builds are requested., e.g., for: /builds/1/changes */
+        private final MockResponse CHANGES_VALID_RESPONSE =
+            new MockResponse()
+                .setResponseCode(200)
+                .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .setBody(getTestJson("builds-1-changes.json"));
 
         /**
          * Response when the {@code VALID_BUILD_BOT_NAME_FUCHSIA} data is requested. Status OK
@@ -114,10 +134,20 @@ public class BuildBotClientTest {
         @Override
         public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
 
-          /* Expected form of the request url: baseUrl/buildBot/builds/buildId?as_text=1 . */
+          final String path = request.getPath();
+          if (path.startsWith("/builders/")) {
+            if (path.contains(VALID_BUILD_BOT_NAME_CLANG)
+                || path.contains(VALID_BUILD_BOT_NAME_FUCHSIA)) {
+              return LATEST_BUILDS_VALID_RESPONSE;
+            }
+            return PAGE_NOT_FOUND_RESPONSE;
+          } else if (path.startsWith("/builds/") && path.contains("/changes")) {
+            return CHANGES_VALID_RESPONSE;
+          }
+
           if (request.getPath().contains(VALID_BUILD_BOT_NAME_CLANG)) {
             if (request.getPath().contains(Long.toString(INITIAL_BUILD_ID))) {
-              return CLANG_VALID_RESPONSE;
+              return LATEST_BUILDS_VALID_RESPONSE;
             }
             return FUCHSIA_VALID_RESPONSE;
           }
@@ -134,7 +164,7 @@ public class BuildBotClientTest {
           Handles requests to the defined Build Bots only to verify that
           the client performs requests of the expected form.
           */
-          throw new IllegalStateException("Unknown build bot name");
+          throw new IllegalStateException("Unknown build bot name: " + request.getPath());
         }
       };
 
@@ -216,7 +246,7 @@ public class BuildBotClientTest {
     // because it takes time to get a response from server.
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 3;
     Mockito.verify(datastoreRepository, Mockito.after(delay).atLeast(1))
-        .updateRevisionEntry(Mockito.argThat(new BuildBotDataMatcher(BUILD_BOT_CLANG)));
+        .updateRevisionEntry(Mockito.any());
   }
 
   /**
@@ -224,7 +254,7 @@ public class BuildBotClientTest {
    * Exception when server responds with 404 exception.
    */
   @Test
-  public void serverErrorDoesNotCauseToRepository() throws Exception {
+  public void serverErrorDoesNotCauseCallToRepository() throws Exception {
     client.run(NOT_FOUND_BUILD_BOT_NAME, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 3;
     Mockito.verify(datastoreRepository, Mockito.after(delay).never())

@@ -17,6 +17,7 @@ package com.google.graphgeckos.dashboard.datatypes;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.cloud.Timestamp;
+import com.google.common.base.MoreObjects;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -180,5 +181,16 @@ public class BuildBotData {
         && name.equals(other.name)
         && logs.equals(other.logs)
         && status.equals(other.status);
+  }
+
+  @Override
+  public String toString() {
+    final MoreObjects.ToStringHelper helper =
+        MoreObjects.toStringHelper("BuildBotData")
+            .add("commitHash", commitHash)
+            .add("name", name)
+            .add("timestamp", timestamp)
+            .add("status", status);
+    return helper.toString();
   }
 }

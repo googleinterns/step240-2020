@@ -14,19 +14,61 @@
 
 package com.google.graphgeckos.dashboard.fetchers.buildbot;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.util.Preconditions;
+import com.google.cloud.Timestamp;
 import com.google.graphgeckos.dashboard.datatypes.BuildBotData;
+import com.google.graphgeckos.dashboard.datatypes.BuilderStatus;
+import com.google.graphgeckos.dashboard.datatypes.Log;
 import com.google.graphgeckos.dashboard.storage.DatastoreRepository;
-import java.time.Duration;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.lang.NonNull;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+
+// A single build json, e.g.,
+// http://lab.llvm.org:8011/api/v2/builders/clang-x86_64-debian-fast/builds?order=-number&limit=20
+@JsonIgnoreProperties(ignoreUnknown = true)
+class BuildJson {
+  @JsonProperty("buildid")
+  int buildId;
+
+  @JsonProperty("state_string")
+  String stateString;
+}
+
+// The builds/ endpoint, e.g.,
+// http://lab.llvm.org:8011/api/v2/builders/clang-x86_64-debian-fast/builds?order=-number&limit=20
+@JsonIgnoreProperties(ignoreUnknown = true)
+class BuildsJson {
+  @JsonProperty("builds")
+  BuildJson[] builds;
+}
+
+// A change json, e.g.,
+// http://lab.llvm.org:8011/api/v2/changes?limit=1
+@JsonIgnoreProperties(ignoreUnknown = true)
+class ChangeJson {
+  @JsonProperty("revision")
+  String revision;
+
+  @JsonProperty("when_timestamp")
+  long whenSecondsSinceEpoch;
+}
+
+// The changes/ endpoint, e.g.,
+// http://lab.llvm.org:8011/api/v2/changes?limit=5
+@JsonIgnoreProperties(ignoreUnknown = true)
+class ChangesJson {
+  @JsonProperty("changes")
+  ChangeJson[] changes;
+}
 
 /** A (external) BuildBot API json data fetcher. */
 public class BuildBotClient {
@@ -35,75 +77,112 @@ public class BuildBotClient {
   @Autowired private DatastoreRepository datastoreRepository;
 
   /**
-   * Base url of the BuildBot API, LLVM BuildBot API base url is
-   * "http://lab.llvm.org:8011/json/builders"
+   * Base url of the BuildBot API, LLVM BuildBot API base URL is "http://lab.llvm.org:8011/api/v2".
    */
   private String baseUrl;
 
+  private ObjectMapper objectMapper = new ObjectMapper();
+
   private static final Logger logger = Logger.getLogger(BuildBotClient.class.getName());
+
+  public BuildBotClient(@NonNull String baseUrl, DatastoreRepository repository) {
+    this.baseUrl = Preconditions.checkNotNull(baseUrl);
+    this.datastoreRepository = repository;
+  }
 
   public BuildBotClient(@NonNull String baseUrl) {
     this.baseUrl = Preconditions.checkNotNull(baseUrl);
   }
 
   /**
+   * Returns the text of a HTTP GET request to the base URL.
+   *
+   * The endpoint is computed from the arguments via {@code String.format}.
+   * 
+   * @param format format string for the HTTP endpoint relative to the base URL.
+   * @param args the args to substiture in the format string.
+   */
+  private String httpGet(String format, Object... args) {
+    return WebClient.builder()
+        .baseUrl(baseUrl)
+        .defaultHeader(HttpHeaders.CONTENT_TYPE, "application/json")
+        .build()
+        .get()
+        .uri(String.format(format, args))
+        .accept(MediaType.TEXT_PLAIN)
+        .retrieve()
+        .bodyToMono(String.class)
+        .block();
+  }
+
+  /** Returns the latest 20 builds for {@code builderId}, or null if they cannot be retrieved. */
+  private BuildJson[] getLatestBuilds(String builderId) {
+    String response;
+    try {
+      response = httpGet("/builders/%s/builds?order=-buildid&limit=20", builderId);
+    } catch (Exception e) {
+      logger.warning(
+          String.format("Failed to fetch latest builds for builderId: %s: %s", builderId, e));
+      return null;
+    }
+    if (response == null) {
+      logger.warning(String.format("Failed to get build results for builderId: %s", builderId));
+      return null;
+    }
+    try {
+      BuildsJson builds = objectMapper.readValue(response, BuildsJson.class);
+      if (builds == null) return null;
+      return builds.builds;
+    } catch (JsonProcessingException e) {
+      logger.severe(String.format("Failed to deserialize GET response %s: %s", response, e));
+    }
+    return null;
+  }
+
+  private ChangeJson getChange(int buildId) {
+    String response = httpGet("/builds/%d/changes?limit=1", buildId);
+    try {
+      ChangesJson changes = objectMapper.readValue(response, ChangesJson.class);
+      if (changes != null && changes.changes != null && changes.changes.length > 0) {
+        return changes.changes[0];
+      }
+    } catch (JsonProcessingException e) {
+      logger.severe(String.format("Failed to deserialize GET response %s: %s", response, e));
+    }
+    return null;
+  }
+
+  /**
    * Starts fetching process. Fetches data every {@code delay} seconds from the url: {@code
-   * baseUrl}/{@code buildBot}/builds/{@code buildId}?as_text=1. E.g with buildBot =
+   * baseUrl}/{@code buildBot}/builds/{@code buildId}. E.g with buildBot =
    * "clang-x86_64-debian-fast" and buildId = 1000, baseUrl =
    * "http://lab.llvm.org:8011/json/builders" the request url will be
-   * http://lab.llvm.org:8011/json/builders/clang-x86_64-debian-fast/builds/1000?as_text=1 . Adds
-   * valid fetched data in the form of {@link BuildBotData} to the storage and tries to fetch an
-   * entry with the next buildId after waiting for {@code delay} seconds. If the fetched data is
-   * empty (invalid) waits for {@code delay} seconds and tries to make the same request.
+   * http://lab.llvm.org:8011/json/builders/clang-x86_64-debian-fast/builds/1000 Adds valid fetched
+   * data in the form of {@link BuildBotData} to the storage and tries to fetch an entry with the
+   * next buildId after waiting for {@code delay} seconds. If the fetched data is empty (invalid)
+   * waits for {@code delay} seconds and tries to make the same request.
    *
    * @param buildBot name of the BuildBot as it is in the API (e.g "clang-x86_64-debian-fast")
    * @param initialBuildId the id of the BuildBot's build from where to start fetching data
    */
   public void run(@NonNull String buildBot, long initialBuildId, long delay) {
-
-    AtomicLong buildId = new AtomicLong(initialBuildId);
     logger.info(
         String.format(
             "Builder %s: started fetching from the base url: %s",
             Preconditions.checkNotNull(initialBuildId), baseUrl));
-    WebClient.builder()
-        .baseUrl(baseUrl)
-        .defaultHeader(HttpHeaders.CONTENT_TYPE, "application/json")
-        .build()
-        .get()
-        .uri(String.format("/%s/builds/%d?as_text=1", buildBot, buildId.get()))
-        .accept(MediaType.TEXT_PLAIN)
-        .retrieve()
-        .bodyToMono(String.class)
-        .delaySubscription(Duration.ofSeconds(delay))
-        .onErrorResume(
-            e -> {
-              logger.info("Ignoring error: " + e.getMessage());
-              return Mono.empty();
-            })
-        .repeat()
-        .subscribe(
-            response -> {
-              if (response.isEmpty()) {
-                logger.info(
-                    String.format(
-                        "Builder %s: Error occurred, waiting for %d seconds", buildBot, delay));
-                return;
-              }
-              logger.info(String.format("Builder %s: trying to deserialize valid JSON", buildBot));
-              try {
-                BuildBotData builder = new ObjectMapper().readValue(response, BuildBotData.class);
-                datastoreRepository.updateRevisionEntry(builder);
-              } catch (Exception e) {
-                logger.info(String.format("Builder %s: can't deserialize JSON", buildBot));
-                e.printStackTrace();
-              }
-              long nextBuildId = buildId.incrementAndGet();
-              logger.info(
-                  String.format(
-                      "Builder %s:Next build id is %d, performing request in %d seconds",
-                      buildBot, nextBuildId, delay));
-            });
+    BuildJson[] builds = getLatestBuilds(buildBot);
+    logger.info("builds: " + builds);
+    if (builds == null) return;
+    for (BuildJson build : builds) {
+      ChangeJson change = getChange(build.buildId);
+      logger.info("change: " + change);
+      if (change == null) continue;
+      BuildBotData data =
+          new BuildBotData(change.revision, buildBot, new ArrayList<Log>(), BuilderStatus.PASSED);
+      data.setTimestamp(Timestamp.ofTimeSecondsAndNanos(change.whenSecondsSinceEpoch, 0));
+      logger.info("Updating: " + data);
+      datastoreRepository.updateRevisionEntry(data);
+    }
   }
 
   public void setBaseUrl(String baseUrl) {
