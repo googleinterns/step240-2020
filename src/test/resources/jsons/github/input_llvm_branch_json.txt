@@ -1,0 +1,100 @@
+[
+  {
+    "sha": "29ec5901c9c515e34ed4299ac500f268dca1f62e",
+    "node_id": "MDY6Q29tbWl0NzU4MjE0MzI6MjllYzU5MDFjOWM1MTVlMzRlZDQyOTlhYzUwMGYyNjhkY2ExZjYyZQ==",
+    "commit": {
+      "author": {
+        "name": "Jinsong Ji",
+        "email": "jji@us.ibm.com",
+        "date": "2020-09-24T18:20:57Z"
+      },
+      "committer": {
+        "name": "Jinsong Ji",
+        "email": "jji@us.ibm.com",
+        "date": "2020-09-24T18:20:57Z"
+      },
+      "message": "[llvm-exegesis] Add whitespace between words in error message",
+      "tree": {
+        "sha": "32acaf6a675e2af2c17af02e8e03434aa9dff460",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/32acaf6a675e2af2c17af02e8e03434aa9dff460"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/29ec5901c9c515e34ed4299ac500f268dca1f62e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/29ec5901c9c515e34ed4299ac500f268dca1f62e",
+    "html_url": "https://github.com/llvm/llvm-project/commit/29ec5901c9c515e34ed4299ac500f268dca1f62e",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/29ec5901c9c515e34ed4299ac500f268dca1f62e/comments",
+    "author": {
+      "login": "jsji",
+      "id": 1674522,
+      "node_id": "MDQ6VXNlcjE2NzQ1MjI=",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1674522?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jsji",
+      "html_url": "https://github.com/jsji",
+      "followers_url": "https://api.github.com/users/jsji/followers",
+      "following_url": "https://api.github.com/users/jsji/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jsji/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jsji/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jsji/subscriptions",
+      "organizations_url": "https://api.github.com/users/jsji/orgs",
+      "repos_url": "https://api.github.com/users/jsji/repos",
+      "events_url": "https://api.github.com/users/jsji/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jsji/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jsji",
+      "id": 1674522,
+      "node_id": "MDQ6VXNlcjE2NzQ1MjI=",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1674522?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jsji",
+      "html_url": "https://github.com/jsji",
+      "followers_url": "https://api.github.com/users/jsji/followers",
+      "following_url": "https://api.github.com/users/jsji/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jsji/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jsji/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jsji/subscriptions",
+      "organizations_url": "https://api.github.com/users/jsji/orgs",
+      "repos_url": "https://api.github.com/users/jsji/repos",
+      "events_url": "https://api.github.com/users/jsji/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jsji/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b62fd436a3e613cbfe0654305cbc0e4f142bfcf9",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/b62fd436a3e613cbfe0654305cbc0e4f142bfcf9",
+        "html_url": "https://github.com/llvm/llvm-project/commit/b62fd436a3e613cbfe0654305cbc0e4f142bfcf9"
+      }
+    ],
+    "stats": {
+      "total": 2,
+      "additions": 1,
+      "deletions": 1
+    },
+    "files": [
+      {
+        "sha": "fb3f41e1473483f0999ef0aa54c436165c4874bd",
+        "filename": "llvm/tools/llvm-exegesis/llvm-exegesis.cpp",
+        "status": "modified",
+        "additions": 1,
+        "deletions": 1,
+        "changes": 2,
+        "blob_url": "https://github.com/llvm/llvm-project/blob/29ec5901c9c515e34ed4299ac500f268dca1f62e/llvm/tools/llvm-exegesis/llvm-exegesis.cpp",
+        "raw_url": "https://github.com/llvm/llvm-project/raw/29ec5901c9c515e34ed4299ac500f268dca1f62e/llvm/tools/llvm-exegesis/llvm-exegesis.cpp",
+        "contents_url": "https://api.github.com/repos/llvm/llvm-project/contents/llvm/tools/llvm-exegesis/llvm-exegesis.cpp?ref=29ec5901c9c515e34ed4299ac500f268dca1f62e",
+        "patch": "@@ -406,7 +406,7 @@ static void analysisMain() {\n   if (AnalysisClustersOutputFile.empty() &&\n       AnalysisInconsistenciesOutputFile.empty()) {\n     ExitWithError(\n-        \"for --mode=analysis: At least one of --analysis-clusters-output-file\"\n+        \"for --mode=analysis: At least one of --analysis-clusters-output-file \"\n         \"and --analysis-inconsistencies-output-file must be specified\");\n   }\n "
+      }
+    ]
+  }
+]

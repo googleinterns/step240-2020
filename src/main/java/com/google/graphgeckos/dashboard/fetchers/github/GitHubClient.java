@@ -55,7 +55,7 @@ public class GitHubClient {
         .uri(url)
         .accept(MediaType.APPLICATION_JSON)
         .retrieve()
-        .bodyToMono(GitHubData.class)
+        .bodyToMono(GitHubData[].class)
         .delaySubscription(Duration.ofSeconds(delay))
         .onErrorResume(
             e -> {
@@ -64,12 +64,14 @@ public class GitHubClient {
             })
         .repeat()
         .subscribe(
-            response -> {
-              if (response == null) {
+            responses -> {
+              if (responses == null) {
                 logger.info(String.format("GitHub: Error occurred, waiting for %d seconds", delay));
                 return;
               }
-              datastoreRepository.createRevisionEntry(response);
+              for (GitHubData response : responses) {
+                datastoreRepository.createRevisionEntry(response);
+              }
               logger.info(String.format("GitHub: Performing re-request in %d seconds", delay));
             });
   }

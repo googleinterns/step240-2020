@@ -44,11 +44,11 @@ public class GitHubClientTest {
   /** Tested BuildBot API fetcher. */
   GitHubClient client;
 
-  private final String VALID_MASTER = "llvm_master_json";
+  private final String VALID_BRANCH = "llvm_branch_json";
 
-  private GitHubJsonTestInfo LLVM_MASTER = new GitHubJsonTestInfo(VALID_MASTER);
+  private GitHubJsonTestInfo LLVM_BRANCH = new GitHubJsonTestInfo(VALID_BRANCH);
 
-  private final String VALID_GITHUB_URL = "valid-master-url";
+  private final String VALID_GITHUB_URL = "valid-branch-url";
   private final String NOT_FOUND_GITHUB_URL = "server-will-respond-with-404";
   private final String EMPTY_JSON_GITHUB_URL = "server-will-respond-with-empty-json";
   private final String EMPTY_JSON = "";
@@ -64,12 +64,12 @@ public class GitHubClientTest {
   Dispatcher dispatcher =
       new Dispatcher() {
 
-        /** Response when the {@code VALID_MASTER} data is requested. Status OK(200), */
-        private final MockResponse LLVM_MASTER_RESPONSE =
+        /** Response when the {@code VALID_BRANCH} data is requested. Status OK(200), */
+        private final MockResponse LLVM_BRANCH_RESPONSE =
             new MockResponse()
                 .setResponseCode(200)
                 .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .setBody(LLVM_MASTER.getContent());
+                .setBody(LLVM_BRANCH.getContent());
 
         /** Status NOT FOUND (404). */
         private final MockResponse PAGE_NOT_FOUND_RESPONSE =
@@ -87,7 +87,7 @@ public class GitHubClientTest {
         @Override
         public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
           if (request.getPath().contains(VALID_GITHUB_URL)) {
-            return LLVM_MASTER_RESPONSE;
+            return LLVM_BRANCH_RESPONSE;
           }
           if (request.getPath().contains(NOT_FOUND_GITHUB_URL)) {
             return PAGE_NOT_FOUND_RESPONSE;
@@ -176,7 +176,7 @@ public class GitHubClientTest {
     // because it takes time to get a response from server.
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 3;
     Mockito.verify(datastoreRepository, Mockito.after(delay).atLeast(1))
-        .createRevisionEntry(Mockito.argThat(new GitHubDataMatcher(LLVM_MASTER)));
+        .createRevisionEntry(Mockito.argThat(new GitHubDataMatcher(LLVM_BRANCH)));
   }
 
   /**
