@@ -27,7 +27,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -40,10 +39,10 @@ public class GitHubClientTest {
 
   private MockWebServer mockWebServer = new MockWebServer();
 
-  /** Tested BuildBot API fetcher. */
-  @InjectMocks GitHubClient client = new GitHubClient();
-
   @Mock DatastoreRepository datastoreRepository;
+
+  /** Tested BuildBot API fetcher. */
+  GitHubClient client;
 
   private final String VALID_MASTER = "llvm_master_json";
 
@@ -144,6 +143,7 @@ public class GitHubClientTest {
   @Before
   public void init() throws IOException {
     MockitoAnnotations.initMocks(this);
+    client = new GitHubClient("test-baseUrl", datastoreRepository);
 
     mockWebServer.start();
     mockWebServer.setDispatcher(dispatcher);

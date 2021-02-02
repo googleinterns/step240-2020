@@ -29,18 +29,19 @@ import reactor.core.publisher.Mono;
 public class GitHubClient {
 
   /** Provides access to the storage. */
-  @Autowired private DatastoreRepository datastoreRepository;
+  private DatastoreRepository datastoreRepository;
 
+  /**
+   * The GitHub API URL of the commits of the repository, e.g.:
+   * https://api.github.com/repos/llvm/llvm-project/commits
+   */
   private String url;
 
   private static final Logger logger = Logger.getLogger(GitHubClient.class.getName());
 
-  private GitHubClient(@NonNull String baseUrl) {
+  public GitHubClient(@NonNull String baseUrl, @NonNull DatastoreRepository repository) {
     this.url = Preconditions.checkNotNull(baseUrl);
-  }
-
-  public GitHubClient() {
-    this("https://api.github.com/repos/llvm/llvm-project/commits/master");
+    this.datastoreRepository = Preconditions.checkNotNull(repository);
   }
 
   public void run(@NonNull long delay) {
