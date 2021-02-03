@@ -56,13 +56,11 @@ public class GitHubClient {
         .accept(MediaType.APPLICATION_JSON)
         .retrieve()
         .bodyToMono(GitHubData[].class)
-        .delaySubscription(Duration.ofSeconds(delay))
         .onErrorResume(
             e -> {
               logger.info("Ignoring error: " + e.getMessage());
               return Mono.empty();
             })
-        .repeat()
         .subscribe(
             responses -> {
               if (responses == null) {
@@ -70,9 +68,9 @@ public class GitHubClient {
                 return;
               }
               for (GitHubData response : responses) {
+                logger.info("Creating revision: " + response.getCommitHash());
                 datastoreRepository.createRevisionEntry(response);
               }
-              logger.info(String.format("GitHub: Performing re-request in %d seconds", delay));
             });
   }
 

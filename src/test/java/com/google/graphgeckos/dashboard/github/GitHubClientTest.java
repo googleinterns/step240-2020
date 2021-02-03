@@ -204,14 +204,4 @@ public class GitHubClientTest {
     Mockito.verify(datastoreRepository, Mockito.after(delay).never())
         .createRevisionEntry(Mockito.any());
   }
-
-  /** Should access the storage at least twice when given enough time for more than one request. */
-  @Test
-  public void twoValidResponsesCauseTwoCallsToRepository() throws Exception {
-    client.setUrl(baseUrl + VALID_GITHUB_URL);
-    client.run(DELAY_ONE_SECOND);
-    long delay = secondsToMillis(DELAY_ONE_SECOND) * 5;
-    Mockito.verify(datastoreRepository, Mockito.timeout(delay).atLeast(2))
-        .createRevisionEntry(Mockito.any());
-  }
 }
