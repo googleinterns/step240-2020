@@ -32,55 +32,74 @@ import org.springframework.http.MediaType;
 import org.springframework.lang.NonNull;
 import org.springframework.web.reactive.function.client.WebClient;
 
-// A single build json, e.g.,
-// http://lab.llvm.org:8011/api/v2/builders/clang-x86_64-debian-fast/builds?order=-number&limit=20
+/**
+ * A single build JSON, as returned by:
+ * http://lab.llvm.org:8011/api/v2/builders/clang-x86_64-debian-fast/builds?order=-number&limit=20
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 class BuildJson {
+  /** ID of this build. It uniquely identifies this build among builds performed by the builder. */
   @JsonProperty("buildid")
   int buildId;
 
+  /**
+   * The state of this build.
+   *
+   * <p>When the build was successful this, string is: "build successful". In case of failures, this
+   * string looks like: "70 expected passes 18 expected failures 7 unsupported tests 3 unexpected
+   * failures (failure)"
+   */
   @JsonProperty("state_string")
   String stateString;
 }
 
-// The builds/ endpoint, e.g.,
-// http://lab.llvm.org:8011/api/v2/builders/clang-x86_64-debian-fast/builds?order=-number&limit=20
+/**
+ * A collection of builds, as returned by:
+ * http://lab.llvm.org:8011/api/v2/builders/clang-x86_64-debian-fast/builds?order=-number&limit=20
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 class BuildsJson {
   @JsonProperty("builds")
   BuildJson[] builds;
 }
 
-// A change json, e.g.,
-// http://lab.llvm.org:8011/api/v2/changes?limit=1
+/** A change JSON, as returned by: http://lab.llvm.org:8011/api/v2/changes?limit=1 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 class ChangeJson {
+  /** The GitHub commit hash of this change. */
   @JsonProperty("revision")
   String revision;
 
+  /** The time when this change was committed to GitHub. */
   @JsonProperty("when_timestamp")
   long whenSecondsSinceEpoch;
 }
 
-// The changes/ endpoint, e.g.,
-// http://lab.llvm.org:8011/api/v2/changes?limit=5
+/** A collection of changes, as returned by: http://lab.llvm.org:8011/api/v2/changes?limit=5 */
 @JsonIgnoreProperties(ignoreUnknown = true)
 class ChangesJson {
   @JsonProperty("changes")
   ChangeJson[] changes;
 }
 
-/** A (external) BuildBot API json data fetcher. */
+/**
+ * A BuildBot v2 API JSON data fetcher.
+ *
+ * <p>The LLVM build bots are served at: http://lab.llvm.org:8011/api/v2/.
+ */
 public class BuildBotClient {
 
   /** Provides access to the storage. */
   @Autowired private DatastoreRepository datastoreRepository;
 
   /**
-   * Base url of the BuildBot API, LLVM BuildBot API base URL is "http://lab.llvm.org:8011/api/v2".
+   * Base url of the BuildBot API.
+   *
+   * <p>The LLVM build bot API base URL is http://lab.llvm.org:8011/api/v2.
    */
   private String baseUrl;
 
+  /** Default object mapper used to deserialize JSON data. */
   private ObjectMapper objectMapper = new ObjectMapper();
 
   private static final Logger logger = Logger.getLogger(BuildBotClient.class.getName());
@@ -100,7 +119,7 @@ public class BuildBotClient {
    * The endpoint is computed from the arguments via {@code String.format}.
    * 
    * @param format format string for the HTTP endpoint relative to the base URL.
-   * @param args the args to substiture in the format string.
+   * @param args the args to substitute in the format string.
    */
   private String httpGet(String format, Object... args) {
     return WebClient.builder()
@@ -139,6 +158,10 @@ public class BuildBotClient {
     return null;
   }
 
+  /**
+   * Returns the change of the build identified by {@code buildId}, or null if the build is not
+   * found.
+   */
   private ChangeJson getChange(int buildId) {
     String response = httpGet("/builds/%d/changes?limit=1", buildId);
     try {
@@ -153,6 +176,7 @@ public class BuildBotClient {
   }
 
   /**
+   * Fetches build information for the {@code buildBot}.
    * Starts fetching process. Fetches data every {@code delay} seconds from the url: {@code
    * baseUrl}/{@code buildBot}/builds/{@code buildId}. E.g with buildBot =
    * "clang-x86_64-debian-fast" and buildId = 1000, baseUrl =
@@ -165,11 +189,9 @@ public class BuildBotClient {
    * @param buildBot name of the BuildBot as it is in the API (e.g "clang-x86_64-debian-fast")
    * @param initialBuildId the id of the BuildBot's build from where to start fetching data
    */
-  public void run(@NonNull String buildBot, long initialBuildId, long delay) {
-    logger.info(
-        String.format(
-            "Builder %s: started fetching from the base url: %s",
-            Preconditions.checkNotNull(initialBuildId), baseUrl));
+  public void run(@NonNull String buildBot) {
+    Preconditions.checkNotNull(buildBot);
+
     BuildJson[] builds = getLatestBuilds(buildBot);
     logger.info("builds: " + builds);
     if (builds == null) return;

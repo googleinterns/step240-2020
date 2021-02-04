@@ -240,7 +240,7 @@ public class BuildBotClientTest {
    */
   @Test
   public void validResponseCausesUpdateCallToRepositoryWithValidArgument() {
-    client.run(VALID_BUILD_BOT_NAME_CLANG, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
+    client.run(VALID_BUILD_BOT_NAME_CLANG);
 
     // Wait to check if the datastoreRepository::updateRevisionEntry was called
     // because it takes time to get a response from server.
@@ -255,7 +255,7 @@ public class BuildBotClientTest {
    */
   @Test
   public void serverErrorDoesNotCauseCallToRepository() throws Exception {
-    client.run(NOT_FOUND_BUILD_BOT_NAME, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
+    client.run(NOT_FOUND_BUILD_BOT_NAME);
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 3;
     Mockito.verify(datastoreRepository, Mockito.after(delay).never())
         .updateRevisionEntry(Mockito.any());
@@ -267,7 +267,7 @@ public class BuildBotClientTest {
    */
   @Test
   public void emptyJsonResponseDoesNotCauseCallToRepository() throws Exception {
-    client.run(EMPTY_JSON_BUILD_BOT_NAME, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
+    client.run(EMPTY_JSON_BUILD_BOT_NAME);
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 3;
     Mockito.verify(datastoreRepository, Mockito.after(delay).never())
         .updateRevisionEntry(Mockito.any());
@@ -276,7 +276,7 @@ public class BuildBotClientTest {
   /** Should access the storage at least twice when given enough time for more than one request. */
   @Test
   public void twoValidResponsesCauseTwoCallsToRepository() throws Exception {
-    client.run(VALID_BUILD_BOT_NAME_CLANG, INITIAL_BUILD_ID, DELAY_ONE_SECOND);
+    client.run(VALID_BUILD_BOT_NAME_CLANG);
     long delay = secondsToMillis(DELAY_ONE_SECOND) * 5;
     Mockito.verify(datastoreRepository, Mockito.timeout(delay).atLeast(2))
         .updateRevisionEntry(Mockito.any());

@@ -6,9 +6,9 @@ import com.google.graphgeckos.dashboard.reader.BuildBotSetUpData;
 import com.google.graphgeckos.dashboard.reader.BuildBotSetUpReader;
 import com.google.graphgeckos.dashboard.storage.DatastoreRepository;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -21,7 +21,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
-
 
 @SpringBootApplication
 @Configuration
@@ -52,8 +51,7 @@ public class DashboardApplication implements SchedulingConfigurer {
     }
     for (BuildBotSetUpData buildBot : buildBots) {
       logger.info("Fetching builds from build bot: " + buildBot.name);
-      new BuildBotClient(BASE_URL, datastoreRepository)
-          .run(buildBot.name, buildBot.initialId, buildBot.delay);
+      new BuildBotClient(BASE_URL, datastoreRepository).run(buildBot.name);
     }
   }
 
