@@ -1,12 +1,4 @@
 clang-x86_64-debian-fast
-600
-0
 mlir-nvidia
-600
-0
 llvm-clang-x86_64-win-fast
-600
-0
 mlir-windows
-600
-0
