@@ -30,8 +30,14 @@ import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 @EnableDatastoreRepositories
 public class DashboardApplication implements SchedulingConfigurer {
 
-  private static final String BASE_URL = "http://lab.llvm.org:8011/api/v2";
+  /**
+   * Base LLVM Buildbot API URL.
+   */
+  private static final String BASE_URL = "https://lab.llvm.org/buildbot/api/v2";
 
+  /**
+   * LLVM Github commits URL.
+   */
   private static final String GITHUB_URL = "https://api.github.com/repos/llvm/llvm-project/commits";
 
   /**
