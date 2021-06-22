@@ -32,7 +32,10 @@ const HEADERS = ['no.', 'text', 'log'];
  * @param {string} props.buildSteps[].logs - A URL pointing to the log file.
  */
 export const BuilderDataTable = props => {
-  const buildSteps = props.buildSteps;
+  let buildSteps = [];
+  if (props.buildSteps !== undefined) {
+    buildSteps = props.buildSteps;
+  }
 
   return (
     <table className='data-table'>
