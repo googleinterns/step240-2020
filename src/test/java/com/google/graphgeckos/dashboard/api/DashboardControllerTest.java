@@ -40,8 +40,7 @@ public class DashboardControllerTest {
 
   private final String COMMIT_HASH = "1234";
   private final Timestamp TIMESTAMP = Timestamp.ofTimeMicroseconds(12345679);
-  private final String BRANCH = "branch a";
-  private final GitHubData INITIAL_GITHUB_DATA = new GitHubData(COMMIT_HASH, TIMESTAMP, BRANCH);
+  private final GitHubData INITIAL_GITHUB_DATA = new GitHubData(COMMIT_HASH, TIMESTAMP);
 
   /** Builders names. */
   private final String NAME_A = "Builder A";
@@ -144,7 +143,6 @@ public class DashboardControllerTest {
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$[0].commitHash").value(COMMIT_HASH))
-        .andExpect(jsonPath("$[0].branch").value(BRANCH))
         .andExpect(jsonPath("$[0].builders[0].builderName").value(NAME_A))
         .andExpect(jsonPath("$[0].builders[1].status").value(STATUS_B))
         .andExpect(jsonPath("$[0].builders[0].logs[1].type").value(LOG_TYPE_2))

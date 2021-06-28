@@ -45,7 +45,7 @@ public class DatastoreRepositoryTests {
   }
 
   private GitHubData getDummyGitData(String commitHash, Timestamp time) {
-    return new GitHubData(commitHash, time, "test");
+    return new GitHubData(commitHash, time);
   }
 
   private BuildBotData getDummyUpdate(String commitHash) {

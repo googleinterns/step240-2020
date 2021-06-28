@@ -8,8 +8,6 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GitHubData {
 
-  private String branch = "master";
-
   private String commitHash;
 
   private String timestamp;
@@ -39,17 +37,6 @@ public class GitHubData {
     repositoryLink = repository.get("html_url").toString();
   }
 
-  /**
-   * Extracts the name of the branch from the reference.
-   *
-   * @param ref Git reference.
-   */
-  @JsonProperty("ref")
-  private void extractBranch(String ref) {
-    String[] refComponents = ref.split("/");
-    branch = refComponents[refComponents.length - 1];
-  }
-
   // Properties for the GitHubClient
   @JsonProperty("commit")
   private void unpackCommit(Map<String, ?> commit) {
@@ -75,20 +62,9 @@ public class GitHubData {
 
   public GitHubData() {}
 
-  public GitHubData(String commitHash, Timestamp timestamp, String branch) {
+  public GitHubData(String commitHash, Timestamp timestamp) {
     this.commitHash = commitHash;
     this.timestamp = timestamp.toString();
-    this.branch = branch;
-  }
-
-  public GitHubData(String commitHash, String branch) {
-    this.commitHash = commitHash;
-    this.branch = branch;
-  }
-
-  /** Returns name of the Git branch, where the tested changes were made. */
-  public String getBranch() {
-    return branch;
   }
 
   /** Returns Git commit hash of the last commit. */

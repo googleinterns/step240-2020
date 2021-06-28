@@ -106,12 +106,6 @@ public class GitHubClientTest {
    */
   static class GitHubDataMatcher implements ArgumentMatcher<GitHubData> {
 
-    /**
-     * Expected output fields. See {@link com.google.graphgeckos.dashboard.datatypes.GitHubData} to
-     * learn more.
-     */
-    private String branch;
-
     private String commitHash;
     private String timestamp;
     private String repositoryLink;
@@ -119,7 +113,6 @@ public class GitHubClientTest {
     public GitHubDataMatcher(GitHubJsonTestInfo expected) {
       this.commitHash = expected.getCommitHash();
       this.timestamp = expected.getTimestamp();
-      this.branch = expected.getBranch();
       this.repositoryLink = expected.getRepositoryLink();
     }
 
@@ -134,7 +127,6 @@ public class GitHubClientTest {
     public boolean matches(GitHubData data) {
       return data.getCommitHash().equals(commitHash)
           && data.getTimestamp().equals(timestamp)
-          && data.getBranch().equals(branch)
           && data.getRepositoryLink().equals(repositoryLink);
     }
   }

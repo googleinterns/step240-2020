@@ -24,9 +24,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.lang.NonNull;
 
 /**
- * This class encapsulates all the information gathered about a specific revision. Information
- * included: * commit hash * timestamp * branch * information from builders: - builder name -
- * compile logs - compilation status
+ * This class encapsulates all the information gathered about a specific LLVM revision.
  *
  * <p>This class is used to facilitate Datastore I/O operations through Spring Cloud API, and to
  * transfer the data from the DataRepository to the REST API component.
@@ -42,11 +40,6 @@ public class BuildInfo {
   /** Timestamp when the commit was pushed. */
   @Field(name = "timestamp")
   private Timestamp timestamp;
-
-  /** Branch where the commit was pushed. */
-  @Unindexed
-  @Field(name = "branch")
-  private String branch;
 
   /** List of buildbots which attempted compilation and their results. */
   @Unindexed
@@ -69,7 +62,6 @@ public class BuildInfo {
   public BuildInfo(GitHubData creationData) {
     this.commitHash = creationData.getCommitHash();
     this.timestamp = Timestamp.parseTimestamp(creationData.getTimestamp());
-    this.branch = creationData.getBranch();
     this.builders = new ArrayList<>();
     this.status = RevisionStatus.lost;
   }
@@ -82,11 +74,6 @@ public class BuildInfo {
   @NonNull
   public Timestamp getTimestamp() {
     return timestamp;
-  }
-
-  @NonNull
-  public String getBranch() {
-    return branch;
   }
 
   @NonNull
@@ -105,10 +92,6 @@ public class BuildInfo {
 
   public void setTimestamp(@NonNull Timestamp timestamp) {
     this.timestamp = timestamp;
-  }
-
-  public void setBranch(@NonNull String branch) {
-    this.branch = branch;
   }
 
   public void setBuilders(@NonNull List<BuildBotData> builders) {

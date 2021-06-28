@@ -22,7 +22,7 @@ import org.junit.Test;
 
 public class BuildInfoTests {
   private BuildInfo getDummyEntity() {
-    return new BuildInfo(new GitHubData("dummy", Timestamp.ofTimeMicroseconds(0), "test"));
+    return new BuildInfo(new GitHubData("dummy", Timestamp.ofTimeMicroseconds(0)));
   }
 
   private BuildBotData getDummyUpdate(BuilderStatus status) {
