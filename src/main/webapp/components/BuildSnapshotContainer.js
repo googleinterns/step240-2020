@@ -47,7 +47,7 @@ export const BuildSnapshotContainer = React.memo(_ =>
 
     /**
      * Fetch data when component is mounted.
-     * Pass in empty array as second paramater to prevent
+     * Pass in empty array as second parameter to prevent
      * infinite callbacks as component refreshes.
      * @see <a href="www.robinwieruch.de/react-hooks-fetch-data">Fetching</a>
      */
@@ -76,7 +76,6 @@ export const BuildSnapshotContainer = React.memo(_ =>
               onClick={hasPrev ? null : () => changePage(-1)}></span>
         <span className={`${hasNext ? 'hiddenButton' : 'paginationButton'} nextPage`}
               onClick={hasNext ? null : () => changePage(1)}></span>
-        <span className='currentPage'>Page: {pageNumber}</span>
       </div>;
 
     return (

@@ -231,7 +231,3 @@ ul {
   transform: rotate(-45deg);
   -webkit-transform: rotate(-45deg);
 }
-
-.currentPage {
-  font: 2rem normal 'Roboto' sans-serif;
-}
