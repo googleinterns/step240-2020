@@ -17,12 +17,12 @@ import { Navigation } from "./Navigation";
 
 const OPTIONS = [
   {
-    text: 'Docs',
-    link: 'https://github.com/googleinterns/step240-2020'
+    text: 'Wiki',
+    link: 'https://github.com/googleinterns/step240-2020/wiki'
   },
   {
-    text: 'Buildbot',
-    link: 'http://lab.llvm.org:8011/'
+    text: 'LLVM Buildbot',
+    link: 'https://lab.llvm.org/buildbot/#/console'
   }
 ];
 
@@ -30,7 +30,7 @@ const OPTIONS = [
  * Main Navigation Component
  */
 export const Header = _ => {
-  const TITLE = 'LLVM Build View';
+  const TITLE = 'LLVM builds';
 
   return (
     <header className='header'>
