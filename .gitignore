@@ -1,6 +1,10 @@
 # Please keep this list in ASCII sort order
+.classpath
 .DS_Store
+.factorypath
 .idea
+.project
+.settings/
 src/main/webapp/.cache
 src/main/webapp/dist
 src/main/webapp/node
